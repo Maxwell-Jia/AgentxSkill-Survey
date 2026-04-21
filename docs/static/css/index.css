@@ -1,0 +1,324 @@
+/* =========================================================
+   Agent × Skill Survey — custom styles on top of Bulma
+   (Adapted from the Nerfies / academic-project-page template,
+    same conventions as XSkill-Agent/xskill_page)
+   ========================================================= */
+
+body {
+  font-family: 'Noto Sans', 'Noto Sans SC', sans-serif;
+  color: #111;
+}
+
+.publication-title,
+.publication-authors,
+.title,
+.subtitle {
+  font-family: 'Google Sans', 'Noto Sans SC', sans-serif;
+}
+
+.author-block { display: inline-block; margin: 0 0.35rem; }
+
+/* ---------- Brand gradient (small-caps) ---------- */
+.agentxskill {
+  font-variant: small-caps;
+  font-weight: bold;
+  background: linear-gradient(90deg, #0ea5a0 0%, #F97316 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.skillx {
+  font-variant: small-caps;
+  font-weight: bold;
+  background: linear-gradient(90deg, #F97316 0%, #0ea5a0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.gos {
+  font-variant: small-caps;
+  font-weight: bold;
+  background: linear-gradient(90deg, #7c3aed 0%, #0ea5a0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ---------- Publication link buttons ---------- */
+.link-block a { margin: 5px; }
+
+.btn-arxiv { background-color: #b31b1b; border-color: #8a1414; color: #fff !important; }
+.btn-arxiv:hover { background-color: #8a1414; border-color: #8a1414; color: #fff !important; }
+
+.btn-github { background-color: #24292e; border-color: #1a1e22; color: #fff !important; }
+.btn-github:hover { background-color: #1a1e22; border-color: #1a1e22; color: #fff !important; }
+
+.btn-hf { background-color: #ff9d00; border-color: #e08800; color: #fff !important; }
+.btn-hf:hover { background-color: #e08800; border-color: #e08800; color: #fff !important; }
+
+.btn-home { background-color: #0ea5a0; border-color: #0a8580; color: #fff !important; }
+.btn-home:hover { background-color: #0a8580; border-color: #0a8580; color: #fff !important; }
+
+.hf-icon { font-style: normal; font-size: 1rem; line-height: 1; }
+
+/* ---------- Figures ---------- */
+.analysis-figure-wrap {
+  border: 1px solid #dde3ea;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fafbfc;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+}
+.analysis-figure-wrap img { display: block; width: 100%; height: auto; }
+.figure-caption {
+  font-size: 0.9rem;
+  color: #546e7a;
+  margin-top: 0.8rem;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* ---------- Key insight callout ---------- */
+.key-insight {
+  border-left: 4px solid #0ea5a0;
+  background: #ecfdf5;
+  padding: 1.1rem 1.3rem;
+  border-radius: 0 10px 10px 0;
+  margin: 1rem 0 1.5rem;
+}
+.key-insight .label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #0a7a75;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+.key-insight p { margin: 0; font-size: 0.98rem; }
+
+/* ---------- Result / data tables ---------- */
+.results-table { font-size: 0.85rem; }
+.results-table thead th {
+  background: #37474f;
+  color: white;
+  text-align: center;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.results-table td { text-align: center; vertical-align: middle; }
+.results-table td:nth-child(1),
+.results-table td:nth-child(2) { text-align: left; }
+.results-table .our-method-row td { background: #e8f5e9; font-weight: 600; }
+.results-table .our-method-row td strong { color: #1b5e20; }
+
+.ablation-table { font-size: 0.88rem; }
+.ablation-table thead th {
+  background: #f3f4f6;
+  color: #374151;
+  font-weight: 700;
+  border-bottom: 2px solid #d1d5db;
+  text-align: center;
+}
+.ablation-table td { text-align: center; }
+.ablation-table td:first-child { text-align: left; }
+.ablation-table .our-method-row td { background: #e8f5e9; font-weight: 700; }
+.drop { color: #c62828; font-weight: 600; }
+
+/* ---------- Analysis cards (also used for paper cards on hub) ---------- */
+.analysis-card {
+  background: #ffffff;
+  border: 1px solid #e4e8ee;
+  border-radius: 12px;
+  padding: 1.4rem 1.5rem 1.1rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  height: 100%;
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+.analysis-card-title {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 1.05rem !important;
+  margin-bottom: 0.5rem !important;
+  line-height: 1.4;
+  color: #1a1a1a;
+}
+.analysis-card-title a { color: #1a1a1a; }
+.analysis-card-title a:hover { color: #0ea5a0; }
+.analysis-card-desc {
+  font-size: 0.88rem;
+  color: #444;
+  line-height: 1.65;
+  margin: 0.4rem 0 0.9rem;
+  text-align: justify;
+}
+
+/* ---------- Hub-specific: paper card ---------- */
+.paper-card {
+  background: #ffffff;
+  border: 1px solid #e4e8ee;
+  border-radius: 12px;
+  padding: 1.3rem 1.4rem 1rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+}
+.paper-card.has-detail {
+  border-color: #bfe5e3;
+  box-shadow: 0 3px 18px rgba(14, 165, 160, 0.12);
+}
+.paper-card.has-detail:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(14, 165, 160, 0.18);
+  border-color: #0ea5a0;
+}
+.pc-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+  font-family: 'Google Sans', monospace;
+  font-size: 0.78rem;
+  color: #6b7280;
+}
+.pc-id { font-family: 'Courier New', monospace; letter-spacing: 0.02em; }
+.pc-likes { color: #ef4444; font-weight: 500; }
+.pc-title {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 1.08rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #1a1a1a;
+  margin: 0 0 0.35rem;
+}
+.pc-title a { color: #1a1a1a; border-bottom: none; }
+.pc-title a:hover { color: #0ea5a0; }
+.pc-affil {
+  font-size: 0.82rem;
+  color: #6b7280;
+  margin-bottom: 0.6rem;
+  font-style: italic;
+}
+.pc-summary {
+  font-size: 0.88rem;
+  color: #374151;
+  line-height: 1.6;
+  margin: 0 0 0.8rem;
+  text-align: justify;
+  flex-grow: 1;
+}
+.pc-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.6rem;
+  border-top: 1px dashed #e5e7eb;
+}
+.pc-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.55rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.tag-synthesis { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+.tag-evolve    { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+.tag-memory    { background: #ede9fe; color: #5b21b6; border: 1px solid #ddd6fe; }
+.tag-meta      { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+.tag-failure   { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+.tag-mgmt      { background: #f3e8ff; color: #6b21a8; border: 1px solid #e9d5ff; }
+.tag-retrieve  { background: #ccfbf1; color: #0f766e; border: 1px solid #99f6e4; }
+.tag-bench     { background: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe; }
+.tag-distill   { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+
+.pc-detail-link {
+  font-size: 0.8rem;
+  color: #0ea5a0;
+  font-weight: 600;
+}
+.pc-detail-link:hover { color: #0a7a75; }
+
+/* ---------- Direction section intro ---------- */
+.direction-intro {
+  font-size: 0.98rem;
+  color: #374151;
+  line-height: 1.75;
+  max-width: 760px;
+  margin: 0 auto 1.8rem;
+  text-align: justify;
+}
+
+/* ---------- Survey overview stat banner ---------- */
+.overview-stats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+  padding: 1.5rem 0 0.5rem;
+}
+.stat-item { text-align: center; }
+.stat-num {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #0ea5a0;
+  line-height: 1;
+}
+.stat-lab {
+  font-size: 0.78rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0.4rem;
+}
+
+/* ---------- Paper detail: meta table ---------- */
+.meta-table {
+  font-size: 0.9rem;
+  width: 100%;
+}
+.meta-table td {
+  padding: 0.4rem 0.8rem;
+  border-bottom: 1px solid #f1f3f5;
+}
+.meta-table td:first-child {
+  font-weight: 600;
+  color: #6b7280;
+  width: 7rem;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+/* ---------- Breadcrumb ---------- */
+.breadcrumb-nav {
+  font-size: 0.88rem;
+  color: #6b7280;
+  padding: 0.6rem 1.5rem;
+  background: #fafbfc;
+  border-bottom: 1px solid #eceef1;
+}
+.breadcrumb-nav a { color: #0ea5a0; }
+.breadcrumb-nav .sep { color: #cbd5e1; margin: 0 0.5rem; }
+
+/* ---------- Footer ---------- */
+.footer {
+  background: #f7f8fa;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.88rem;
+  border-top: 1px solid #eceef1;
+}
+.footer a { color: #0ea5a0; }
+
+/* ---------- Responsive ---------- */
+@media screen and (max-width: 768px) {
+  .overview-stats { gap: 1.5rem; }
+  .stat-num { font-size: 1.6rem; }
+  .results-table { font-size: 0.72rem; }
+}

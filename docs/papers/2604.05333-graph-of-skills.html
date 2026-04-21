@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Graph of Skills: Dependency-Aware Structural Retrieval — reading notes.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Graph of Skills — Agent × Skill Survey</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+</head>
+<body>
+
+<div class="breadcrumb-nav">
+  <div class="container is-max-desktop">
+    <a href="../index.html">Agent × Skill Survey</a>
+    <span class="sep">/</span>
+    <span>03 Infrastructure</span>
+    <span class="sep">/</span>
+    <span>Graph of Skills</span>
+  </div>
+</div>
+
+
+<!-- ========= Hero ========= -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="gos">Graph of Skills</span>:<br>
+            Dependency-Aware Structural Retrieval<br>for Massive Agent Skills
+          </h1>
+          <p class="is-size-5" style="color:#555; margin-top:0.2rem; font-family:'Google Sans',sans-serif;">
+            面向大规模 Agent 技能库的依赖感知结构化检索
+          </p>
+
+          <div class="is-size-6 publication-authors" style="margin-top:1rem;">
+            <span class="author-block">David Liu<sup>*1</sup>,</span>
+            <span class="author-block">Dawei Li<sup>1</sup>,</span>
+            <span class="author-block">et al.</span>
+          </div>
+          <div class="is-size-7 publication-authors" style="margin-top:0.3rem; color:#555;">
+            <span class="author-block"><sup>1</sup>University of Pennsylvania</span>
+            <span class="author-block">· UMD · Brown · CMU · Lehigh</span>
+          </div>
+          <div class="is-size-7" style="margin-top:0.25rem; color:#888;">
+            2026-04-08 · ♥ 22
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2604.05333" target="_blank"
+                   class="external-link button is-normal is-rounded btn-arxiv">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/davidliuk/graph-of-skills" target="_blank"
+                   class="external-link button is-normal is-rounded btn-github">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/papers/2604.05333" target="_blank"
+                   class="external-link button is-normal is-rounded btn-hf">
+                  <span class="icon hf-icon">🤗</span>
+                  <span>HF Papers</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="../index.html"
+                   class="external-link button is-normal is-rounded btn-home">
+                  <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                  <span>Back</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Teaser ========= -->
+<section class="hero teaser" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="hero-body" style="padding-top:0;">
+      <div class="analysis-figure-wrap">
+        <img src="https://arxiv.org/html/2604.05333v1/x1.png" alt="Figure 1: Vanilla vs Vector vs GoS" loading="lazy">
+      </div>
+      <p class="figure-caption has-text-centered">
+        <strong>Figure 1.</strong> 三种策略对比：<strong>Vanilla Skills</strong> 全库塞入 prompt，关键依赖被超载上下文淹没；<strong>Vector Skills</strong> 提升效率但仍可能遗漏功能性前置；
+        <span class="gos">GoS</span> 从混合语义–词法种子出发，通过结构感知检索恢复前置，组装紧凑执行包。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Abstract ========= -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            现代 Agent 系统中，skill library 正从数十个快速扩展到数千、数万个。两种主流策略各有根本缺陷：<strong>Vanilla Skills</strong>（全量加载）token 成本线性增长且存在 "Lost in the Middle" 现象；<strong>Vector Skills</strong>（向量检索）按语义相似度 top-k，但顶级语义匹配往往是高层求解器技能，真正执行所需的底层解析器、预处理、格式化工具因语义距离远而被漏掉——形成 <strong>prerequisite gap</strong>。
+          </p>
+          <p>
+            <span class="gos">GoS</span> 离线从本地技能包构建 <strong>类型化有向技能图</strong>，推理时通过混合语义–词法播种 + <strong>反向感知 Personalized PageRank 图扩散</strong> + 预算约束水化，输出一个依赖完备、token 高效的技能执行包。在 SkillsBench（1000 技能 / 11 领域）与 ALFWorld 上，跨 Claude Sonnet 4.5、MiniMax M2.7、GPT-5.2 Codex 三家模型：reward 相对 Vanilla 平均 <strong>+43.6%</strong>、token 平均 <strong>−37.8%</strong>，所有 6 个模型 × benchmark 组合中均取得最高 reward。
+          </p>
+        </div>
+
+        <div class="key-insight">
+          <div class="label">Key Insight</div>
+          <p><strong>语义接近 ≠ 可执行完备。</strong>仅靠向量检索对长链技术任务不够——检索系统必须显式建模技能间的依赖结构，并沿依赖边反向传播相关性，才能组装可直接执行的最小完整技能包。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Framework ========= -->
+<section class="section" id="framework" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Framework Overview</h2>
+        <div class="content has-text-justified">
+          <p>
+            <span class="gos">GoS</span> 将本地技能语料库转换为类型化有向图 $G = (V, E, w, \varphi)$，边类型 $\varphi(e) \in \{\text{dep}, \text{wf}, \text{sem}, \text{alt}\}$。给定查询 $q$ 与上下文预算 $\tau$，检索目标为找到束 $B(q) \subseteq V$ 最大化"相关性 + 依赖完备性"：
+          </p>
+          <p style="text-align:center;">
+            $\max_{B\subseteq V}\ \sum_{v\in B} \text{rel}(v,q) + \beta \sum_{(u,v)\in E_{\text{dep}}} \mathbb{1}[u\in B \land v\in B]\quad \text{s.t.}\ \text{cost}(B) \le \tau$
+          </p>
+          <p>通过三阶段近似求解：<strong>混合种子检索 → 反向感知图扩散 → 预算化重排与水化</strong>。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2604.05333v1/x2.png" alt="GoS framework" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 2.</strong> GoS 总体框架——离线索引构建类型化有向图；在线检索经"混合播种 → 反向感知 PPR → 预算化水化"输出执行包。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">四类边</h3>
+          <div class="content">
+            <ul>
+              <li><strong>dep</strong>（dependency）— I/O 兼容性确定性归纳：$v_i$ 输出与 $v_j$ 输入 overlap 超阈值。</li>
+              <li><strong>wf</strong>（workflow）— 常见多步流程中的顺序关系。</li>
+              <li><strong>sem</strong>（semantic）— 近似重复或主题相邻。</li>
+              <li><strong>alt</strong>（alternative）— 同一子问题的可互换策略。</li>
+            </ul>
+            <p style="font-size:0.82rem; color:#6b7280;">非依赖边通过"稀疏验证"建立：先构造候选池（词法 + 语义邻居 + I/O 扩展），池内 LLM 关系验证（高精度优先）。</p>
+          </div>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">反向感知类型扩散</h3>
+          <div class="content">
+            <p>统一转移算子：</p>
+            <p style="font-size:0.88rem;">$T = \text{RowNorm}\!\left(\sum_{r} \lambda_r (T_r^{\to} + \gamma_r T_r^{\leftarrow})\right)$</p>
+            <p>Personalized PageRank 扩散至收敛：</p>
+            <p style="font-size:0.88rem;">$s^{(\ell+1)} = \alpha \mathbf{p} + (1-\alpha) T^\top s^{(\ell)}$</p>
+            <p style="font-size:0.82rem; color:#6b7280;"><strong>dep 边的反向系数 $\gamma_{\text{dep}}$ 最大</strong>——沿依赖边反向恢复上游 prerequisite 是 GoS 的核心机制。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Results ========= -->
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Results</h2>
+        <p style="color:#555;">R ↑ reward(%) · T ↓ tokens · S ↓ runtime(s)</p>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="table is-striped is-fullwidth results-table">
+        <thead>
+          <tr>
+            <th>Model</th><th>Method</th>
+            <th>SkillsBench R↑</th><th>SkillsBench T↓</th><th>S↓</th>
+            <th>ALFWorld R↑</th><th>ALFWorld T↓</th><th>S↓</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td rowspan="3">Claude Sonnet 4.5</td><td>Vanilla</td><td>25.0</td><td>967,791</td><td>465.8</td><td>89.3</td><td>1,524,401</td><td>53.2</td></tr>
+          <tr><td>Vector</td><td>19.3</td><td>894,640</td><td>357.3</td><td>93.6</td><td>28,407</td><td>37.8</td></tr>
+          <tr class="our-method-row"><td><strong>GoS</strong></td><td><strong>31.0</strong></td><td><strong>860,315</strong></td><td>364.9</td><td><strong>97.9</strong></td><td><strong>27,215</strong></td><td>49.2</td></tr>
+
+          <tr><td rowspan="3">MiniMax M2.7</td><td>Vanilla</td><td>17.2</td><td>942,113</td><td>580.7</td><td>47.1</td><td>2,184,823</td><td>88.6</td></tr>
+          <tr><td>Vector</td><td>10.4</td><td>852,881</td><td>552.9</td><td>50.7</td><td>66,109</td><td>73.4</td></tr>
+          <tr class="our-method-row"><td><strong>GoS</strong></td><td><strong>18.7</strong></td><td>867,452</td><td><strong>502.5</strong></td><td><strong>54.3</strong></td><td><strong>65,227</strong></td><td><strong>68.8</strong></td></tr>
+
+          <tr><td rowspan="3">GPT-5.2 Codex</td><td>Vanilla</td><td>27.4</td><td>3,187,749</td><td>686.8</td><td>89.3</td><td>1,435,614</td><td>83.3</td></tr>
+          <tr><td>Vector</td><td>21.5</td><td>1,243,648</td><td>773.0</td><td>92.9</td><td>34,436</td><td>57.0</td></tr>
+          <tr class="our-method-row"><td><strong>GoS</strong></td><td><strong>34.4</strong></td><td>1,379,773</td><td><strong>715.6</strong></td><td><strong>93.6</strong></td><td>46,462</td><td><strong>64.7</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <ul>
+            <li>相对 Vanilla 全量加载，reward 平均 <strong>+43.6%</strong>、token 平均 <strong>−37.8%</strong>。</li>
+            <li>相对 Vector Skills，SkillsBench 上 <strong>+10.97 reward pts</strong>，ALFWorld 上 +2.87。</li>
+            <li>Claude Sonnet 4.5 + ALFWorld：成功率 89.3% / 93.6% → <strong>97.9%</strong>；token 从 1.52M 压缩至 <strong>27K</strong>（−98%）。</li>
+            <li>Vector Skills 在长链技术任务中甚至低于 Vanilla（Claude / MiniMax 下），<em>验证 prerequisite gap 确实存在</em>。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Analysis ========= -->
+<section class="section" id="analysis" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Analysis</h2>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">库规模敏感性</h3>
+          <p class="analysis-card-desc">
+            GPT-5.2 Codex 在 SkillsBench 上将库规模从 200 扩展到 2000：Vanilla 的 token 从 1.93M 增长到 <strong>5.84M</strong>（约 3×），而 GoS 维持在 <strong>1.14~1.38M</strong>。200 技能小规模时 Vanilla 与 GoS reward 相当；一旦库规模增大，GoS 稳定领先，<em>优势不随库规模增大而削弱</em>。
+          </p>
+          <table class="table is-narrow ablation-table is-fullwidth">
+            <thead><tr><th>N</th><th>Vanilla R</th><th>GoS R</th><th>Vanilla T (M)</th><th>GoS T (M)</th></tr></thead>
+            <tbody>
+              <tr><td>200</td><td>32.5</td><td class="drop">32.1</td><td>1.85</td><td>1.36</td></tr>
+              <tr><td>500</td><td>26.0</td><td><strong>31.4</strong></td><td>1.93</td><td>1.16</td></tr>
+              <tr><td>1000</td><td>27.4</td><td><strong>34.4</strong></td><td>3.19</td><td>1.38</td></tr>
+              <tr><td>2000</td><td>26.7</td><td><strong>31.3</strong></td><td>5.84</td><td>1.14</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">组件消融</h3>
+          <table class="table is-narrow ablation-table is-fullwidth">
+            <thead><tr><th>Config</th><th>R↑ %</th><th>T (M)</th><th>S (s)</th></tr></thead>
+            <tbody>
+              <tr class="our-method-row"><td><strong>Full GoS</strong></td><td><strong>34.4</strong></td><td>1.38</td><td>715.6</td></tr>
+              <tr><td>w/o graph propagation</td><td class="drop">29.3</td><td>0.89</td><td>766.2</td></tr>
+              <tr><td>w/o lexical + rerank</td><td class="drop">26.7</td><td>1.01</td><td>747.7</td></tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc" style="margin-top:0.7rem;">
+            去图传播 reward 降 5.1 pts——图扩散是从种子恢复前置依赖的关键；
+            去词法 + 重排降 7.7 pts（更大）——<strong>种子质量是瓶颈</strong>，初始种子差时图扩散也无从恢复正确依赖链。
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Takeaways ========= -->
+<section class="section" id="takeaways">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Takeaways</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h3 class="title is-5">核心结论</h3>
+          <p>在大规模技能库中，<strong>结构化依赖感知检索优于语义相似度检索和全量加载</strong>，且这一优势在跨 benchmark、跨模型家族、跨库规模下均成立。</p>
+
+          <h3 class="title is-5">局限性</h3>
+          <ul>
+            <li>依赖图质量是上限——文档不完整 / I/O schema 模糊会降低边质量。</li>
+            <li>当前图是静态的，不从执行轨迹或用户反馈中动态更新。</li>
+          </ul>
+
+          <h3 class="title is-5">对 Skill 管理与检索方向的启发</h3>
+          <ol>
+            <li><strong>Prerequisite gap 是实际问题</strong>——长链任务必须显式建模技能间依赖。</li>
+            <li><strong>图 + PPR 是可落地解法</strong>——离线建图成本摊薄到检索时，inference 开销可控。</li>
+            <li><strong>混合种子优于单一信号</strong>——词法擅长具体文件名/API，语义擅长抽象意图。</li>
+            <li><strong>水化是最后一公里</strong>——检索结果需物化为 agent 可直接执行的负载（含源路径 + 执行注意事项）。</li>
+            <li><strong>Agent Interface 是方法的一部分</strong>——如何把检索结果"强制"传达给 agent，与检索质量同等重要。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <p><a href="../index.html">← 返回 Agent × Skill 论文列表</a></p>
+    <p style="margin-top:0.5rem; font-size:0.78rem; color:#9ca3af;">
+      Data from <a href="https://huggingface.co/papers/2604.05333" target="_blank">Hugging Face Papers</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

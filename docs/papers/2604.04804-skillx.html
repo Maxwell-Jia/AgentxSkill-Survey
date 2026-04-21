@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="SkillX: Automatically Constructing Skill Knowledge Bases for Agents — reading notes.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SkillX — Agent × Skill Survey</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+</head>
+<body>
+
+<!-- ========= Breadcrumb ========= -->
+<div class="breadcrumb-nav">
+  <div class="container is-max-desktop">
+    <a href="../index.html">Agent × Skill Survey</a>
+    <span class="sep">/</span>
+    <span>01 Synthesis</span>
+    <span class="sep">/</span>
+    <span>SkillX</span>
+  </div>
+</div>
+
+
+<!-- ========= Hero ========= -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="skillx">SkillX</span>: Automatically Constructing<br>
+            Skill Knowledge Bases for Agents
+          </h1>
+          <p class="is-size-5" style="color:#555; margin-top:0.2rem; font-family:'Google Sans',sans-serif;">
+            自动为智能体构建技能知识库
+          </p>
+
+          <div class="is-size-6 publication-authors" style="margin-top:1rem;">
+            <span class="author-block">Zhuoyun Yu<sup>1</sup>,</span>
+            <span class="author-block">Xin Xie<sup>1,2</sup>,</span>
+            <span class="author-block">Wuguannan Yao<sup>2</sup>,</span>
+            <span class="author-block">Runnan Fang<sup>1</sup>,</span>
+            <span class="author-block">Shuofei Qiao<sup>1</sup>,</span>
+            <span class="author-block">Kexin Cao<sup>1</sup>,</span>
+            <span class="author-block">Guozhou Zheng<sup>1</sup>,</span>
+            <span class="author-block">Xiang Qi<sup>2</sup>,</span>
+            <span class="author-block">Peng Zhang<sup>2</sup>,</span>
+            <span class="author-block">Shumin Deng<sup>1</sup></span>
+          </div>
+          <div class="is-size-7 publication-authors" style="margin-top:0.3rem; color:#555;">
+            <span class="author-block"><sup>1</sup>Zhejiang University</span>
+            <span class="author-block"><sup>2</sup>Ant Group</span>
+          </div>
+          <div class="is-size-7" style="margin-top:0.25rem; color:#888;">
+            ICML 2026 · 2026-04-07 · ♥ 32
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2604.04804" target="_blank"
+                   class="external-link button is-normal is-rounded btn-arxiv">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/zjunlp/SkillX" target="_blank"
+                   class="external-link button is-normal is-rounded btn-github">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/papers/2604.04804" target="_blank"
+                   class="external-link button is-normal is-rounded btn-hf">
+                  <span class="icon hf-icon">🤗</span>
+                  <span>HF Papers</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="../index.html"
+                   class="external-link button is-normal is-rounded btn-home">
+                  <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                  <span>Back</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Teaser figure ========= -->
+<section class="hero teaser" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="hero-body" style="padding-top:0;">
+      <div class="analysis-figure-wrap">
+        <img src="https://arxiv.org/html/2604.04804v1/x1.png" alt="Figure 1: Claude Skills vs SkillX representation" loading="lazy">
+      </div>
+      <p class="figure-caption has-text-centered">
+        <strong>Figure 1.</strong> Claude Skills 采用长上下文渐进披露，需要复杂沙箱 + 多轮交互；
+        <span class="skillx">SkillX</span> 采用层次化条目化表示，通过轻量级检索一次性注入 system prompt，更易在不同 base model 间迁移。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Abstract ========= -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            现有 LLM agent 的"自我进化"范式存在三个结构性缺陷：<strong>孤立学习</strong>（agent 独立反复发现相似经验）、<strong>经验泛化弱</strong>（挖掘出的经验难以迁移）、<strong>模型能力瓶颈</strong>（提取质量受限于 agent 自身）。核心问题由此浮现：<em>什么形式的经验可以跨越不同能力的 agent、跨越不同环境被广泛复用？</em>
+          </p>
+          <p>
+            受 Anthropic Claude Skills 启发，<span class="skillx">SkillX</span> 认为 <strong>skill</strong> 是更合适的抽象，但此前 skill 设计依赖长上下文渐进披露，对推理和沙箱要求过高。SkillX 通过 <strong>三层次技能设计 + 迭代精炼 + 探索式扩展</strong>，从 agent 轨迹中全自动构建可插拔技能知识库（SkillKB）：强模型（GLM-4.6）提炼的技能库可直接插拔到弱模型（Qwen3-32B），在 BFCL-v3 / AppWorld / τ²-Bench 上带来约 <strong>+10 分</strong> 性能提升。
+          </p>
+        </div>
+
+        <div class="key-insight">
+          <div class="label">Key Insight</div>
+          <p>经验 <strong>表示形式</strong> 的选择比经验 <strong>提取模型</strong> 的强弱更关键。层次化结构化经验（Planning → Functional → Atomic）支持跨模型迁移。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Framework ========= -->
+<section class="section" id="framework" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Framework Overview</h2>
+        <div class="content has-text-justified">
+          <p>
+            <span class="skillx">SkillX</span> 的自动化迭代 pipeline 集成 <strong>Skills Extraction</strong>（提取） / <strong>Skills Expansion</strong>（扩展） / <strong>Skills Refinement</strong>（精炼）三个阶段；技能库 $\mathcal{D} = S_{\text{plan}} \oplus S_{\text{func}} \oplus S_{\text{atomic}}$ 组织为 Planning / Functional / Atomic 三层。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2604.04804v1/x2.png" alt="SkillX pipeline" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 2.</strong> SkillX 的自动化迭代 pipeline 与三层技能组织方式。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#c2410c;">Planning Skills</h3>
+          <p class="analysis-card-desc">任务级粒度。从成功轨迹压缩出有序高层步骤集合，过滤掉探索、回溯、试错等非必要转换。指导 functional skills 的组合方式。</p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#15803d;">Functional Skills</h3>
+          <p class="analysis-card-desc">子任务级。可复用的、基于工具的子程序，对应子任务完成步骤。字段：<code>name</code> / <code>document</code> / <code>content</code>。对整体性能提升贡献最大。</p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#1e40af;">Atomic Skills</h3>
+          <p class="analysis-card-desc">单工具级。单个工具的增强规格说明：调用模式、参数配置、常见约束与失败模式。缺失时对关键 API 任务影响显著。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <h3 class="title is-5" style="margin-top:1rem;">Rollout &amp; Iterative Refinement</h3>
+        <div class="content has-text-justified">
+          <p>每轮 rollout 后，批次聚合通过精炼算子 $\phi$ 更新库：</p>
+          <p>$$\mathcal{D}^{(k+1)} = \mathcal{D}^{(k)} \cup \phi\!\left(\bigcup_{i=1}^{N_k} \mathcal{S}_i^{(k)}\right)$$</p>
+          <p>$\phi$ 包含：<strong>Skills Merge</strong>（余弦相似度聚类语义相近技能、过于复杂的合并结果分解为子技能）与 <strong>Skills Filter</strong>（General Filter 过滤外部依赖 / 过度封装；Tool-specific Filter 按环境 schema 验证）。最多迭代 3 轮。</p>
+          <p><strong>Exploratory Expansion</strong>：种子数据稀缺时（如 AppWorld 数百 API），统计各工具使用情况，优先探索 under-explored 或 failure-prone 工具，从探索轨迹合成新任务后再次进入 pipeline——优于随机探索。</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Results ========= -->
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Results</h2>
+        <p style="color:#555; margin-bottom:0.2rem;">
+          对比 No Memory / A-Mem / AWM / ExpeL 等 baseline。
+          <code>*</code> 自演化（提取 = 推理），<code>‡</code> 蒸馏（GLM-4.6 提取，原模型推理）。
+        </p>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="table is-striped is-fullwidth results-table">
+        <thead>
+          <tr>
+            <th>Model</th><th>Method</th>
+            <th>BFCL Avg@4</th><th>BFCL Pass@4</th>
+            <th>AppWorld Avg@4</th><th>AppWorld Pass@4</th>
+            <th>τ² Retail</th><th>τ² Airline</th><th>τ² Telecom</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td rowspan="7">Qwen3-32B</td><td>No Memory*</td><td>53.67</td><td>73.33</td><td>27.68</td><td>47.62</td><td>53.75</td><td>38.75</td><td>36.25</td></tr>
+          <tr><td>A-Mem*</td><td>53.67</td><td>73.00</td><td>26.79</td><td>50.59</td><td>53.12</td><td>38.75</td><td>38.12</td></tr>
+          <tr><td>AWM*</td><td>55.67</td><td>76.00</td><td>30.80</td><td>55.95</td><td>55.00</td><td>40.00</td><td>38.12</td></tr>
+          <tr><td>AWM‡</td><td>56.67</td><td>76.33</td><td>34.45</td><td>56.25</td><td>57.50</td><td>41.25</td><td>40.62</td></tr>
+          <tr><td>ExpeL*</td><td>57.33</td><td>77.67</td><td>32.87</td><td>58.93</td><td>56.25</td><td>42.50</td><td>39.38</td></tr>
+          <tr><td>ExpeL‡</td><td>59.33</td><td>78.83</td><td>32.94</td><td>58.78</td><td>58.12</td><td>43.75</td><td>41.25</td></tr>
+          <tr class="our-method-row"><td><strong>SkillX‡</strong></td><td><strong>63.67</strong></td><td><strong>82.00</strong></td><td><strong>35.12</strong></td><td><strong>58.93</strong></td><td><strong>66.87</strong></td><td><strong>47.50</strong></td><td><strong>43.75</strong></td></tr>
+
+          <tr><td rowspan="4">Kimi-K2</td><td>No Memory*</td><td>65.17</td><td>78.00</td><td>46.88</td><td>70.24</td><td>75.62</td><td>51.25</td><td>78.12</td></tr>
+          <tr><td>AWM*</td><td>65.33</td><td>79.00</td><td>49.70</td><td>76.19</td><td>76.25</td><td>53.75</td><td>77.50</td></tr>
+          <tr><td>ExpeL*</td><td>66.33</td><td>79.33</td><td>52.53</td><td>78.57</td><td>77.50</td><td>55.50</td><td>78.75</td></tr>
+          <tr class="our-method-row"><td><strong>SkillX‡</strong></td><td><strong>66.83</strong></td><td><strong>81.33</strong></td><td><strong>56.40</strong></td><td><strong>81.55</strong></td><td><strong>78.12</strong></td><td><strong>58.75</strong></td><td><strong>82.50</strong></td></tr>
+
+          <tr><td rowspan="4">GLM-4.6</td><td>No Memory*</td><td>76.67</td><td>83.33</td><td>60.27</td><td>83.33</td><td>76.25</td><td>70.00</td><td>70.63</td></tr>
+          <tr><td>AWM*</td><td>77.17</td><td>84.00</td><td>62.20</td><td>84.52</td><td>77.50</td><td>71.25</td><td>70.63</td></tr>
+          <tr><td>ExpeL*</td><td>78.83</td><td>85.33</td><td>64.14</td><td>85.12</td><td>77.50</td><td>72.50</td><td>71.25</td></tr>
+          <tr class="our-method-row"><td><strong>SkillX*</strong></td><td><strong>79.50</strong></td><td><strong>86.00</strong></td><td><strong>64.88</strong></td><td><strong>88.69</strong></td><td><strong>82.50</strong></td><td><strong>76.25</strong></td><td><strong>71.88</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content">
+          <ul>
+            <li>Qwen3-32B 使用 SkillX 在多项 benchmark 获得约 <strong>+10 分</strong> 提升。</li>
+            <li>Kimi-K2 在 AppWorld 上 Avg@4 46.88 → <strong>56.40</strong>（+9.5），Pass@4 70.24 → <strong>81.55</strong>（+11.3）。</li>
+            <li>用 GLM-4.6 提取的 AWM/ExpeL 经验仍不及 SkillX——说明 <em>表示形式 > 提取模型</em>。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Analysis ========= -->
+<section class="section" id="analysis" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Analysis</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2604.04804v1/image/analysis.png" alt="Analysis plots" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 3.</strong> (a) 技能组合性能 · (b) 效率 · (c) 迭代精炼影响 · (d) 扩展策略对比 · (e) 输入 token · (f) 执行步骤。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">哪种技能最有效？</h3>
+          <p class="analysis-card-desc">
+            <strong>Planning skills</strong> 对弱模型（Qwen3-32B、K2）一致减少执行步骤；直接加 Functional + Atomic 反而可能让弱模型过度模仿、损害性能。
+            <strong>Functional skills</strong> 对整体性能提升贡献最大。
+            <strong>Atomic skills</strong> 对关键 API 提供重要澄清，缺失时性能大幅下降。
+            最优组合因模型而异：GLM-4.6 = 全部；K2 = Functional + Atomic；Qwen3-32B = 仅 Planning。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">迭代精炼 &amp; 经验引导探索</h3>
+          <p class="analysis-card-desc">
+            多轮精炼在训练集和测试集均进一步提升性能，但数据有限时纯文本优化可能过拟合，需选合适轮数。
+            经验引导探索发现比随机探索更多样化的技能；在复杂环境、稀缺数据场景下，<strong>技能扩展是经验学习的关键组成</strong>。
+            执行效率上 SkillX 不追求最少步骤/最少 token，而是在效率与性能之间取得最佳平衡。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Usage 时的检索策略</h3>
+          <p class="analysis-card-desc">
+            先检索语义相似的 planning skills；LLM 结合结果改写任务特定 <strong>伪计划 $\tilde{p}(q)$</strong>，伪计划仅作检索 query <em>不注入 prompt</em>（防止幻觉）；再以伪计划各步骤检索 functional &amp; atomic skills，去重 + LLM 过滤后注入 system prompt。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">跨环境泛化</h3>
+          <p class="analysis-card-desc">
+            SkillX 在 AppWorld（数百 API）、BFCL-v3（多轮函数调用）、τ²-Bench（对话式交互）三类风格迥异的 benchmark 均有效；进一步在 DeepSeek-V3.2、GPT-4.1 等强模型上同样带来稳定提升（Table 2）。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Takeaways ========= -->
+<section class="section" id="takeaways">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Takeaways</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h3 class="title is-5">核心结论</h3>
+          <ol>
+            <li>层次化结构化经验（planning → functional → atomic）比单一形式更有利于跨模型迁移。</li>
+            <li>强模型提炼的 SkillKB 可直接插拔到弱模型，带来约 10% 的性能提升，同时提升执行效率。</li>
+            <li>经验 <em>表示形式</em> 比经验 <em>提取模型</em> 的强弱更关键。</li>
+            <li>探索式扩展 + 迭代精炼在数据稀缺的复杂环境中尤为重要。</li>
+          </ol>
+
+          <h3 class="title is-5">局限性</h3>
+          <ul>
+            <li>技能与具体工具 schema 绑定，跨域（不同工具生态）直接复用困难。</li>
+            <li>当前主要针对工具调用型 agent，纯对话场景（无函数调用）覆盖不足。</li>
+          </ul>
+
+          <h3 class="title is-5">对后续研究的启发</h3>
+          <ol>
+            <li>技能粒度分层是 agent 记忆系统设计的有效范式。</li>
+            <li>强模型蒸馏 → 弱模型受益，提供了低成本增强弱 agent 的实用路径。</li>
+            <li>经验引导探索显著优于随机探索。</li>
+            <li><strong>伪计划改写</strong>作为检索中间桥梁，是缓解"任务 — 历史经验"语义不匹配的实用技巧。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Footer ========= -->
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <p><a href="../index.html">← 返回 Agent × Skill 论文列表</a></p>
+    <p style="margin-top:0.5rem; font-size:0.78rem; color:#9ca3af;">
+      Data from <a href="https://huggingface.co/papers/2604.04804" target="_blank">Hugging Face Papers</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

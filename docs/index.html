@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Agent × Skill: a survey of 2026 papers on skill automation, self-evolution and management in LLM agents.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agent × Skill — A Survey of 2026 Papers</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+</head>
+<body>
+
+<!-- ========= Nav ========= -->
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow:1; justify-content:center;">
+      <a class="navbar-item" href="#abstract">Overview</a>
+      <a class="navbar-item" href="#direction-1">Synthesis</a>
+      <a class="navbar-item" href="#direction-2">Memory</a>
+      <a class="navbar-item" href="#direction-3">Infrastructure</a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ========= Hero ========= -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="agentxskill">Agent × Skill</span>:<br>
+            A Survey of 2026 Papers on Self-Evolving Skills in LLM Agents
+          </h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Maxwell<sup>*</sup></span>
+          </div>
+          <div class="is-size-6 publication-authors" style="margin-top:0.3rem; color:#555;">
+            <span class="author-block">Reading survey · collected via <code>hf papers</code></span>
+          </div>
+          <div class="is-size-7" style="margin-top:0.25rem; color:#888;">
+            2026-02 — 2026-04 · 最近更新 2026-04-21
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://huggingface.co/papers" target="_blank"
+                   class="external-link button is-normal is-rounded btn-hf">
+                  <span class="icon hf-icon">🤗</span>
+                  <span>HF Papers</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#abstract"
+                   class="external-link button is-normal is-rounded btn-home">
+                  <span class="icon"><i class="fas fa-book-open"></i></span>
+                  <span>Start Reading</span>
+                </a>
+              </span>
+            </div>
+          </div>
+
+          <div class="overview-stats">
+            <div class="stat-item">
+              <div class="stat-num">28</div>
+              <div class="stat-lab">Papers</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">3</div>
+              <div class="stat-lab">Directions</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">2</div>
+              <div class="stat-lab">Deep Reads</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">~11k</div>
+              <div class="stat-lab">HF Likes (total)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Abstract ========= -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Overview</h2>
+        <div class="content has-text-justified">
+          <p>
+            2026 年上半年，<span class="agentxskill">Agent × Skill</span> 成为 LLM agent 研究的一条高度收敛主线：以 Anthropic Claude Skills 为代表的"可复用能力模块"被大量工作重新定义并验证，研究问题从"agent 能不能用 skill"转向"skill 如何被 <em>自动产生、跨任务迁移、大规模管理</em>"。本综述覆盖 Hugging Face Papers 上 2026-02 至 2026-04 间的 28 篇相关论文。
+          </p>
+          <p>
+            我们按 <strong>skill 生命周期</strong> 组织全文：方向一聚焦技能如何 <em>产生</em>（合成 / 自进化 / 沉淀）；方向二聚焦技能如何 <em>累积并复用</em>（记忆 / 失败复用 / 元学习）；方向三聚焦当技能库规模膨胀后如何 <em>管理、检索与评测</em>（基建）。带
+            <span style="background:#e6f7f5; color:#0a7a75; padding:0.05rem 0.4rem; border-radius:3px; font-size:0.92em;">精读</span>
+            标记的论文提供独立详情页，含方法图解、完整实验表与讨论笔记。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Direction 1 ========= -->
+<section class="section" id="direction-1" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">01 · Synthesis, Self-Evolution &amp; Consolidation</h2>
+        <p class="direction-intro">
+          核心问题：如何让 agent 从轨迹中自动 <em>产生</em> 可复用 skill，并通过迭代精炼持续进化。代表性范式有三条——轨迹到声明式技能的蒸馏（Trace2Skill），RL 驱动的层次化技能发现（SkillRL），以及"强模型沉淀 → 弱模型即插即用"（SkillX）。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns is-multiline">
+
+      <div class="column is-half">
+        <div class="paper-card">
+          <div class="pc-head">
+            <span><span class="pc-id">2602.08234</span> · 2026-02-11</span>
+            <span class="pc-likes">♥ 74</span>
+          </div>
+          <h3 class="pc-title">SkillRL: Evolving Agents via Recursive Skill-Augmented RL</h3>
+          <div class="pc-affil">UNC Chapel Hill</div>
+          <p class="pc-summary">层次化技能发现 + 递归策略演化，让 LLM agent 在复杂任务上自主改进。</p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-evolve">自进化</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="paper-card">
+          <div class="pc-head">
+            <span><span class="pc-id">2603.12056</span> · 2026-03-12</span>
+            <span class="pc-likes">♥ 33</span>
+          </div>
+          <h3 class="pc-title">XSkill: Continual Learning from Experience and Skills</h3>
+          <div class="pc-affil">HKUST · Zhejiang Univ. · HUST</div>
+          <p class="pc-summary">双流持续学习：action-level Experience + task-level Skill 通过 visually-grounded summarization 与 cross-rollout critique 形成闭环，5 benchmark / 4 backbone 均稳定优于基线。</p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-distill">沉淀</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="paper-card">
+          <div class="pc-head">
+            <span><span class="pc-id">2603.25158</span> · 2026-03-30</span>
+            <span class="pc-likes">♥ 50</span>
+          </div>
+          <h3 class="pc-title">Trace2Skill: Distill Trajectory-Local Lessons into Transferable Skills</h3>
+          <div class="pc-affil">—</div>
+          <p class="pc-summary">并行分析多样化轨迹并蒸馏为可迁移的声明式技能，无参数更新、无外部模块。</p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-synthesis">合成</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="paper-card">
+          <div class="pc-head">
+            <span><span class="pc-id">2604.02268</span> · 2026-04-03</span>
+            <span class="pc-likes">♥ 94</span>
+          </div>
+          <h3 class="pc-title">SKILL0: In-Context Agentic RL for Skill Internalization</h3>
+          <div class="pc-affil">Zhejiang Univ.</div>
+          <p class="pc-summary">训练时把 skill 内化进参数，推理时无需再把技能塞入 prompt，同时提升零样本自主性。</p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-distill">沉淀</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-full">
+        <div class="paper-card has-detail">
+          <div class="pc-head">
+            <span><span class="pc-id">2604.04804</span> · 2026-04-07 · ICML</span>
+            <span class="pc-likes">♥ 32</span>
+          </div>
+          <h3 class="pc-title"><a href="papers/2604.04804-skillx.html"><span class="skillx">SkillX</span>: Automatically Constructing Skill Knowledge Bases for Agents</a></h3>
+          <div class="pc-affil">Zhejiang University · Ant Group</div>
+          <p class="pc-summary">
+            把 skill 分为 <strong>Planning / Functional / Atomic</strong> 三层，用 rollout → 提取 → 精炼 → 探索扩展的闭环自动构建 SkillKB。强模型（GLM-4.6）提炼的技能库即插即用到弱模型（Qwen3-32B），BFCL-v3 / AppWorld / τ²-Bench 上均带来约 <strong>+10 分</strong> 提升，证明经验<em>表示形式</em>比<em>提取模型</em>的强弱更关键。
+          </p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-distill">沉淀 · 代表作</span>
+            <a class="pc-detail-link" href="papers/2604.04804-skillx.html">Read detail →</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Direction 2 ========= -->
+<section class="section" id="direction-2">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">02 · Memory, Failure Reuse &amp; Meta-Learning</h2>
+        <p class="direction-intro">
+          核心问题：让 agent 的记忆系统成为自身的一部分——包括分层经验池、失败轨迹的负样本利用、以及策略 / 技能并行演化的元学习框架。相比方向一更侧重 <em>跨任务、跨时间</em> 的连续性。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns is-multiline">
+
+      <div class="column is-half">
+        <div class="paper-card">
+          <div class="pc-head">
+            <span><span class="pc-id">2603.17187</span> · 2026-03-19</span>
+            <span class="pc-likes">♥ 138</span>
+          </div>
+          <h3 class="pc-title">MetaClaw: Just Talk — An Agent That Meta-Learns and Evolves in the Wild</h3>
+          <div class="pc-affil">UNC Chapel Hill</div>
+          <p class="pc-summary">持续元学习：策略与可复用行为技能联合演化，通过"机会性更新"与技能驱动适应最小化下线时间。</p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-meta">元学习</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="paper-card">
+          <div class="pc-head">
+            <span><span class="pc-id">2603.19461</span> · 2026-03-23</span>
+            <span class="pc-likes">♥ 50</span>
+          </div>
+          <h3 class="pc-title">Hyperagents: A Self-Referential Framework for Metacognitive Agents</h3>
+          <div class="pc-affil">Meta FAIR</div>
+          <p class="pc-summary">任务 agent 与元 agent 合一，构成单一可编辑程序，实现跨域开放式自我改进。</p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-meta">元学习</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="paper-card">
+          <div class="pc-head">
+            <span><span class="pc-id">2603.24533</span> · 2026-03-26</span>
+            <span class="pc-likes">♥ 47</span>
+          </div>
+          <h3 class="pc-title">UI-Voyager: A Self-Evolving GUI Agent Learning via Failed Experience</h3>
+          <div class="pc-affil">Tencent</div>
+          <p class="pc-summary">两阶段自进化的移动 GUI agent：拒绝微调 + 群体相对自蒸馏，充分复用失败轨迹。</p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-failure">失败复用</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="paper-card">
+          <div class="pc-head">
+            <span><span class="pc-id">2602.05832</span> · 2026-02-05</span>
+            <span class="pc-likes">♥ 0</span>
+          </div>
+          <h3 class="pc-title">UI-Mem: Self-Evolving Experience Memory for Online RL in Mobile GUI Agents</h3>
+          <div class="pc-affil">—</div>
+          <p class="pc-summary">层次化经验记忆 + 分层采样，改进长时序 GUI 任务的信用分配与经验迁移。</p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-memory">记忆</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Direction 3 ========= -->
+<section class="section" id="direction-3" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">03 · Infrastructure — Management, Retrieval &amp; Benchmarks</h2>
+        <p class="direction-intro">
+          核心问题：当技能库从十几个膨胀到上万个，管理、检索、评测成为新的工程瓶颈。这条线索回应方向一、二的下游挑战，给出从向量检索到依赖图谱、从扁平调用到 DAG 编排、从手工 curation 到"野外"评测的差异化解法。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns is-multiline">
+
+      <div class="column is-half">
+        <div class="paper-card">
+          <div class="pc-head">
+            <span><span class="pc-id">2602.12670</span> · 2026-02-18</span>
+            <span class="pc-likes">♥ 60</span>
+          </div>
+          <h3 class="pc-title">SkillsBench: Benchmarking How Well Agent Skills Work Across Diverse Tasks</h3>
+          <div class="pc-affil">BenchFlow</div>
+          <p class="pc-summary">86 任务评测发现：curated skill 显著但不稳定地提升性能，模型自生成 skill 几乎无收益——当前 LLM 难以自主产生有用程序化知识，但能很好利用他人产生的。</p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-bench">评测</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="paper-card">
+          <div class="pc-head">
+            <span><span class="pc-id">2603.02176</span> · 2026-03-02</span>
+            <span class="pc-likes">♥ 2</span>
+          </div>
+          <h3 class="pc-title">AgentSkillOS: Organizing, Orchestrating &amp; Benchmarking Skills at Ecosystem Scale</h3>
+          <div class="pc-affil">—</div>
+          <p class="pc-summary">技能作为一等实体：层次化组织 + DAG 编排，在大规模场景下明显优于扁平调用。</p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-mgmt">管理</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="paper-card">
+          <div class="pc-head">
+            <span><span class="pc-id">2604.04323</span> · 2026-04-08</span>
+            <span class="pc-likes">♥ 40</span>
+          </div>
+          <h3 class="pc-title">How Well Do Agentic Skills Work in the Wild</h3>
+          <div class="pc-affil">UCSB NLP · Shiyu's Lab</div>
+          <p class="pc-summary">当 skill 从"手工打造"变成"检索 + 精炼"的真实使用方式，agent 性能显著退化；定向精炼策略可部分恢复。</p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-bench">评测</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-full">
+        <div class="paper-card has-detail">
+          <div class="pc-head">
+            <span><span class="pc-id">2604.05333</span> · 2026-04-08</span>
+            <span class="pc-likes">♥ 22</span>
+          </div>
+          <h3 class="pc-title"><a href="papers/2604.05333-graph-of-skills.html"><span class="gos">Graph of Skills</span>: Dependency-Aware Structural Retrieval for Massive Agent Skills</a></h3>
+          <div class="pc-affil">UPenn · UMD · Brown · CMU · Lehigh</div>
+          <p class="pc-summary">
+            <strong>语义接近 ≠ 可执行完备。</strong>仅靠向量检索在长链技术任务中会出现 <em>prerequisite gap</em>——顶层求解器技能被检索到，底层解析器/预处理工具却因语义距离远而被漏掉。GoS 离线构建类型化有向技能图，推理时通过混合语义–词法播种 + <strong>反向感知 PPR 扩散</strong> + 预算化水化组装最小执行包，reward 平均 <strong>+43.6%</strong>、token 平均 <strong>−37.8%</strong>。
+          </p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-retrieve">检索 · 代表作</span>
+            <a class="pc-detail-link" href="papers/2604.05333-graph-of-skills.html">Read detail →</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Footer ========= -->
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <p>整理于 <code>Wiki/SkillX</code> · 数据来自 <a href="https://huggingface.co/papers" target="_blank">Hugging Face Papers</a> · 页面仅供组会交流使用</p>
+    <p style="margin-top:0.5rem; font-size:0.78rem; color:#9ca3af;">
+      页面设计参考 <a href="https://xskill-agent.github.io/xskill_page/" target="_blank">xskill_page</a> / Nerfies academic project page template
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
