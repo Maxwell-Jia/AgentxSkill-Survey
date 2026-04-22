@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="AutoSkill: Experience-Driven Lifelong Learning via Skill Self-Evolution — reading notes.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AutoSkill — Agent × Skill Survey</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+  <style>
+    /* AutoSkill brand: 青绿 → 靛蓝，区别于 SkillX 的橙→青 和 GoS 的紫→青 */
+    .autoskill {
+      font-variant: small-caps;
+      font-weight: bold;
+      background: linear-gradient(90deg, #0891b2 0%, #4f46e5 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========= Breadcrumb ========= -->
+<div class="breadcrumb-nav">
+  <div class="container is-max-desktop">
+    <a href="../index.html">Agent × Skill Survey</a>
+    <span class="sep">/</span>
+    <span>01 Synthesis</span>
+    <span class="sep">/</span>
+    <span>AutoSkill</span>
+  </div>
+</div>
+
+
+<!-- ========= Hero ========= -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="autoskill">AutoSkill</span>: Experience-Driven Lifelong<br>
+            Learning via Skill Self-Evolution
+          </h1>
+          <p class="is-size-5" style="color:#555; margin-top:0.2rem; font-family:'Google Sans',sans-serif;">
+            经验驱动的技能自演化：无参数更新的终身个性化学习
+          </p>
+
+          <div class="is-size-6 publication-authors" style="margin-top:1rem;">
+            <span class="author-block">Yutao Yang<sup>1</sup>,</span>
+            <span class="author-block">Junsong Li<sup>1</sup>,</span>
+            <span class="author-block">Qianjun Pan<sup>1</sup>,</span>
+            <span class="author-block">Bihao Zhan<sup>1</sup>,</span>
+            <span class="author-block">Yuxuan Cai<sup>1</sup>,</span>
+            <span class="author-block">Lin Du<sup>1</sup>,</span>
+            <span class="author-block">Jie Zhou<sup>1*</sup>,</span>
+            <span class="author-block">Kai Chen<sup>2*</sup>,</span>
+            <span class="author-block">Qin Chen<sup>1</sup>,</span>
+            <span class="author-block">Xin Li<sup>1</sup>,</span>
+            <span class="author-block">Bo Zhang<sup>1</sup>,</span>
+            <span class="author-block">Liang He<sup>1</sup></span>
+          </div>
+          <div class="is-size-7 publication-authors" style="margin-top:0.3rem; color:#555;">
+            <span class="author-block"><sup>1</sup>华东师范大学计算机科学与技术学院</span>
+            <span class="author-block">&nbsp;·&nbsp;<sup>2</sup>上海人工智能实验室</span>
+          </div>
+          <div class="is-size-7" style="margin-top:0.2rem; color:#888;">
+            <em>* Equal Contribution</em>
+          </div>
+          <div class="is-size-7" style="margin-top:0.25rem; color:#888;">
+            2025-03 · arXiv 2603.01145
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2603.01145" target="_blank"
+                   class="external-link button is-normal is-rounded btn-arxiv">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/ECNU-ICALK/AutoSkill" target="_blank"
+                   class="external-link button is-normal is-rounded btn-github">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/papers/2603.01145" target="_blank"
+                   class="external-link button is-normal is-rounded btn-hf">
+                  <span class="icon hf-icon">🤗</span>
+                  <span>HF Papers</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="../index.html"
+                   class="external-link button is-normal is-rounded btn-home">
+                  <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                  <span>Back</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Teaser figure ========= -->
+<section class="hero teaser" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="hero-body" style="padding-top:0;">
+      <div class="analysis-figure-wrap">
+        <img src="https://arxiv.org/html/2603.01145v2/x1.png" alt="Figure 1: AutoSkill 双循环框架示意" loading="lazy">
+      </div>
+      <p class="figure-caption has-text-centered">
+        <strong>Figure 1.</strong> <span class="autoskill">AutoSkill</span> 框架由两个紧密耦合的过程组成：右侧循环（<em>技能演化</em>）从对话历史持续提取、合并、精炼显式技能；左侧循环（<em>技能增强响应生成</em>）通过查询重写 → 混合检索 → 上下文注入支持当前响应。系统通过外部显式技能记忆成长，而非模型微调。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Abstract ========= -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            现实 LLM 应用中，用户会反复表达相同偏好与要求——"避免幻觉"、"遵循机构写作规范"、"减少技术术语"——但这些交互经验从未被系统性沉淀为可复用知识。现有记忆增强方案（MemoryBank、MemGPT、Mem0 等）仅将过去对话当作可检索的文本片段，而非可操作化的行为能力；参数更新路线（Self-evolution、RLHF）代价高昂且缺乏透明度；Voyager、Reflexion 等 Agent 框架中的技能通常隐含于 prompt 或轨迹，缺乏统一的检视、编辑、迁移与长期维护机制。
+          </p>
+          <p>
+            <span class="autoskill">AutoSkill</span> 将用户交互经验抽象为带版本号的显式技能制品（SKILL.md），通过"技能提取 → 检索辅助管理 → 版本化合并 → 混合检索注入"的闭环实现无需参数更新的终身个性化学习。在 WildChat-1M 真实对话数据上，系统从超过 10,000 段对话中自动提取近 1,858 个技能，并通过案例验证了版本化演化机制的有效性——高频生产力技能历经数十次精炼迭代，版本号最高达 <code>0.1.34</code>。
+          </p>
+        </div>
+
+        <div class="key-insight">
+          <div class="label">Key Insight</div>
+          <p>将技能显式化为可版本管理的 <strong>SKILL.md</strong> 制品，比隐藏在 prompt 或策略中具有更高的可维护性与可迁移性；<strong>仅从用户查询侧</strong>提取技能（不含模型回复），确保捕获稳定用户需求而非模型生成偏差。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Framework ========= -->
+<section class="section" id="framework" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Framework Overview</h2>
+        <div class="content has-text-justified">
+          <p>
+            <span class="autoskill">AutoSkill</span> 的系统模块集合定义为 $\mathcal{M} = \{M_{\mathrm{rw}}, M_{\mathrm{chat}}, M_{\mathrm{ext}}, M_{\mathrm{judge}}, M_{\mathrm{merge}}, M_{\mathrm{emb}}\}$，全部由 Prompt 驱动，无需专项训练。整体运行于两个并发循环：<strong>Loop 1</strong> 负责在线技能增强响应生成，<strong>Loop 2</strong> 负责后台实时技能演化，两者通过共享技能库 $\mathcal{B}_u^t$ 解耦。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 三张框架卡片 -->
+    <div class="columns">
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#0891b2;">技能七元组表示</h3>
+          <p class="analysis-card-desc">
+            每个技能 $s = (n, d, p, \tau, \gamma, \xi, v)$，字段分别为：名称 $n$、描述 $d$、可执行指令 prompt $p$、触发条件集 $\tau$、标签集 $\gamma$、示例集 $\xi$、版本号 $v$。技能以 <strong>SKILL.md</strong> 持久化，可人工检视、编辑、导入导出，亦可跨用户共享。
+          </p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#4f46e5;">Loop 1：技能增强响应生成</h3>
+          <p class="analysis-card-desc">
+            <strong>步骤 1 查询重写</strong>：$\tilde{q}_t = M_{\mathrm{rw}}(P_{\mathrm{rw}}, q_t, h_t)$，解析上下文依赖、暴露格式/风格/领域等检索约束。<br>
+            <strong>步骤 2 混合检索</strong>：$\mathrm{Rel}(q_t, s) = \lambda\hat{d}(q_t,s) + (1-\lambda)\hat{b}(q_t,s)$（Dense + BM25），取 Top-K 超阈值 $\eta$ 的技能集 $\mathcal{H}_t$。<br>
+            <strong>步骤 3 注入生成</strong>：将 $\mathcal{H}_t$ 渲染为紧凑上下文块 $C_t$ 注入对话模型：$r_t = M_{\mathrm{chat}}(P_{\mathrm{chat}}, q_t, h_t, C_t)$。
+          </p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#0f766e;">Loop 2：实时技能演化</h3>
+          <p class="analysis-card-desc">
+            <strong>提取</strong>：仅用用户查询序列 $z_t = M_{\mathrm{ext}}(P_{\mathrm{ext}}, \mathcal{Q}_u^t)$，过滤一次性请求，捕获持久偏好、可复用流程、输出约束等。<br>
+            <strong>管理</strong>：检索最近邻 $s_t^*$，由判断模块决策 $a_t \in \{\texttt{add}, \texttt{merge}, \texttt{discard}\}$。<br>
+            <strong>合并</strong>：merge 时版本化演化 $s_t' = M_{\mathrm{merge}}(\cdot)$，$v(s_t') = \mathrm{Bump}(v(s_t^*))$，保持库一致性。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 技能库更新公式 -->
+    <div class="columns is-centered" style="margin-top:1rem;">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <p>技能库更新规则：</p>
+          <p>$$\mathcal{B}_u^{t+1} = \begin{cases} \mathcal{B}_u^t \cup \{z_t\}, & a_t = \texttt{add} \\ (\mathcal{B}_u^t \setminus \{s_t^*\}) \cup \{s_t'\}, & a_t = \texttt{merge} \\ \mathcal{B}_u^t, & a_t = \texttt{discard} \end{cases}$$</p>
+          <p>
+            <strong>技能生命周期（四阶段）</strong>：① <em>经验摄入</em>——摄入对话消息与行为事件轨迹；② <em>技能提取</em>——从摄入证据中提取可复用能力候选；③ <em>维护与版本控制</em>——add / merge / discard 三选一，合并时更新版本号；④ <em>技能复用</em>——混合检索相关技能，渲染为上下文后注入 LLM 请求。
+          </p>
+          <p>
+            <strong>系统部署模式</strong>支持四种接入方式：Python SDK（<code>ingest / search / render_context</code>）、Web UI（前台检索注入 + 后台异步演化）、OpenAI 兼容反向代理（透明增强现有客户端）、离线引导（批量导入历史对话初始化 SkillBank）。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Results ========= -->
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Results</h2>
+        <p style="color:#555; margin-bottom:1rem;">
+          数据来自 <strong>WildChat-1M</strong>（真实用户与 ChatGPT 交互日志，保留超过 8 轮对话）。
+          四个子集共构建 <strong>1,858 个技能</strong>。
+        </p>
+      </div>
+    </div>
+
+    <!-- SkillBank 规模表 -->
+    <div class="table-container">
+      <table class="table is-striped is-fullwidth results-table">
+        <thead>
+          <tr>
+            <th>子集</th>
+            <th>对话数</th>
+            <th>总消息数</th>
+            <th>提取技能数</th>
+            <th>平均消息数/对话</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>English GPT-3.5</td><td>10,243</td><td>267,681</td><td>631</td><td>~26</td></tr>
+          <tr><td>Chinese GPT-3.5</td><td>—</td><td>—</td><td>—</td><td>~26</td></tr>
+          <tr><td>English GPT-4</td><td>—</td><td>—</td><td>—</td><td>30.23–32.17</td></tr>
+          <tr class="our-method-row"><td><strong>Chinese GPT-4</strong></td><td>1,145</td><td>36,834</td><td>224</td><td>~32</td></tr>
+          <tr><td><strong>合计</strong></td><td colspan="3" style="text-align:center; font-weight:700;">4 个子集共 <strong>1,858</strong> 个技能</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 高频标签表 -->
+    <div class="columns is-centered" style="margin-top:1.5rem;">
+      <div class="column is-four-fifths">
+        <h3 class="title is-5">高频标签分布（Top 技能类别）</h3>
+        <div class="table-container">
+          <table class="table is-striped is-fullwidth results-table">
+            <thead>
+              <tr><th>排名</th><th>标签</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td><code>python</code></td><td>编程辅助、代码生成、调试</td></tr>
+              <tr><td>2</td><td><code>javascript</code></td><td>前端开发、脚本自动化</td></tr>
+              <tr><td>3</td><td><code>excel</code></td><td>表格处理、数据整理</td></tr>
+              <tr><td>4</td><td><code>c++</code></td><td>系统编程、性能优化</td></tr>
+              <tr><td>5</td><td><code>pandas</code></td><td>数据分析、DataFrame 操作</td></tr>
+              <tr><td colspan="3" style="color:#546e7a; font-style:italic; text-align:left; font-size:0.83rem;">其他常见标签：creative writing · formatting · education · translation · roleplay</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:0.88rem; color:#546e7a; margin-top:0.5rem; font-style:italic;">
+          编程与软件开发占最大份额，其次为写作与内容创作、数据与 AI/ML、通用混合技能；研究、营销等垂直领域技能出现较少。
+        </p>
+      </div>
+    </div>
+
+    <!-- 版本化演化案例 -->
+    <div class="columns is-centered" style="margin-top:1.5rem;">
+      <div class="column is-four-fifths">
+        <h3 class="title is-5">版本演化的质性证据（案例对比）</h3>
+        <div class="table-container">
+          <table class="table is-striped is-fullwidth results-table">
+            <thead>
+              <tr><th>技能名</th><th>语言</th><th>版本号</th><th>含义</th></tr>
+            </thead>
+            <tbody>
+              <tr class="our-method-row">
+                <td><code>professional_text_rewrite</code></td>
+                <td>英文</td>
+                <td><strong>0.1.34</strong></td>
+                <td>经 34 轮迭代精炼，捕获严格的专业改写规范（禁止额外说明、不可省略细节等）</td>
+              </tr>
+              <tr>
+                <td><code>顶级心理咨询师</code></td>
+                <td>中文</td>
+                <td>0.1.0</td>
+                <td>接近初始提取形态，编码温暖/共情/非评判性对话支持风格</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:0.88rem; color:#546e7a; margin-top:0.5rem; font-style:italic;">
+          高频使用的生产力技能被反复 merge 精炼，版本号持续增长；低频/专业技能则可能长期保持早期版本——版本化机制有效区分"稳定核心技能"与"细分长尾技能"。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Analysis ========= -->
+<section class="section" id="analysis" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Analysis</h2>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">关键设计：仅用查询侧提取</h3>
+          <p class="analysis-card-desc">
+            技能提取阶段只用<strong>用户查询序列</strong>（不含模型回复）：$z_t = M_{\mathrm{ext}}(P_{\mathrm{ext}}, \mathcal{Q}_u^t)$。这确保提取到的是稳定的用户需求，而非模型生成偏差。对需要对齐真实用户意图的系统尤为重要——若从模型回复中学习，系统可能逐渐强化模型本身的倾向而非用户偏好。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">最近邻局部管理 vs. 全库比较</h3>
+          <p class="analysis-card-desc">
+            候选技能不直接入库，而是先检索最相似的现有技能作为局部证据，仅在该局部范围内由 judge/merge 模块决策。相比全库遍历，这显著减少输入规模、使决策更聚焦且更可扩展。混合检索（Dense + BM25）则确保语义相关与关键词精确触发两者兼顾：阈值 $\eta$ 过滤无关技能，避免噪声干扰响应生成。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns" style="margin-top:0.8rem;">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">版本化合并 vs. 重复积累</h3>
+          <p class="analysis-card-desc">
+            传统 RAG 系统倾向于堆积相似 chunk，导致库膨胀与质量下降。AutoSkill 的 merge + version 机制在同一技能的后续反馈触发时<strong>直接迭代更新</strong>而不产生重复 prompt 片段，有效控制库规模并保持语义一致性。这是构建可长期维护技能库（乃至"技能市场"）的关键工程范式。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">异步演化解耦在线延迟</h3>
+          <p class="analysis-card-desc">
+            技能提取在后台异步执行，与在线响应生成完全解耦：用户感知到的延迟仅来自检索注入，而非耗时的 LLM 提取与 merge 操作。这是面向生产部署的关键工程决策。系统同时支持<strong>离线引导</strong>模式——批量导入历史对话、文档或 Agent 轨迹初始化 SkillBank，无需等待实时积累即可冷启动。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Takeaways ========= -->
+<section class="section" id="takeaways">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Takeaways</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h3 class="title is-5">核心结论</h3>
+          <ol>
+            <li><strong>技能即制品（Skill-as-Artifact）</strong>：将技能显式化为可版本管理的 SKILL.md 文件，比隐藏在 prompt 或策略中具有更高的可维护性——这一范式值得在更多 Agent 框架中推广。</li>
+            <li><strong>仅从用户侧信号学习</strong>：提取阶段只用用户查询而非模型回复，是避免学习到模型偏差的巧妙设计，对需要对齐真实用户意图的系统尤为重要。</li>
+            <li><strong>版本化合并替代重复积累</strong>：merge + version 机制保持技能库的一致性，有效控制库规模与质量，可借鉴于其他知识管理系统。</li>
+            <li><strong>异步演化解耦延迟</strong>：将技能提取放在后台异步执行，是面向生产部署的关键工程决策。</li>
+            <li><strong>跨用户迁移潜力</strong>：SKILL.md 的标准化表示使得技能在用户间、Agent 间共享成为可能，是构建"技能市场"或组织级技能知识库的基础。</li>
+          </ol>
+
+          <h3 class="title is-5">局限性</h3>
+          <ul>
+            <li>实验以描述性分析为主，缺乏与基线方法的系统性量化对比。</li>
+            <li>技能质量评估主要依赖案例分析，端到端效果有待配套评测 benchmark（如 StuLife）进一步验证。</li>
+            <li>当前主要针对文本对话场景，对工具调用型 Agent 的覆盖有待扩展。</li>
+          </ul>
+
+          <h3 class="title is-5">对后续研究的启发</h3>
+          <ol>
+            <li>将"终身学习"问题从隐式记忆积累重新表述为<strong>显式技能演化</strong>，是一个值得广泛采用的研究范式。</li>
+            <li>SKILL.md 制品标准化为跨框架的"技能市场"奠定了基础——多 Agent 协作时可直接共享技能库。</li>
+            <li>版本化管理与 add/merge/discard 三路决策，是维护任何领域知识库质量的通用有效机制。</li>
+            <li>混合检索（Dense + BM25）+ 阈值过滤是技能检索的实用基线，应优先于纯语义检索。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Footer ========= -->
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <p><a href="../index.html">← 返回 Agent × Skill 论文列表</a></p>
+    <p style="margin-top:0.5rem; font-size:0.78rem; color:#9ca3af;">
+      Data from <a href="https://huggingface.co/papers/2603.01145" target="_blank">Hugging Face Papers</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

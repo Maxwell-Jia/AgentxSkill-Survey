@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="SKILL0: In-Context Agentic Reinforcement Learning for Skill Internalization — reading notes.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SKILL0 — Agent × Skill Survey</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+  <style>
+    /* SKILL0 brand gradient: deep indigo → vivid rose */
+    .skill0 {
+      font-variant: small-caps;
+      font-weight: bold;
+      background: linear-gradient(90deg, #4f46e5 0%, #e11d48 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========= Breadcrumb ========= -->
+<div class="breadcrumb-nav">
+  <div class="container is-max-desktop">
+    <a href="../index.html">Agent × Skill Survey</a>
+    <span class="sep">/</span>
+    <span>01 Synthesis</span>
+    <span class="sep">/</span>
+    <span>SKILL0</span>
+  </div>
+</div>
+
+
+<!-- ========= Hero ========= -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="skill0">SKILL0</span>: In-Context Agentic<br>
+            Reinforcement Learning for<br>Skill Internalization
+          </h1>
+          <p class="is-size-5" style="color:#555; margin-top:0.2rem; font-family:'Google Sans',sans-serif;">
+            上下文内 Agent 强化学习实现 Skill 内化
+          </p>
+
+          <div class="is-size-6 publication-authors" style="margin-top:1rem;">
+            <span class="author-block">Zhengxi Lu<sup>1</sup>,</span>
+            <span class="author-block">et al.</span>
+          </div>
+          <div class="is-size-7 publication-authors" style="margin-top:0.3rem; color:#555;">
+            <span class="author-block"><sup>1</sup>Zhejiang University</span>
+            <span class="author-block">· Meituan</span>
+            <span class="author-block">· Tsinghua University</span>
+          </div>
+          <div class="is-size-7" style="margin-top:0.25rem; color:#888;">
+            2026-04-03 · arXiv 2604.02268
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2604.02268" target="_blank"
+                   class="external-link button is-normal is-rounded btn-arxiv">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/ZJU-REAL/SkillZero" target="_blank"
+                   class="external-link button is-normal is-rounded btn-github">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/papers/2604.02268" target="_blank"
+                   class="external-link button is-normal is-rounded btn-hf">
+                  <span class="icon hf-icon">🤗</span>
+                  <span>HF Papers</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="../index.html"
+                   class="external-link button is-normal is-rounded btn-home">
+                  <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                  <span>Back</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Teaser figure ========= -->
+<section class="hero teaser" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="hero-body" style="padding-top:0;">
+      <div class="analysis-figure-wrap">
+        <img src="https://arxiv.org/html/2604.02268v1/x1.png"
+             alt="Figure 1: Skill 增强范式 vs. SKILL0 内化范式" loading="lazy">
+      </div>
+      <p class="figure-caption has-text-centered">
+        <strong>Figure 1.</strong>
+        (a) 传统 Skill 增强范式在推断时检索并注入技能，模型始终依赖外部上下文；
+        (b) <span class="skill0">SKILL0</span> 范式：训练时提供完整技能上下文，推断时完全无技能（zero-skill），通过动态课程实现从显式注入到参数内化的平稳过渡。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Abstract ========= -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            当前 Agent Skill 增强范式（inference-time skill augmentation）存在三大结构性缺陷：
+            <strong>检索噪声</strong>（不相关或误导性技能污染上下文）、
+            <strong>Token 开销</strong>（注入的 Skill 内容在多轮交互中累积，如 SkillRL 每步 2.21k token）、
+            <strong>未真正学习</strong>（技能知识驻留在上下文而非参数中，Agent 永远无法自主行为）。
+          </p>
+          <p>
+            <span class="skill0">SKILL0</span> 提出首个以 <em>Skill 内化</em> 为显式训练目标的 RL 框架。核心口号：
+            <strong>"Skills at training, zero at inference."</strong>
+            通过上下文内强化学习（ICRL）+ 动态课程（Dynamic Curriculum），逐步将上下文注入的 Skill 转移到模型参数中，推断阶段完全不依赖外部技能。最终在 ALFWorld 上达到 <strong>87.9%（3B）/ 89.8%（7B）</strong>，超越有技能增强的 SkillRL（85.5%），同时推断 token 仅 <strong>0.38k/步</strong>（SkillRL 的 5.8 倍压缩）。
+          </p>
+        </div>
+
+        <div class="key-insight">
+          <div class="label">Key Insight</div>
+          <p>Skill 不必永远活在上下文里——它可以成为训练过程中的<strong>临时脚手架</strong>，通过受控的课程式退火，最终内化进模型参数，推断时实现真正零依赖的自主行为。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Framework ========= -->
+<section class="section" id="framework" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Framework Overview</h2>
+        <div class="content has-text-justified">
+          <p>
+            <span class="skill0">SKILL0</span> 由三大机制协同构成：
+            <strong>上下文压缩</strong>（视觉编码压缩交互历史与技能）、
+            <strong>In-Context RL (ICRL)</strong>（融合技能提示的样本效率与 RL 探索能力）、
+            <strong>动态课程</strong>（线性衰减技能预算 + 有用性驱动筛选）。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#4f46e5;">技能组织</h3>
+          <p class="analysis-card-desc">
+            两层结构：<strong>通用 Skill</strong>（探索策略、目标追踪）+ <strong>任务特定 Skill</strong>（领域知识、动作序列）。
+            目录组织 <code>skills/{task}/{category}.md</code>，共 $N$ 个技能文件构成 SkillBank。
+            训练时按<em>在线有用性</em>排序选 $m$ 个注入，推断时完全不用。
+          </p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#e11d48;">视觉压缩与 ICRL</h3>
+          <p class="analysis-card-desc">
+            将文本历史 $h_t$ 与检索技能 $\mathcal{S}$ 编码为 RGB 图像，压缩比 $c_t \in (0,1]$ 由策略<em>自生成</em>（非固定超参）。
+            复合奖励 $\tilde{r}_t = r_t + \lambda \cdot r^{\text{comp}}_t$，其中成功时
+            $r^{\text{comp}}_t = \ln(c_t)$（对数形式反映边际收益递减）。
+            ALFWorld 上 token/步从 2.21k 降至 <strong>0.38k</strong>（&gt;5× 压缩）。
+          </p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#0ea5a0;">动态课程</h3>
+          <p class="analysis-card-desc">
+            分 $N_S$ 阶段线性衰减技能预算：
+            $$M^{(s)} = \left\lceil N \cdot \frac{N_S - s}{N_S - 1} \right\rceil$$
+            每 $d$ 步评估有/无技能时性能差 $\Delta_k$（有用性指标），
+            Filter &amp; Rank &amp; Select 只保留当前策略仍受益的技能，
+            逐步逼迫模型内化知识。最优配置为 $[6,3,0]$ 线性衰减。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered" style="margin-top:1.5rem;">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h3 class="title is-5">两阶段课程操作流程</h3>
+          <p>
+            <strong>(a) 离线相关性分组</strong>（Relevance-Driven Skill Grouping）：将验证集 $N$ 个子集
+            $\{\mathcal{T}_k\}_{k=1}^N$ 与对应技能文件关联，基于领域对齐为每个 $\mathcal{S}_k$ 分配专属验证任务。
+          </p>
+          <p>
+            <strong>(b) 在线有用性驱动课程</strong>（Helpfulness-Driven Dynamic Curriculum）：每 $d$ 步评估有/无技能条件下子任务性能差 $\Delta_k$，筛选、排序、选取 top-$m$ 技能，只保留当前策略仍受益的技能，随训练进度逐步收紧预算，逼迫模型将行为锚定到参数中。
+          </p>
+          <p>
+            <strong>关键消融</strong>：去 Rank（随机选择）导致性能崩溃 −13.7%（至 62.9%），充分证明精准筛选是动态课程的核心而非可选项。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Training dynamics figure -->
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2604.02268v1/x6.png"
+               alt="Figure 6: 技能有用性动态变化" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 6.</strong> 技能有用性 $\Delta_k$ 在各子任务上呈"先升后降"特征。
+          早期策略无法利用技能提示，中期学会对齐，后期课程减少技能预算强制内化，有用性回落——验证了 ICRL 与课程学习的协同机制。
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Results ========= -->
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Results</h2>
+        <p style="color:#555; margin-bottom:0.2rem;">
+          推断时 <span class="skill0">SKILL0</span> 完全无技能注入；SkillRL 推断时仍检索技能。
+          括号内为技能内化增益（vs. 无技能基线）。
+        </p>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="table is-striped is-fullwidth results-table">
+        <thead>
+          <tr>
+            <th>方法</th>
+            <th>推断时有技能？</th>
+            <th>ALFWorld (%)</th>
+            <th>Search-QA (%)</th>
+            <th>Token/步 (k)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Few-Shot + Text</td><td>否</td><td>78.2</td><td>34.2</td><td>2.21</td></tr>
+          <tr><td>AgentOCR (3B)</td><td>否</td><td>78.2</td><td>34.2</td><td>0.78</td></tr>
+          <tr><td>SkillRL (有技能)</td><td><strong>是</strong></td><td>85.5</td><td>43.2</td><td>0.87</td></tr>
+          <tr class="our-method-row">
+            <td><strong>SKILL0 (3B)</strong></td><td>否</td>
+            <td><strong>87.9</strong></td><td><strong>40.8</strong></td><td><strong>0.38</strong></td>
+          </tr>
+          <tr class="our-method-row">
+            <td><strong>SKILL0 (7B)</strong></td><td>否</td>
+            <td><strong>89.8</strong></td><td><strong>44.4</strong></td><td>0.47</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <ul>
+            <li>vs. AgentOCR 基线：<strong>+9.7%</strong>（ALFWorld）、<strong>+6.6%</strong>（Search-QA）。</li>
+            <li>推断时完全零 Skill，仍以 87.9% 超越有技能增强的 SkillRL（85.5%），证明 Skill 已真正内化进参数。</li>
+            <li>SKILL0 (3B) 仅 0.38k token/步，为 SkillRL 的 <strong>5.8 倍压缩</strong>，实际部署延迟大幅降低。</li>
+            <li>7B 模型进一步提升至 89.8% / 44.4%，表明内化质量随模型容量正向扩展。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Training dynamics figure -->
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2604.02268v1/x5.png"
+               alt="Figure 5: 技能内化训练动态" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 5.</strong>
+          (a) 有/无技能情况下性能对比：有技能时早期上升快，无技能初期低但逐步追上——内化过程可观测；
+          (b) 无技能推断下 SKILL0 优于 AgentOCR；
+          (c) SKILL0 相比 GRPO 和 SkillRL 持续改进，最终达到最高上界。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Analysis ========= -->
+<section class="section" id="analysis" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Analysis</h2>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">技能预算衰减策略</h3>
+          <table class="table is-narrow ablation-table is-fullwidth" style="margin-top:0.5rem;">
+            <thead>
+              <tr><th>预算配置</th><th>ALFWorld（%）</th><th>备注</th></tr>
+            </thead>
+            <tbody>
+              <tr class="our-method-row"><td><strong>[6,3,0] 线性衰减</strong></td><td><strong>87.9</strong></td><td>最优</td></tr>
+              <tr><td>[6,6,6] 固定全预算</td><td class="drop">75.6</td><td>推断移除技能 −12.3%</td></tr>
+              <tr><td>[3,3,3] 固定低预算</td><td class="drop">80.1</td><td>早期探索受限</td></tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc" style="margin-top:0.7rem;">
+            线性衰减是唯一展现正向转移的方案。固定全预算导致过度依赖：推断时移除技能后性能骤降 12.3%，内化失败。固定低预算则早期探索受限，学习不稳定。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">课程三步流程消融</h3>
+          <table class="table is-narrow ablation-table is-fullwidth" style="margin-top:0.5rem;">
+            <thead>
+              <tr><th>配置</th><th>ALFWorld（%）</th></tr>
+            </thead>
+            <tbody>
+              <tr class="our-method-row"><td><strong>完整 Filter &amp; Rank &amp; Select</strong></td><td><strong>87.9</strong></td></tr>
+              <tr><td>去 Filter</td><td class="drop">85.2</td></tr>
+              <tr><td>去 Rank（随机选择）</td><td class="drop">62.9</td></tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc" style="margin-top:0.7rem;">
+            去 Rank 随机选择导致性能崩溃至 62.9%（−13.7%），这是最关键的消融结论：基于当前策略状态的有用性排序，而非向量相似度或随机抽样，是动态课程的核心。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns" style="margin-top:1rem;">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">有用性评估间隔 $d$</h3>
+          <p class="analysis-card-desc">
+            $d=5$ 边际收益 +0.3%，但计算开销大；$d=10$ 是最优权衡选择；$d=20$ 评估粗粒度，性能下降。
+            间隔过短会频繁重新排序技能，扰乱训练稳定性；过长则有用性信号滞后，无法及时淘汰已被内化的技能。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">自适应压缩比的意义</h3>
+          <p class="analysis-card-desc">
+            压缩比 $c_t$ 由策略自生成而非固定超参，使模型学会<em>根据任务复杂度动态调节上下文规模</em>。
+            简单任务自动压缩更激进，复杂多跳任务保留更多历史——这与人类认知负荷调节吻合，是视觉压缩机制的核心创新。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Takeaways ========= -->
+<section class="section" id="takeaways">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Takeaways</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h3 class="title is-5">核心结论</h3>
+          <ol>
+            <li>提出首个显式以 Skill <em>内化</em> 为训练目标的 RL 框架，推断时完全零 Skill 依赖，性能反超有技能增强的 baseline。</li>
+            <li>线性衰减技能预算 + 有用性驱动筛选是平稳内化的关键；随机选择会导致 −13.7% 性能崩溃。</li>
+            <li>自适应视觉压缩将推断 token 压缩至 0.38k/步，为 SkillRL 的 1/5.8，兼顾性能与效率。</li>
+            <li>Skill 有用性指标 $\Delta_k$ 呈"先升后降"规律，为技能生命周期管理提供了可量化的退场信号。</li>
+          </ol>
+
+          <h3 class="title is-5">局限性</h3>
+          <ul>
+            <li>视觉压缩路径依赖多模态架构（LLaVA 系），纯文本模型不可直接复用。</li>
+            <li>当前 SkillBank 固定，训练完成后不再演化；在技能需持续更新的开放域场景下适应性有限。</li>
+            <li>ALFWorld 和 Search-QA 场景相对封闭，对复杂工具调用（如 AppWorld 数百 API）的泛化未验证。</li>
+          </ul>
+
+          <h3 class="title is-5">对后续研究的启发</h3>
+          <ol>
+            <li><strong>从"检索注入"到"内化习得"的范式转变</strong>：推翻当前 skill augmentation 对推断期技能的必要性论证，为低延迟部署开辟新路径。</li>
+            <li><strong>技能生命周期管理</strong>：Skill 是训练过程中的<em>临时脚手架</em>，有用性指标 $\Delta_k$ 的"兴衰周期"可指导增量更新策略。</li>
+            <li><strong>精准筛选优于盲目堆积</strong>：基于当前策略状态的有用性评估（不是向量相似度）是 Skill 管理的核心判据。</li>
+            <li><strong>推断-训练分布对齐</strong>：在推断时彻底去掉 Skill 迫使训练过程对齐，避免"提示范式"中的隐性不匹配，对 Skill 进化 / 元学习有借鉴。</li>
+            <li><strong>与 SkillRL 的互补定位</strong>：SkillRL 适于高度模块化、技能复用率高的任务；SKILL0 适于追求低延迟、自主性强的部署环境，两者可在系统层面结合。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Footer ========= -->
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <p><a href="../index.html">← 返回 Agent × Skill 论文列表</a></p>
+    <p style="margin-top:0.5rem; font-size:0.78rem; color:#9ca3af;">
+      Data from <a href="https://huggingface.co/papers/2604.02268" target="_blank">Hugging Face Papers</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

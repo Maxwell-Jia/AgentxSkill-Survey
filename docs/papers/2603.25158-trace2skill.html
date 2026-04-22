@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Trace2Skill: Distill Trajectory-Local Lessons into Transferable Agent Skills — reading notes.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trace2Skill — Agent × Skill Survey</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+  <style>
+    /* Trace2Skill brand — teal-to-indigo gradient */
+    .trace2skill {
+      font-variant: small-caps;
+      font-weight: bold;
+      background: linear-gradient(90deg, #0d9488 0%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========= Breadcrumb ========= -->
+<div class="breadcrumb-nav">
+  <div class="container is-max-desktop">
+    <a href="../index.html">Agent × Skill Survey</a>
+    <span class="sep">/</span>
+    <span>01 Synthesis</span>
+    <span class="sep">/</span>
+    <span>Trace2Skill</span>
+  </div>
+</div>
+
+
+<!-- ========= Hero ========= -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="trace2skill">Trace2Skill</span>: Distill<br>
+            Trajectory-Local Lessons into<br>
+            Transferable Agent Skills
+          </h1>
+          <p class="is-size-5" style="color:#555; margin-top:0.2rem; font-family:'Google Sans',sans-serif;">
+            从执行轨迹中蒸馏局部经验为可迁移 Agent Skill
+          </p>
+
+          <div class="is-size-6 publication-authors" style="margin-top:1rem;">
+            <span class="author-block">Jingwei Ni<sup>1</sup>,</span>
+            <span class="author-block">Yihao Liu<sup>2</sup>,</span>
+            <span class="author-block">Xinpeng Liu<sup>3</sup>,</span>
+            <span class="author-block">Yutao Sun<sup>4</sup>,</span>
+            <span class="author-block">Mengyu Zhou<sup>†</sup></span>
+            <span class="author-block">et al.</span>
+          </div>
+          <div class="is-size-7 publication-authors" style="margin-top:0.3rem; color:#555;">
+            <span class="author-block"><sup>1</sup>ETH Zürich</span>
+            <span class="author-block"><sup>2</sup>北京大学</span>
+            <span class="author-block"><sup>3</sup>浙江大学</span>
+            <span class="author-block"><sup>4</sup>阿里巴巴 Qwen 团队</span>
+          </div>
+          <div class="is-size-7" style="margin-top:0.25rem; color:#888;">
+            2026-03-27 · Work in progress（完整实验版）
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2603.25158" target="_blank"
+                   class="external-link button is-normal is-rounded btn-arxiv">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/papers/2603.25158" target="_blank"
+                   class="external-link button is-normal is-rounded btn-hf">
+                  <span class="icon hf-icon">🤗</span>
+                  <span>HF Papers</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="../index.html"
+                   class="external-link button is-normal is-rounded btn-home">
+                  <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                  <span>Back</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Teaser figure ========= -->
+<section class="hero teaser" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="hero-body" style="padding-top:0;">
+      <div class="analysis-figure-wrap">
+        <img src="https://arxiv.org/html/2603.25158v1/x1.png"
+             alt="Figure 1: Online sequential update (left) vs. Trace2Skill parallel consolidation (right)"
+             loading="lazy">
+      </div>
+      <p class="figure-caption has-text-centered">
+        <strong>Figure 1.</strong> 左图：在线顺序更新范式——轨迹逐条触发 Skill 更新，早期错误会漂移积累；
+        右图：<span class="trace2skill">Trace2Skill</span> 并行分析全量轨迹池后统一归纳为单一 SOP，避免顺序漂移。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Abstract + Key Insight ========= -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            现有 Agent Skill 方案面临两类根本缺陷：<strong>纯参数知识生成的 Skill</strong> 不含任务域特有的陷阱信息，效果基本等同于"无 Skill"；而<strong>在线顺序更新</strong>（AutoSkill、XSkill 等）会造成 Skill 碎片化与顺序漂移——早期低质量更新扭曲整体方向，且单条轨迹视野有限，难以归纳通用规律。
+          </p>
+          <p>
+            此外，人工编写的高质量 Skill（如 Anthropic 官方 xlsx skill）存在<strong>跨模型尺度不可移植</strong>的问题——同一份 Skill 对 122B 模型提升 +20 pp，对 35B 模型却产生 −9 pp 负效果。
+          </p>
+          <p>
+            <span class="trace2skill">Trace2Skill</span> 提出一个三阶段无参数更新 pipeline：<strong>轨迹生成 → 并行多 Agent Patch 提案 → 无冲突层次化归并</strong>，像人类专家撰写 SOP 一样，先广泛积累执行经验，再通过归纳推理将局部知识整合为单一、全面、无冲突的 Skill 目录。35B 开源模型撰写的 Skill 可让 122B agent 在 WikiTQ 上提升 <strong>+57.65 pp</strong>，并行整合比顺序更新快 <strong>20×</strong>。
+          </p>
+        </div>
+
+        <div class="key-insight">
+          <div class="label">Key Insight</div>
+          <p><strong>全局并行归纳优于局部顺序更新。</strong>先积累大量经验，再统一归纳（类似人类专家写作 SOP），而非在线逐条更新——效果更好、速度更快，且无需检索模块。<strong>任务执行能力 ≠ Skill 创作能力</strong>，归纳推理能力是独立的核心维度。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Framework Overview ========= -->
+<section class="section" id="framework" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Framework Overview</h2>
+        <div class="content has-text-justified">
+          <p>
+            <span class="trace2skill">Trace2Skill</span> 不更新模型参数，通过三阶段 pipeline 将执行轨迹蒸馏为结构化 Skill 目录 $S = (\mathcal{M}, \mathcal{R})$，其中 $\mathcal{M}$ 为 SKILL.md（自然语言 SOP），$\mathcal{R}$ 包含可执行脚本、领域参考文件和辅助资产。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Framework figure -->
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2603.25158v1/figures/trace2skill_framwork.png"
+               alt="Figure 2: Trace2Skill three-stage pipeline"
+               loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 2.</strong> Trace2Skill 三阶段 Pipeline：Stage 1 以初始 Skill $S_0$ 让冻结 Agent 并行生成轨迹池 $\mathcal{T}$；Stage 2 并行多 Agent 独立分析各条轨迹并提出 Patch $p_i$；Stage 3 将全部 Patch 层次化归并为最终 Skill $S^*$。
+        </p>
+      </div>
+    </div>
+
+    <!-- Three stages as cards -->
+    <div class="columns">
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#0d9488;">Stage 1：轨迹生成</h3>
+          <p class="analysis-card-desc">
+            以 ReAct 为框架，将初始 Skill $S_0$ 预置到系统提示中，让冻结 Agent $\pi_\theta$ 在演化集 $D_{\text{evolve}}$ 上<strong>并行运行</strong>，产生轨迹集合 $\mathcal{T}$，按正确性划分为 $\mathcal{T}^-$（失败）与 $\mathcal{T}^+$（成功）。实践规模：200 条轨迹、50+ 步/条，122B 模型 &lt;2 GPU 小时。
+          </p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#6366f1;">Stage 2：并行多 Agent Patch 提案</h3>
+          <p class="analysis-card-desc">
+            每条轨迹独立分配给一个分析 Agent，读取 $S_0$ 的<strong>冻结副本</strong>，输出 Patch $p_i$。
+            <strong>Error Analyst（$A^-$）</strong>：多轮 ReAct，可检查 trace、读取文件、对比 GT，迭代缩小根因后才提出 Patch——质量门控。
+            <strong>Success Analyst（$A^+$）</strong>：单轮调用识别可泛化成功模式。所有 Analyst 彼此不可见，保留多样性。
+          </p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#7c3aed;">Stage 3：无冲突层次化归并</h3>
+          <p class="analysis-card-desc">
+            对 Patch 池 $P = P^- \cup P^+$ 执行层次化归并：$$p^{(\ell+1)} = M(\pi_\theta, S_0, \{p_1^{(\ell)}, \ldots, p_B^{(\ell)}\})$$
+            归并层数 $L = \lceil\log_{B_{\text{merge}}}|P|\rceil$，批次大小 $B_{\text{merge}} = 32$。Merge Operator 明确识别"跨 Patch 高频模式"并提升为通用 SOP；低频特例自动归入 references/ 子目录。三重确定性防护防止幻觉。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Two evolution modes -->
+    <div class="columns is-centered" style="margin-top:1.5rem;">
+      <div class="column is-four-fifths">
+        <h3 class="title is-5">两种演化模式</h3>
+        <div class="content has-text-justified">
+          <p>
+            <strong>Skill Deepening（深化）</strong>：以人类专家编写的高质量 Skill 为 $S_0$，轨迹分析进一步精炼其薄弱之处。
+            <strong>Skill Creation（从零创建）</strong>：以 LLM 参数知识草稿为 $S_0$，完全由轨迹驱动构建有效 Skill。两种模式均在实验中验证有效，且均能跨模型尺度迁移。
+          </p>
+          <p>
+            归并即归纳推理：出现频率低的 Patch 视为特例丢弃，高频 Patch 被提升为通用 SOP——这是 Skill 获得<strong>可迁移性</strong>的核心机制，自动复现了人类专家分层撰写 SOP 的惯例（主文 SKILL.md + 特例 references/）。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Results ========= -->
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Results</h2>
+        <p style="color:#555; margin-bottom:0.5rem;">
+          主域：SpreadsheetBench-Verified（Vrf 精确验证 / WikiTQ OOD）；模型：Qwen3.5-122B-A10B 与 Qwen3.5-35B-A3B。
+          数值为相对于 Human-Written（Deepening）或 Parametric（Creation）基线的增量（pp）。
+        </p>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="table is-striped is-fullwidth results-table">
+        <thead>
+          <tr>
+            <th>Skill Author</th>
+            <th>条件</th>
+            <th>122B: Vrf Δ</th>
+            <th>122B: WikiTQ Δ</th>
+            <th>35B: Vrf Δ</th>
+            <th>35B: WikiTQ Δ</th>
+            <th>Avg Δ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Reference rows -->
+          <tr style="color:#6b7280; font-size:0.8rem;">
+            <td colspan="2">参考绝对值：No Skill</td>
+            <td>27.67</td><td>21.50</td><td>19.00</td><td>13.33</td><td>—</td>
+          </tr>
+          <tr style="color:#6b7280; font-size:0.8rem;">
+            <td colspan="2">参考绝对值：Human-Written</td>
+            <td>48.33</td><td>74.68</td><td>9.67</td><td>9.02</td><td>—</td>
+          </tr>
+          <tr style="color:#6b7280; font-size:0.8rem;">
+            <td colspan="2">参考绝对值：Parametric</td>
+            <td>26.17</td><td>23.73</td><td>20.17</td><td>20.14</td><td>—</td>
+          </tr>
+          <!-- 122B-authored -->
+          <tr>
+            <td rowspan="4">122B-Authored</td>
+            <td>Deepening +Error</td>
+            <td>+17.50</td><td>+1.62</td><td>+27.00</td><td>+9.26</td><td>+9.18</td>
+          </tr>
+          <tr>
+            <td>Deepening +Success</td>
+            <td class="drop">−21.83</td><td class="drop">−10.35</td><td>+9.16</td><td>+12.09</td><td class="drop">−0.90</td>
+          </tr>
+          <tr class="our-method-row">
+            <td><strong>Deepening +Combined</strong></td>
+            <td><strong>+21.50</strong></td><td>+4.56</td><td>+21.16</td><td>+6.64</td><td><strong>+9.19</strong></td>
+          </tr>
+          <tr class="our-method-row">
+            <td><strong>Creation +Success</strong></td>
+            <td>+15.33</td><td>+23.70</td><td>+12.83</td><td>+30.36</td><td><strong>+17.62</strong></td>
+          </tr>
+          <!-- 35B-authored -->
+          <tr>
+            <td rowspan="3">35B-Authored</td>
+            <td>Deepening +Error</td>
+            <td>+16.67</td><td class="drop">−6.36</td><td>+17.33</td><td>+2.71</td><td>+4.47</td>
+          </tr>
+          <tr class="our-method-row">
+            <td><strong>Creation +Error</strong></td>
+            <td>+1.00</td><td><strong>+57.65</strong></td><td>+3.83</td><td>+12.66</td><td><strong>+18.26</strong></td>
+          </tr>
+          <tr class="our-method-row">
+            <td><strong>Deepening +Combined</strong></td>
+            <td>+6.67</td><td>+2.65</td><td>+20.00</td><td>+42.20</td><td><strong>+14.78</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content">
+          <ul>
+            <li>35B-authored Creation +Error 在 WikiTQ 上让 122B agent 提升 <strong>+57.65 pp</strong>（绝对值 81.38%，超过 Human-Written 6.7 pp）——弱模型写的 Skill 反而帮了强模型。</li>
+            <li>Deepening +Combined 在 SpreadsheetBench-Vrf 上提升 <strong>+21.5 pp</strong>（122B author → 122B user）。</li>
+            <li><strong>+Combined</strong> 是最稳健的设置；<strong>+Error</strong> 最可靠；<strong>+Success</strong> 方差最大（对 122B Deepening 下 Vrf 反降 21.83 pp）。</li>
+            <li>Human-Written Skill 对 35B 产生 −9 pp 负效果，而 Trace2Skill 跨尺度均稳定正向。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- OOD results -->
+    <div class="columns is-centered" style="margin-top:1rem;">
+      <div class="column is-four-fifths">
+        <h3 class="title is-5">跨域泛化：数学推理与视觉问答</h3>
+        <div class="columns">
+          <div class="column is-half">
+            <table class="table is-narrow ablation-table is-fullwidth">
+              <thead>
+                <tr><th>DAPO-Math / AIME</th><th>122B D-Test</th><th>122B AIME</th><th>35B D-Test</th></tr>
+              </thead>
+              <tbody>
+                <tr style="color:#6b7280; font-size:0.8rem;"><td>No Skill（绝对值）</td><td>92.0</td><td>90.4</td><td>89.0</td></tr>
+                <tr class="our-method-row"><td>122B-Authored +Error</td><td><strong>+3.0</strong></td><td><strong>+2.9</strong></td><td><strong>+5.0</strong></td></tr>
+                <tr><td>35B-Authored +Error</td><td>+2.0</td><td>+1.3</td><td>+4.0</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="column is-half">
+            <table class="table is-narrow ablation-table is-fullwidth">
+              <thead>
+                <tr><th>DocVQA</th><th>122B ANLS</th><th>122B Acc</th><th>35B Acc</th></tr>
+              </thead>
+              <tbody>
+                <tr style="color:#6b7280; font-size:0.8rem;"><td>No Skill（绝对值）</td><td>0.6424</td><td>71.2%</td><td>75.2%</td></tr>
+                <tr class="our-method-row"><td>122B-Authored +Error</td><td><strong>+0.1639</strong></td><td><strong>+15.3 pp</strong></td><td>+13.6 pp</td></tr>
+                <tr><td>35B-Authored +Error</td><td>+0.0093</td><td>+0.9 pp</td><td class="drop">−6.2 pp</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p class="figure-caption">DocVQA 揭示重要发现：35B 在任务执行上领先 122B，但作为 Skill 创作者对 35B 自身却有害——<strong>任务执行能力与 Skill 创作能力（归纳推理）是独立的能力维度</strong>。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Analysis ========= -->
+<section class="section" id="analysis" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Analysis</h2>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">并行整合 vs. 顺序编辑</h3>
+          <table class="table is-narrow ablation-table is-fullwidth" style="margin-bottom:0.6rem;">
+            <thead>
+              <tr><th>条件</th><th>122B Vrf</th><th>122B Hard</th><th>35B Vrf</th><th>耗时</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Seq-B=4</td><td>59.00</td><td>20.63</td><td>26.17</td><td>~15 min</td></tr>
+              <tr><td>Seq-B=1</td><td>61.83</td><td>25.40</td><td>26.00</td><td>~60 min</td></tr>
+              <tr class="our-method-row"><td><strong>Parallel（ours）</strong></td><td><strong>65.83</strong></td><td><strong>27.43</strong></td><td><strong>27.00</strong></td><td><strong>~3 min</strong></td></tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc">
+            并行整合速度快 <strong>20×</strong>（vs Seq-B=1），所有指标均优。根本优势：所有 Patch 来自同一冻结初始 Skill，避免顺序漂移；Merge 同时对全量轨迹归纳，而非对最近更新归纳。
+          </p>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">vs. 检索记忆库（ReasoningBank）</h3>
+          <table class="table is-narrow ablation-table is-fullwidth" style="margin-bottom:0.6rem;">
+            <thead>
+              <tr><th>条件</th><th>122B Vrf</th><th>122B Soft</th><th>122B Hard</th><th>35B Vrf</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>ReasoningBank</td><td>56.00</td><td>40.10</td><td>21.30</td><td>20.50</td></tr>
+              <tr class="our-method-row"><td><strong>+Combined（ours）</strong></td><td><strong>69.83</strong></td><td><strong>47.17</strong></td><td><strong>29.53</strong></td><td><strong>29.67</strong></td></tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc">
+            +Combined 全面领先 ReasoningBank：+13.8 pp Vrf（122B）、+9.2 pp Vrf（35B）。蒸馏的 Skill 无需检索、直接集成系统提示、已经过冗余过滤和泛化抽象，无检索损耗。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns" style="margin-top:1rem;">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Agentic 根因分析 vs. 单次 LLM 调用</h3>
+          <table class="table is-narrow ablation-table is-fullwidth" style="margin-bottom:0.6rem;">
+            <thead>
+              <tr><th>条件</th><th>122B Deep. Avg</th><th>122B Creat. Avg</th><th>35B Creat. Avg</th></tr>
+            </thead>
+            <tbody>
+              <tr class="our-method-row"><td><strong>+Error Agentic</strong></td><td><strong>40.75</strong></td><td><strong>27.84</strong></td><td><strong>39.06</strong></td></tr>
+              <tr><td>+Error LLM</td><td>28.58</td><td>27.08</td><td>25.76</td></tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc">
+            Agentic 分析在 4 组中均领先（差距 +0.8 ~ +13.3 pp）。单次 LLM 调用无法访问文件和 GT，在 57% 含解析错误的案例中误将解析失败归为根因（Agentic 仅 14%），且存在幻觉失败原因的情况。
+          </p>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">学到的可泛化 SOP（322 条 Patch 分析）</h3>
+          <table class="table is-narrow ablation-table is-fullwidth" style="margin-bottom:0.6rem;">
+            <thead>
+              <tr><th>SOP 主题</th><th>来源 Patch 数</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>公式重算与写回验证（recalc.py）</td><td>178 / 323</td></tr>
+              <tr><td>工具选择：openpyxl 优于 pandas</td><td>177 / 323</td></tr>
+              <tr><td>显式读回验证（写入后重开文件）</td><td>138 / 323</td></tr>
+              <tr><td>结构编辑安全（降序删行、写前备份）</td><td>53 / 323</td></tr>
+              <tr><td>低频边缘案例 → references/ 子目录</td><td>13 个参考文件</td></tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc">
+            系统<strong>自动</strong>复现了人类专家分层撰写 SOP 的惯例：高频通用规则进 SKILL.md，特例进 references/，形成层次化 Skill 结构。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Takeaways ========= -->
+<section class="section" id="takeaways">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Takeaways</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h3 class="title is-5">核心结论</h3>
+          <ol>
+            <li><strong>经验可蒸馏为可迁移 Skill</strong>：轨迹局部知识经过并行归纳后，能跨模型尺度（35B 写的 Skill 帮助 122B 提升 +57.65 pp）和跨任务域（电子表格 Skill → WikiTQ）发挥作用。</li>
+            <li><strong>全局并行优于局部顺序</strong>：先积累广泛经验、再统一归纳（类似人类专家工作流），效果更好、速度快 20×。</li>
+            <li><strong>单一紧凑 Skill 优于检索记忆库</strong>：无需检索模块，推理时无检索损耗，归纳过滤后更抽象、更通用。</li>
+            <li><strong>开源小模型足够</strong>：35B 开源模型可完成完整的 Skill 演化流程，不依赖专有大模型。</li>
+            <li><strong>任务执行能力 ≠ Skill 创作能力</strong>：后者依赖对失败模式的归纳推理，是独立维度的能力。</li>
+          </ol>
+
+          <h3 class="title is-5">局限性</h3>
+          <ul>
+            <li>无法量化单条 Patch 的因果贡献，也无法追踪推理时各 Skill 段落的使用频率——这是下一步 Skill 自动裁剪与优化的关键入口。</li>
+            <li>当前 Skill 结构为声明式文档，尚不支持在执行轨迹反馈下的持续在线更新。</li>
+          </ul>
+
+          <h3 class="title is-5">对 Skill 自动沉淀方向的启发</h3>
+          <ol>
+            <li><strong>批量离线 > 在线单条</strong>：单条轨迹信噪比低，批量并行分析后归纳才能将"局部经验"升华为"通用规律"。</li>
+            <li><strong>Declarative Skill as Knowledge Artifact</strong>：将 Skill 定义为可读、可共享的声明式文档（非检索索引、非 LoRA 权重），使其天然可跨 Agent 框架移植。</li>
+            <li><strong>Agentic 根因分析是瓶颈</strong>：Error Analyst 的质量直接决定 Patch 的可迁移性，值得重点投入。</li>
+            <li><strong>层次化 Skill 结构</strong>：SKILL.md（通用 SOP）+ references/（特例）的两层设计值得在其他 Skill 系统中采纳。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Footer ========= -->
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <p><a href="../index.html">← 返回 Agent × Skill 论文列表</a></p>
+    <p style="margin-top:0.5rem; font-size:0.78rem; color:#9ca3af;">
+      Data from <a href="https://huggingface.co/papers/2603.25158" target="_blank">Hugging Face Papers</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

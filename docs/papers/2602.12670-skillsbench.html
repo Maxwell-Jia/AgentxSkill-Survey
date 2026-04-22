@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="SkillsBench: Benchmarking How Well Agent Skills Work Across Diverse Tasks — reading notes.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SkillsBench — Agent × Skill Survey</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+  <style>
+    .skillsbench {
+      font-variant: small-caps;
+      font-weight: bold;
+      background: linear-gradient(90deg, #0369a1 0%, #7c3aed 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========= Breadcrumb ========= -->
+<div class="breadcrumb-nav">
+  <div class="container is-max-desktop">
+    <a href="../index.html">Agent × Skill Survey</a>
+    <span class="sep">/</span>
+    <span>03 Infrastructure</span>
+    <span class="sep">/</span>
+    <span>SkillsBench</span>
+  </div>
+</div>
+
+
+<!-- ========= Hero ========= -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="skillsbench">SkillsBench</span>: Benchmarking How Well<br>
+            Agent Skills Work Across Diverse Tasks
+          </h1>
+          <p class="is-size-5" style="color:#555; margin-top:0.2rem; font-family:'Google Sans',sans-serif;">
+            Agent Skill 跨任务效能评测基准
+          </p>
+
+          <div class="is-size-6 publication-authors" style="margin-top:1rem;">
+            <span class="author-block">Xiangyi Li,</span>
+            <span class="author-block">Wenbo Chen,</span>
+            <span class="author-block">Yimin Liu,</span>
+            <span class="author-block">et al. (30+ 作者)</span>
+          </div>
+          <div class="is-size-7 publication-authors" style="margin-top:0.3rem; color:#555;">
+            <span class="author-block">BenchFlow</span>
+          </div>
+          <div class="is-size-7" style="margin-top:0.25rem; color:#888;">
+            2026-02-13
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2602.12670" target="_blank"
+                   class="external-link button is-normal is-rounded btn-arxiv">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/benchflow-ai/skillsbench" target="_blank"
+                   class="external-link button is-normal is-rounded btn-github">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/papers/2602.12670" target="_blank"
+                   class="external-link button is-normal is-rounded btn-hf">
+                  <span class="icon hf-icon">🤗</span>
+                  <span>HF Papers</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="../index.html"
+                   class="external-link button is-normal is-rounded btn-home">
+                  <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                  <span>Back</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Teaser figure ========= -->
+<section class="hero teaser" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="hero-body" style="padding-top:0;">
+      <div class="analysis-figure-wrap">
+        <img src="https://arxiv.org/html/2602.12670v1/x1.png" alt="Figure 1: 三条件下各配置的 pass rate" loading="lazy">
+      </div>
+      <p class="figure-caption has-text-centered">
+        <strong>Figure 1.</strong> Agent 架构堆栈与 84 个任务上 7 种配置的通过率对比。Curated Skill（米色）平均提升 <strong>+16.2pp</strong>；Self-generated Skill（琥珀色）效果近零甚至为负——揭示了"自动生成 Skill"路径的根本局限。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Abstract ========= -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Agent Skills 生态系统正快速增长（GitHub / Claude Code 生态合计 47K+ Skills），然而该领域缺乏系统化评测框架——既不清楚 Skill 是否真正帮助 agent 完成任务，也不清楚哪些设计决策（指令结构、资源数量、细节程度）驱动了性能提升。现有 Agent benchmark（SWE-Bench、WebArena 等）只评测"模型无辅助能力"，而非"Skill 的边际贡献"。
+          </p>
+          <p>
+            <span class="skillsbench">SkillsBench</span> 构建了首个<strong>以 Skill 为一等公民的评测框架</strong>：在 105 位贡献者提交的 322 个候选中精选 84 个任务，覆盖 11 个领域，采用三条件（无 Skill / Curated Skill / Self-generated Skill）× 7 个 LLM-Agent 组合（含 Claude Code、Gemini CLI、Codex CLI 搭配 GPT-5.2、Claude Opus/Sonnet/Haiku 4.5、Gemini 3）进行评测，生成 7,308 条轨迹。核心发现：Curated Skill 平均带来 <strong>+16.2pp</strong> 通过率提升，而 Self-generated Skill 平均下降 <strong>–1.3pp</strong>，揭示了自动 Skill 合成的关键失效机制。
+          </p>
+        </div>
+
+        <div class="key-insight">
+          <div class="label">Key Insight</div>
+          <p><strong>Skill 的价值高度依赖于质量与设计</strong>，而非数量——精选的 2–3 个精简 Skill 可带来 +18.6pp 提升，而让模型自行生成 Skill 平均无效（–1.3pp）。Skill 效能并非来自更多上下文，而来自结构化的程序性指导。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Framework ========= -->
+<section class="section" id="framework" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Framework Overview</h2>
+        <div class="content has-text-justified">
+          <p>
+            <span class="skillsbench">SkillsBench</span> 定义 Skill 为满足四项标准的结构化文件包（<code>SKILL.md</code> + 可选 <code>/scripts</code> / <code>/references</code>），并搭建覆盖"数据聚合 → 质量过滤 → 三条件评测执行"的完整 pipeline，以 Normalized Gain $g = (\text{pass}_\text{skill} - \text{pass}_\text{vanilla}) / (1 - \text{pass}_\text{vanilla})$ 作为核心效能指标。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2602.12670v1/x2.png" alt="Figure 2: Benchmark 三阶段 pipeline" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 2.</strong> 数据聚合（47.15K 个 Skill 来自开源 + Claude Code 生态 + 企业合作）→ 质量过滤（自动检查 + Leakage Audit + 人工审查）→ 评测执行（三条件 × 7 配置 × 5 次重复）。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#0369a1;">Skill 定义四标准</h3>
+          <p class="analysis-card-desc">
+            <strong>程序内容</strong>（包含"如何做"的流程 / SOP）、<strong>任务类通用性</strong>（面向一类问题而非单例）、<strong>结构化组件</strong>（<code>SKILL.md</code> + 可选资源）、<strong>可移植性</strong>（文件系统形式，易于版本控制）。显式排除：系统提示词 / Few-shot 例 / RAG 检索 / 工具文档。
+          </p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#7c3aed;">三条件评测协议</h3>
+          <p class="analysis-card-desc">
+            <strong>No Skill</strong>：仅提供 instruction.md，环境中无 Skill。<br>
+            <strong>Curated Skill</strong>：完整的 <code>environment/skills/</code> 目录（代码片、例子、资源）。<br>
+            <strong>Self-Generated Skill</strong>：无预设 Skill，要求 agent 先自行生成程序知识再求解。
+          </p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#0f766e;">质量保证机制</h3>
+          <p class="analysis-card-desc">
+            <strong>自动化检查</strong>：结构验证 + Oracle 执行（参考解 100% 通过率）+ AI 检测（GPTZero）。<br>
+            <strong>Leakage Audit</strong>：CI 中 Claude Agent 检测 Skill 是否含任务特定解法（任务标识符、精确命令序列等）。<br>
+            <strong>人工审查</strong>：5 项标准多轮核查，录取率 26.7%。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Results ========= -->
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Results</h2>
+        <p style="color:#555; margin-bottom:0.5rem;">
+          7 个 LLM-Agent 配置 × 3 条件（No Skill / Curated Skill / Self-Generated Skill），84 个任务，5 次重复。
+        </p>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="table is-striped is-fullwidth results-table">
+        <thead>
+          <tr>
+            <th>Harness</th><th>Model</th>
+            <th>No Skill (%)</th>
+            <th>Curated Skill (%)</th>
+            <th>增益 (pp)</th>
+            <th>Self-Gen Skill (%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Claude Code</td><td>Opus 4.5</td><td>25.1</td><td>48.4</td><td>+23.3</td><td>~25</td></tr>
+          <tr class="our-method-row"><td>Claude Code</td><td>Opus 4.6</td><td>34.8</td><td><strong>48.8</strong></td><td>+13.9</td><td>36.2</td></tr>
+          <tr><td>Claude Code</td><td>Sonnet 4.5</td><td>~28</td><td>~43</td><td>~+15</td><td>~28</td></tr>
+          <tr><td>Claude Code</td><td>Haiku 4.5</td><td>11.0</td><td>27.7</td><td>+16.7</td><td>~11</td></tr>
+          <tr class="our-method-row"><td>Gemini CLI</td><td>Gemini 3 Flash</td><td>33.8</td><td><strong>48.7</strong></td><td>+14.9</td><td>~33</td></tr>
+          <tr><td>Gemini CLI</td><td>Gemini 3 Pro</td><td>~35</td><td>~52</td><td>~+17</td><td>~35</td></tr>
+          <tr><td>Codex CLI</td><td>GPT-5.2</td><td>~44.7</td><td>~50</td><td>~+5</td><td>39.1</td></tr>
+          <tr><td colspan="2"><strong>平均</strong></td><td><strong>31.2</strong></td><td><strong>47.4</strong></td><td><strong>+16.2</strong></td><td><strong>~29.9 (–1.3)</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="analysis-figure-wrap" style="margin-top:1.5rem;">
+          <img src="https://arxiv.org/html/2602.12670v1/x4.png" alt="Figure 4: Pareto 前沿（Pass rate vs. 成本）" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 4.</strong> Skill 将 Pareto 前沿上移。Gemini 3 Flash + Skill 以 4× 更低单 token 成本实现 48.7% 通过率，总成本比 Claude Opus 4.5 + Skill 便宜 44%（$0.55 vs. $0.98/任务）。
+        </p>
+        <div class="content" style="margin-top:1rem;">
+          <ul>
+            <li>Curated Skill 平均增益 <strong>+16.2pp</strong>，范围 +13.6pp（Gemini Flash）至 +23.3pp（Opus 4.5）。</li>
+            <li>Self-generated Skill 平均 <strong>–1.3pp</strong>；GPT-5.2 最差达 –5.6pp。</li>
+            <li>Haiku 4.5 + Skill（27.7%）接近 Opus 4.5 无 Skill（25.1%）——<em>Skill 可部分弥补模型容量差距</em>。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Analysis ========= -->
+<section class="section" id="analysis" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Analysis</h2>
+      </div>
+    </div>
+
+    <!-- Domain analysis -->
+    <div class="columns">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">领域增益差异</h3>
+          <table class="table is-narrow ablation-table is-fullwidth">
+            <thead><tr><th>领域</th><th>增益 (pp)</th><th>特征</th></tr></thead>
+            <tbody>
+              <tr class="our-method-row"><td><strong>Healthcare</strong></td><td><strong>+51.9</strong></td><td>预训练覆盖极少</td></tr>
+              <tr class="our-method-row"><td><strong>Manufacturing</strong></td><td><strong>+41.9</strong></td><td>工业流程标准化</td></tr>
+              <tr><td>Finance</td><td>中等</td><td>已有预训练知识</td></tr>
+              <tr><td>Software Eng.</td><td>+4.5</td><td>模型已掌握开发流程</td></tr>
+              <tr><td>Mathematics</td><td>+6.0</td><td>覆盖充分</td></tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc" style="margin-top:0.7rem;">
+            <strong>规律</strong>：预训练覆盖不足的专业领域（临床数据协调、工业制造流程）收益最大；模型已掌握常见范式的领域（数学、软工）收益微弱。
+          </p>
+        </div>
+      </div>
+
+      <!-- Skill design factors -->
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Skill 设计因子消融</h3>
+          <table class="table is-narrow ablation-table is-fullwidth">
+            <thead><tr><th>因子</th><th>配置</th><th>增益 (pp)</th></tr></thead>
+            <tbody>
+              <tr><td rowspan="3"><strong>Skill 数量</strong></td><td>1 个</td><td>+13.2</td></tr>
+              <tr class="our-method-row"><td><strong>2–3 个</strong></td><td><strong>+18.6</strong></td></tr>
+              <tr><td>4+ 个</td><td>+5.9</td></tr>
+              <tr><td rowspan="3"><strong>复杂度</strong></td><td>Compact（简略）</td><td>+17.1</td></tr>
+              <tr class="our-method-row"><td><strong>Detailed（精简+例）</strong></td><td><strong>+18.8</strong></td></tr>
+              <tr><td class="drop">Comprehensive（详尽）</td><td class="drop">–2.9</td></tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc" style="margin-top:0.7rem;">
+            过多 Skill 引入认知开销或冲突指导；冗长文档消耗上下文预算，关键信息反而难以提取。模型需要<strong>专注的程序指导</strong>而非穷举文档。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Harness + failure modes -->
+    <div class="columns">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Harness 差异</h3>
+          <p class="analysis-card-desc">
+            <strong>Claude Code</strong>：Skill 利用率最高，所有 Claude 模型一致受益（+13.9pp 至 +23.3pp）。<br>
+            <strong>Gemini CLI</strong>：原始性能最高（Flash 48.7%），改进 +13.6pp 至 +17.4pp。<br>
+            <strong>Codex CLI</strong>：竞争力强（~44.7%），但<em>频繁忽视</em> Skill——agent 常承认 Skill 存在却独立实现解决方案，说明 <strong>Skill 集成设计是效能瓶颈</strong>，与 Skill 质量同等重要。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Self-Generated Skill 失效机制</h3>
+          <p class="analysis-card-desc">
+            轨迹分析揭示两种失败模式：<br>
+            1. <strong>程序不精确</strong>：模型识别到需要领域知识，但生成内容过于泛化（如"用 pandas 处理数据"而无具体 API 模式）。<br>
+            2. <strong>需求盲区</strong>：高领域知识任务（制造业、金融）中，模型未意识到需要专用 Skill，直接用通用方法，导致 GPT-5.2 最终 –5.6pp。<br>
+            → Self-generated 实验同时控制了上下文长度，说明 <em>失效根源是结构而非长度</em>。
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Takeaways ========= -->
+<section class="section" id="takeaways">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Takeaways</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h3 class="title is-5">核心结论</h3>
+          <ol>
+            <li>精心策划的 Curated Skill 平均带来 <strong>+16.2pp</strong> 通过率提升，在 Healthcare 等专业领域可高达 +51.9pp。</li>
+            <li>Self-generated Skill 平均 –1.3pp，打破"让 LLM 自动生成 Skill"的直觉假设——Skill 合成需要人工演示或多轨迹归纳。</li>
+            <li><strong>2–3 个精简 Skill（+18.8pp）</strong> 优于 4+ 个或冗长文档（–2.9pp）；聚焦的程序指导比穷举文档更有效。</li>
+            <li>小模型 + Skill 可接近大模型无 Skill 的水平（Haiku 4.5 + Skill 27.7% ≈ Opus 4.5 无 Skill 25.1%）。</li>
+            <li>Skill 效能不仅取决于质量，还依赖 agent harness 的 Skill 集成能力——这是常被忽视的实现瓶颈。</li>
+          </ol>
+
+          <h3 class="title is-5">局限性</h3>
+          <ul>
+            <li><strong>评测域限制</strong>：聚焦终端命令行 / 容器化任务，结论可能不直接转移至 GUI agent、多智能体协作或超长期任务。</li>
+            <li><strong>因果属性归因</strong>：Skill 注入增加上下文长度；虽然 Self-generated 实验部分控制了长度，仍需更强的匹配基线。</li>
+            <li><strong>覆盖范围</strong>：多模态 / 视觉-语言 agent 在 GUI 环境下的 Skill 评估仍是空白。</li>
+          </ul>
+
+          <h3 class="title is-5">对后续研究的启发</h3>
+          <ol>
+            <li><strong>三条件对比是必要的评测范式</strong>——只比较"有 Skill vs. 无 Skill"无法区分结构价值与上下文长度效应。</li>
+            <li>Skill 合成需要：人工演示引导 / 从多成功轨迹归纳 / 结合执行反馈迭代细化，单纯 LLM 提示不够。</li>
+            <li>Leakage Audit 与 Oracle 检查是 Skill benchmark 的必要基础设施，不可省略。</li>
+            <li>领域异质性强，通用 Skill 合成算法须考虑 per-domain / per-task-family 适配。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Footer ========= -->
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <p><a href="../index.html">← 返回 Agent × Skill 论文列表</a></p>
+    <p style="margin-top:0.5rem; font-size:0.78rem; color:#9ca3af;">
+      Data from <a href="https://huggingface.co/papers/2602.12670" target="_blank">Hugging Face Papers</a>
+      · 项目页 <a href="https://skillsbench.ai/" target="_blank">skillsbench.ai</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

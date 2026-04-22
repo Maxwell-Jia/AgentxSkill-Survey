@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="How Well Do Agentic Skills Work in the Wild — reading notes.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skill Usage in the Wild — Agent × Skill Survey</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+  <style>
+    /* Brand gradient for this paper */
+    .skillwild {
+      font-variant: small-caps;
+      font-weight: bold;
+      background: linear-gradient(90deg, #0369a1 0%, #16a34a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Warning/danger callout for the "degradation gap" */
+    .gap-callout {
+      border-left: 4px solid #dc2626;
+      background: #fef2f2;
+      padding: 1.1rem 1.3rem;
+      border-radius: 0 10px 10px 0;
+      margin: 1rem 0 1.5rem;
+    }
+    .gap-callout .label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #991b1b;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .gap-callout p { margin: 0; font-size: 0.98rem; }
+
+    /* Progressive condition steps */
+    .condition-steps {
+      counter-reset: step-counter;
+      list-style: none;
+      padding: 0;
+    }
+    .condition-steps li {
+      counter-increment: step-counter;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+      padding: 0.8rem 0;
+      border-bottom: 1px dashed #e5e7eb;
+    }
+    .condition-steps li:last-child { border-bottom: none; }
+    .condition-steps li::before {
+      content: counter(step-counter);
+      flex-shrink: 0;
+      width: 1.8rem;
+      height: 1.8rem;
+      background: #0369a1;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0.05rem;
+    }
+    .condition-steps li.ideal::before  { background: #16a34a; }
+    .condition-steps li.baseline::before { background: #6b7280; }
+    .condition-steps li.real::before   { background: #d97706; }
+    .condition-steps li.hardest::before { background: #dc2626; }
+  </style>
+</head>
+<body>
+
+<!-- ========= Breadcrumb ========= -->
+<div class="breadcrumb-nav">
+  <div class="container is-max-desktop">
+    <a href="../index.html">Agent × Skill Survey</a>
+    <span class="sep">/</span>
+    <span>03 Infrastructure</span>
+    <span class="sep">/</span>
+    <span>Skill Usage in the Wild</span>
+  </div>
+</div>
+
+
+<!-- ========= Hero ========= -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            How Well Do <span class="skillwild">Agentic Skills</span><br>
+            Work in the Wild?
+          </h1>
+          <p class="is-size-5" style="color:#555; margin-top:0.2rem; font-family:'Google Sans',sans-serif;">
+            真实场景下 Agent Skill 的可用性评测
+          </p>
+
+          <div class="is-size-6 publication-authors" style="margin-top:1rem;">
+            <span class="author-block">Yujian Liu<sup>1</sup>,</span>
+            <span class="author-block">Jiabao Ji<sup>2</sup>,</span>
+            <span class="author-block">Li An<sup>1</sup>,</span>
+            <span class="author-block">Tommi Jaakkola<sup>2</sup>,</span>
+            <span class="author-block">Yang Zhang<sup>3</sup>,</span>
+            <span class="author-block">Shiyu Chang<sup>1</sup></span>
+          </div>
+          <div class="is-size-7 publication-authors" style="margin-top:0.3rem; color:#555;">
+            <span class="author-block"><sup>1</sup>UCSB (Shiyu Chang Lab)</span>
+            <span class="author-block"><sup>2</sup>MIT CSAIL</span>
+            <span class="author-block"><sup>3</sup>MIT-IBM Watson AI Lab</span>
+          </div>
+          <div class="is-size-7" style="margin-top:0.25rem; color:#888;">
+            arXiv 2604.04323 · 2026-04-06
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2604.04323" target="_blank"
+                   class="external-link button is-normal is-rounded btn-arxiv">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/UCSB-NLP-Chang/Skill-Usage" target="_blank"
+                   class="external-link button is-normal is-rounded btn-github">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/papers/2604.04323" target="_blank"
+                   class="external-link button is-normal is-rounded btn-hf">
+                  <span class="icon hf-icon">🤗</span>
+                  <span>HF Papers</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="../index.html"
+                   class="external-link button is-normal is-rounded btn-home">
+                  <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                  <span>Back</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Teaser figure ========= -->
+<section class="hero teaser" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="hero-body" style="padding-top:0;">
+      <div class="analysis-figure-wrap">
+        <img src="https://arxiv.org/html/2604.04323v1/x1.png"
+             alt="Figure 1: 评测协议流程图，展示从 handcrafted 到 retrieved 到 no-skill 的性能梯度下降"
+             loading="lazy">
+      </div>
+      <p class="figure-caption has-text-centered">
+        <strong>Figure 1.</strong> 评测协议流程图：从<strong>手工精选（handcrafted）</strong>的理想上界，到从 34k 现实 skill 库<strong>检索</strong>的真实条件，再到<strong>无 skill 基线</strong>，性能逐阶梯下降。核心发现是：检索场景下的 skill 收益远小于学术论文所呈现的理想收益。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Abstract + Key Insight ========= -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            现有 Skill Augmented Agents 论文通常将<strong>手工精选、任务专属</strong>的 skill 直接灌给 LLM，暗含 skill 总是可得且完美匹配的假设。然而现实部署中，Agent 需要从涵盖数万个通用 skill 的开放 skill 库（如 skillhub.club、skills.sh）中<strong>自行检索</strong>，检索到的 skill 质量参差、不够精炼。这一"理想 vs 现实"的鸿沟导致现有 benchmark 系统性地<strong>高估</strong>了 skill 的实际收益。
+          </p>
+          <p>
+            本文提出第一个<strong>渐进式（progressive）</strong>的 skill 评测框架，覆盖从理想到现实的四档对照条件，系统量化 skill 在各约束下的真实效能。在 SkillsBench 和 Terminal-Bench 2.0 两个 benchmark 上，作者发现仅检索不精炼时性能改进微乎其微（35.4% → 38.4%），而引入<strong>Query-Specific Refinement</strong>（任务感知精炼）后可恢复到 48.2%，在 Terminal-Bench 2.0 上更带来 +7.8% 的稳定收益。
+          </p>
+        </div>
+
+        <div class="gap-callout">
+          <div class="label">核心发现：Skill Degradation Gap</div>
+          <p>手工精选 skill 下通过率 <strong>55.4%</strong>；从 34k 库检索后无精炼仅 <strong>38.4%</strong>，仅比无 skill 基线（35.4%）高 3 个百分点。<em>现实检索场景下 skill 的实际收益大幅缩水。</em></p>
+        </div>
+
+        <div class="key-insight">
+          <div class="label">Key Insight</div>
+          <p><strong>Skill 的收益是脆弱的（fragile）</strong>——检索漂移（retrieval drift）与 skill 不适配（mismatch）两个失效相互叠加，使得"给 Agent 一堆 skill"不如"精心设计精炼流程"。Query-Specific Refinement 是弥合理想-现实差距的关键杠杆。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Framework ========= -->
+<section class="section" id="framework" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Framework Overview</h2>
+        <div class="content has-text-justified">
+          <p>
+            论文设计了<strong>四档渐进式对照条件</strong>，从最简单（理想上界）到最现实（Agent 既要找 skill 又要用 skill），系统拆解 skill 在不同约束下的失效来源。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Four progressive conditions -->
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <ol class="condition-steps">
+          <li class="ideal">
+            <div>
+              <strong>Curated Skill + Task-Specific（理想上界）</strong><br>
+              <span style="font-size:0.88rem; color:#444;">直接给定手工选中的、针对该任务的 skill。仅用于估计上界，真实部署不可得。通过率约 55.4%。</span>
+            </div>
+          </li>
+          <li class="baseline">
+            <div>
+              <strong>No Skill Baseline（下界）</strong><br>
+              <span style="font-size:0.88rem; color:#444;">纯 LLM 无 skill 辅助。Claude Opus 4.6：35.4%；Claude Haiku：28.1%；GPT-3.5：22.0%。</span>
+            </div>
+          </li>
+          <li class="real">
+            <div>
+              <strong>Retrieved Skill from 34k Collection（现实条件 1）</strong><br>
+              <span style="font-size:0.88rem; color:#444;">Agent 从包含 34k 真实 skill 的开源 skill hub 中检索后使用，无精炼。Claude Opus 4.6：38.4%，仅比无 skill 高 3 个百分点。</span>
+            </div>
+          </li>
+          <li class="hardest">
+            <div>
+              <strong>Agent 自主检索 + 自主使用（最难条件 2）</strong><br>
+              <span style="font-size:0.88rem; color:#444;">Agent 既要自行决定是否检索 skill、如何检索，又要自行决定是否使用。即使有相关 skill 可用，Agent 也只在约 49% 的情况下主动加载。</span>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Three failure modes -->
+    <div class="columns is-centered" style="margin-top:1.5rem;">
+      <div class="column">
+        <h3 class="title is-5 has-text-centered" style="margin-bottom:0.8rem;">三类链式失效的诊断</h3>
+        <p class="has-text-centered" style="font-size:0.9rem; color:#555; margin-bottom:1.2rem;">消融实验显示性能下降来自三个阶段的链式缺陷，每一环都会进一步折损收益。</p>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#0369a1;">Skill 选择失效</h3>
+          <p class="analysis-card-desc">
+            Agent 即使面对相关 skill，也只在 <strong>49%</strong> 的情况下主动加载。<br>
+            原因：弱模型难以评估 skill 的相关性；通用 skill 标题与任务描述语义距离较大，导致 Agent 错误判断"无 skill 可用"。
+          </p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#d97706;">Skill 检索失效</h3>
+          <p class="analysis-card-desc">
+            从 34k 库中检索相关 skill 的成功率仅 <strong>65.5% Recall@5</strong>（Agentic Hybrid Search）；纯语义检索仅 38.1% Recall@3。<br>
+            迭代查询 + 候选评估（Agentic 主动式检索）显著优于直接检索，但仍有大量漏召。
+          </p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#dc2626;">Skill 适配失效</h3>
+          <p class="analysis-card-desc">
+            通用 skill 往往误导 Agent 而非帮助（<strong>negative transfer</strong>）：弱模型（GPT-3.5、Claude Haiku）在面对不适配 skill 时性能反而下降；加入检索 skill 后 GPT-3.5 通过率从 22.0% 降至不稳定。<br>
+            强模型（Claude Opus 4.6）对无关内容的抗性更强。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Refinement strategies -->
+    <div class="columns is-centered" style="margin-top:1.5rem;">
+      <div class="column">
+        <h3 class="title is-5 has-text-centered" style="margin-bottom:0.8rem;">两类精炼策略</h3>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#16a34a;">Query-Specific Refinement（任务感知精炼）</h3>
+          <p class="analysis-card-desc">
+            Agent 基于当前任务描述，动态修改 / 筛选 skill 内容，使通用 skill 定制化适配当前查询。<br>
+            效果最强：Claude Haiku 从 40.1% 恢复到 <strong>48.2%</strong>；Terminal-Bench 2.0 上 Claude Opus 4.6 从 57.7% 提升到 <strong>65.5%</strong>（+7.8%）。<br>
+            <strong>前提</strong>：初始检索的 skill 质量足够好（Coverage Score ≥ 3.83）。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#6b7280;">Query-Agnostic Refinement（通用精炼）</h3>
+          <p class="analysis-card-desc">
+            对所有 skill 统一应用精炼规则（如压缩、简化），不感知具体查询。<br>
+            效果有限：约 <strong>+2%</strong> 改进。<br>
+            作用：当初始 skill 质量不足时作为兜底，但当 Coverage Score &lt; 3.0 时，精炼也无法挽救。<br>
+            结论：<em>精炼本身不生成知识，只是"乘以质量系数"。</em>
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Results ========= -->
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Results</h2>
+        <p style="color:#555; margin-bottom:0.2rem;">
+          Pass Rate（通过率）对比。评测 benchmark：SkillsBench 与 Terminal-Bench 2.0。
+        </p>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="table is-striped is-fullwidth results-table">
+        <thead>
+          <tr>
+            <th>条件</th>
+            <th>Claude Opus 4.6</th>
+            <th>Claude Haiku</th>
+            <th>GPT-3.5</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>No Skill Baseline（下界）</td>
+            <td>35.4%</td>
+            <td>28.1%</td>
+            <td>22.0%</td>
+          </tr>
+          <tr>
+            <td>Retrieved Skill（无精炼）</td>
+            <td>38.4%</td>
+            <td>40.1%</td>
+            <td>24.5%</td>
+          </tr>
+          <tr class="our-method-row">
+            <td><strong>Retrieved + Query-Specific Refinement</strong></td>
+            <td><strong>48.2%</strong></td>
+            <td><strong>48.2%</strong></td>
+            <td><strong>35.2%</strong></td>
+          </tr>
+          <tr>
+            <td>Terminal-Bench 2.0（无精炼）</td>
+            <td>57.7%</td>
+            <td>—</td>
+            <td>—</td>
+          </tr>
+          <tr class="our-method-row">
+            <td><strong>Terminal-Bench 2.0（+精炼）</strong></td>
+            <td><strong>65.5%</strong></td>
+            <td>—</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <ul>
+            <li>仅检索不精炼时，Claude Haiku 虽从 28.1% 升至 40.1%，但 GPT-3.5 提升微弱（22.0% → 24.5%），<strong>弱模型更容易被无关 skill 干扰</strong>。</li>
+            <li>Query-Specific Refinement 是关键"乘数"：三个模型均恢复约 <strong>+5~13 个百分点</strong>。</li>
+            <li>Terminal-Bench 2.0 上精炼带来 <strong>+7.8%</strong> 的稳定收益，说明终端交互等复杂场景中精炼同样有效。</li>
+            <li>当 Coverage Score（skill 与任务的相关度）&lt; 3.0 时，<em>任何精炼策略都无法挽救</em>——检索质量是硬门槛。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Analysis ========= -->
+<section class="section" id="analysis" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Analysis</h2>
+      </div>
+    </div>
+
+    <!-- Retrieval comparison figure -->
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2604.04323v1/x2.png"
+               alt="Figure 2: 按 skill 类别的性能分解与检索方法对比"
+               loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 2.</strong> 按 skill 类别的性能分解（code / knowledge / tool 等）以及检索方法对比结果。Code-related skills 因代码相似性易被向量模型捕捉而检索精度最高；Knowledge skills 检索困难，需要更精细的语义理解。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns" style="margin-top:1.2rem;">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">检索策略对比</h3>
+          <table class="table is-narrow ablation-table is-fullwidth" style="margin-top:0.5rem;">
+            <thead>
+              <tr><th>检索策略</th><th>Recall@3</th><th>Recall@5</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Direct Semantic Search</td><td>38.1%</td><td class="drop">—</td></tr>
+              <tr class="our-method-row"><td><strong>Agentic Hybrid Search</strong></td><td><strong>—</strong></td><td><strong>65.5%</strong></td></tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc" style="margin-top:0.7rem;">
+            Agentic Hybrid Search（Agent 自己尝试多个查询、评估候选）相比直接语义检索有显著提升。<strong>Agent 的主动迭代式查询是 skill 检索的关键能力</strong>，单纯依赖 BM25 或向量检索在 34k 规模上已不足。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Coverage Score 与精炼效果</h3>
+          <p class="analysis-card-desc">
+            Coverage Score 衡量检索到的 skill 与当前任务的相关程度（满分 5 分）：<br><br>
+            <strong>Coverage ≥ 3.83</strong>：Query-Specific Refinement 能有效恢复性能，弥合理想-现实 gap。<br><br>
+            <strong>Coverage &lt; 3.0</strong>：精炼无法挽救——<em>初始 skill 质量是精炼的硬前提</em>，精炼不创造知识，只放大已有 skill 的价值。<br><br>
+            结论：<strong>精炼策略与检索质量必须协同设计</strong>，二者缺一则整体 pipeline 效能大打折扣。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns" style="margin-top:0.8rem;">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Skill 类别差异</h3>
+          <p class="analysis-card-desc">
+            <strong>Code-related skills</strong>：检索精度最高，因为代码相似性易被向量模型捕捉，函数名 / API 名与查询词汇匹配度高。<br><br>
+            <strong>Knowledge skills</strong>：检索困难，需要精细的语义理解；通用知识库的 skill 与具体任务往往存在语义漂移。<br><br>
+            <strong>Tool use skills</strong>：介于两者之间，工具 API 文档的结构化程度影响检索效果。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">模型能力的二阶效应</h3>
+          <p class="analysis-card-desc">
+            <strong>强模型（Claude Opus 4.6）</strong>：对无关 skill 的抗性强，能更好地"忽视"不适配内容，negative transfer 现象不明显。<br><br>
+            <strong>弱模型（GPT-3.5、Claude Haiku）</strong>：面对不适配 skill 时性能明显下降，甚至低于无 skill 基线。弱模型对干扰内容更敏感，skill 管理不能一刀切。<br><br>
+            启发：<em>在多模型部署场景下，Skill 的筛选门槛应按模型能力动态调整。</em>
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Takeaways ========= -->
+<section class="section" id="takeaways">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Takeaways</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h3 class="title is-5">核心结论</h3>
+          <ol>
+            <li><strong>Skill 收益是脆弱的（fragile）</strong>：现实约束（检索、不精炼）下，skill 的优势大幅缩水，弱模型甚至为负收益。</li>
+            <li><strong>检索 + 精炼是必要的组合</strong>：单纯给 LLM 一堆 skill 不如精心设计精炼流程；Query-Specific Refinement 是关键乘数。</li>
+            <li><strong>现有 benchmark 高估了 skill 的实际效能</strong>：许多 skill-augmented 方法在学术评测中表现优异，真实部署时会显著退化。</li>
+            <li><strong>Agentic 主动检索优于被动检索</strong>：Agent 迭代式查询 + 候选评估（Agentic Hybrid Search）显著优于直接语义检索。</li>
+          </ol>
+
+          <h3 class="title is-5">局限性</h3>
+          <ul>
+            <li>评测聚焦于 SkillsBench 和 Terminal-Bench 2.0，开放性更强的场景（如 web agent、embodied agent）覆盖不足。</li>
+            <li>精炼策略需要 LLM 参与，引入额外推理开销；尚未分析精炼成本与收益的权衡曲线。</li>
+            <li>34k skill 池来自特定开源 hub，不代表所有部署场景中的 skill 分布。</li>
+          </ul>
+
+          <h3 class="title is-5">对综述 / 后续研究的启发</h3>
+          <ol>
+            <li><strong>未来 Skill 论文应包含三档对照</strong>：手工精选 / 检索无精炼 / 检索+精炼，而非只秀手工版本。建议新增"Skill Degradation Ratio"指标衡量理想-现实 gap。</li>
+            <li><strong>Skill 质量控制与精炼机制缺一不可</strong>：不能只是累积 skill 数量，需要同步建立质量控制和精炼 pipeline。</li>
+            <li><strong>检索与评测应联动设计</strong>：现有向量检索在 34k 规模上已失效，需要更强的检索模型或更聪明的 Agentic hybrid 策略。</li>
+            <li><strong>Skill 管理生态的三层架构</strong>：（a）高质量 skill 池（非随意累积）；（b）智能检索（Agentic Search）；（c）自动精炼（Query-Aware Adaptation）——三层缺一则收益大幅折扣。</li>
+            <li><strong>与 GoS（Graph of Skills）的关联</strong>：本文揭示的检索漂移问题，可通过依赖感知图检索（GoS）缓解——结构化依赖建模有助于恢复通用 skill 库中的相关候选。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Footer ========= -->
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <p><a href="../index.html">← 返回 Agent × Skill 论文列表</a></p>
+    <p style="margin-top:0.5rem; font-size:0.78rem; color:#9ca3af;">
+      Data from <a href="https://huggingface.co/papers/2604.04323" target="_blank">Hugging Face Papers</a>
+      · Code: <a href="https://github.com/UCSB-NLP-Chang/Skill-Usage" target="_blank">UCSB-NLP-Chang/Skill-Usage</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

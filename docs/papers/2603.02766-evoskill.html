@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="EvoSkill: Automated Skill Discovery for Multi-Agent Systems — reading notes.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EvoSkill — Agent × Skill Survey</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+  <style>
+    /* EvoSkill brand: 进化绿 → 深蓝紫 */
+    .evoskill {
+      font-variant: small-caps;
+      font-weight: bold;
+      background: linear-gradient(90deg, #16a34a 0%, #4f46e5 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    /* Key insight color override for evoskill accent */
+    .key-insight-evo {
+      border-left: 4px solid #16a34a;
+      background: #f0fdf4;
+      padding: 1.1rem 1.3rem;
+      border-radius: 0 10px 10px 0;
+      margin: 1rem 0 1.5rem;
+    }
+    .key-insight-evo .label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #15803d;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .key-insight-evo p { margin: 0; font-size: 0.98rem; }
+  </style>
+</head>
+<body>
+
+<!-- ========= Breadcrumb ========= -->
+<div class="breadcrumb-nav">
+  <div class="container is-max-desktop">
+    <a href="../index.html">Agent × Skill Survey</a>
+    <span class="sep">/</span>
+    <span>01 Synthesis</span>
+    <span class="sep">/</span>
+    <span>EvoSkill</span>
+  </div>
+</div>
+
+
+<!-- ========= Hero ========= -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="evoskill">EvoSkill</span>: Automated Skill Discovery<br>
+            for Multi-Agent Systems
+          </h1>
+          <p class="is-size-5" style="color:#555; margin-top:0.2rem; font-family:'Google Sans',sans-serif;">
+            面向多智能体系统的自动化技能发现框架
+          </p>
+
+          <div class="is-size-6 publication-authors" style="margin-top:1rem;">
+            <span class="author-block">Salaheddin Alzubi<sup>1</sup>,</span>
+            <span class="author-block">Noah Provenzano<sup>1</sup>,</span>
+            <span class="author-block">Jaydon Bingham<sup>1</sup>,</span>
+            <span class="author-block">Weiyuan Chen<sup>1</sup>,</span>
+            <span class="author-block">Tu Vu<sup>1,2</sup></span>
+          </div>
+          <div class="is-size-7 publication-authors" style="margin-top:0.3rem; color:#555;">
+            <span class="author-block"><sup>1</sup>Sentient</span>
+            <span class="author-block"><sup>2</sup>Virginia Tech</span>
+          </div>
+          <div class="is-size-7" style="margin-top:0.25rem; color:#888;">
+            arXiv preprint · 2026-03-04
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2603.02766" target="_blank"
+                   class="external-link button is-normal is-rounded btn-arxiv">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/sentient-agi/EvoSkill" target="_blank"
+                   class="external-link button is-normal is-rounded btn-github">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/papers/2603.02766" target="_blank"
+                   class="external-link button is-normal is-rounded btn-hf">
+                  <span class="icon hf-icon">🤗</span>
+                  <span>HF Papers</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="../index.html"
+                   class="external-link button is-normal is-rounded btn-home">
+                  <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                  <span>Back</span>
+                </a>
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Teaser figure ========= -->
+<section class="hero teaser" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="hero-body" style="padding-top:0;">
+      <div class="analysis-figure-wrap">
+        <img src="https://arxiv.org/html/2603.02766v1/x2.png" alt="EvoSkill iterative loop overview" loading="lazy">
+      </div>
+      <p class="figure-caption has-text-centered">
+        <strong>Figure 1.</strong> <span class="evoskill">EvoSkill</span> 迭代循环总览。三个协作 Agent（Executor / Proposer / Skill-Builder）在技能抽象层上交替运行，底层模型参数始终冻结，仅技能库和程序元数据在迭代中演化。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Abstract ========= -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            以 Claude Code、OpenHands、Codex 为代表的编码 Agent 虽具备通用问题求解能力，但缺乏特定领域任务所需的专业知识。现有技能绝大多数依赖人工制作，扩展性极差；而 AlphaEvolve、GEPA 等进化方法直接在 prompt 或代码等低层制件上进行优化，与特定任务和模型强绑定，<strong>无法自然产生可跨场景复用的组件</strong>。
+          </p>
+          <p>
+            <span class="evoskill">EvoSkill</span> 提出在<strong>技能抽象层</strong>（而非 prompt/代码层）进行进化搜索：通过三个协作 Agent（Executor、Proposer、Skill-Builder）的迭代循环，自动分析执行失败，发现并精炼结构化可复用的 Agent 技能（遵循 agentskills.io 规范）。底层模型始终冻结，仅技能库和 Agent 元数据在迭代中积累演化。在 OfficeQA 上精确匹配准确率从 60.6% 提升至 67.9%（<strong>+7.3%</strong>）；在 SealQA 上从 26.6% 跃升至 38.7%（<strong>+12.1%</strong>）；发现的核心技能零样本迁移到 BrowseComp 仍带来 <strong>+5.3%</strong> 提升。
+          </p>
+        </div>
+
+        <div class="key-insight-evo">
+          <div class="label">Key Insight</div>
+          <p>优化粒度决定可迁移性：在<strong>技能层</strong>（skill level）进化，比在 prompt 层或代码层产生更可解读、可组合、可迁移的制件——结构化技能文件夹天然携带触发条件，与具体模型和任务解耦。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Framework ========= -->
+<section class="section" id="framework" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Framework Overview</h2>
+        <div class="content has-text-justified">
+          <p>
+            <span class="evoskill">EvoSkill</span> 将每个 <strong>Agent Program</strong> 定义为"系统提示 + 积累技能库"，存储为 git 分支，使性能差异可归因于技能变化。Pareto 前沿 $G$（容量 $k=3$）维护当前最优程序集合，通过验证集过滤防止进化退化。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#16a34a;">Executor</h3>
+          <p class="analysis-card-desc">在当前 Agent Program（含技能库）下执行任务，收集得分低于阈值的失败样本集合 $F$。对代码仓库只读，不写入任何内容。</p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#4f46e5;">Proposer</h3>
+          <p class="analysis-card-desc">分析失败 trace 与累积反馈历史 $H$，执行结构化根因分析（trace review → gap analysis → 现有技能审计 → 技能识别），输出 CREATE 或 EDIT 提案 $\pi$。历史 $H$ 防止冗余提案。</p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#0369a1;">Skill-Builder</h3>
+          <p class="analysis-card-desc">将 Proposer 提案具体化为完整技能文件夹（<code>SKILL.md</code> + 可选 Python/TS 脚本）。通过读取元技能 <code>skill-creator/SKILL.md</code> 了解最佳实践，实现"技能创造技能"的自举。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered" style="margin-top:1.5rem;">
+      <div class="column is-four-fifths">
+        <h3 class="title is-5">迭代循环（Algorithm 1）</h3>
+        <div class="content has-text-justified">
+          <ol>
+            <li><strong>数据划分</strong>：LLM 将数据集分类到 $K$ 个类别，分层切分为训练集（失败检测）、验证集（前沿选择）、测试集（不参与演化）。</li>
+            <li><strong>程序选择</strong>：从 Pareto 前沿 $G$ 以轮询方式选取父程序 $p$。</li>
+            <li><strong>失败采集</strong>：Executor 对训练批次运行，使用多容忍度加权评分（$\tau \in \{0.00, 0.01, 0.025, 0.05, 0.10\}$，权重 $w(\tau)=\frac{1}{1+20\tau}$ 偏向严格阈值），加权分低于 0.8 的样本标记为失败集合 $F$。</li>
+            <li><strong>提案生成</strong>：Proposer 接收 $F$ 和历史 $H$，输出提案 $\pi$（CREATE 或 EDIT）。</li>
+            <li><strong>技能物化</strong>：Skill-Builder 将 $\pi$ 实现为候选程序 $\tilde{p}$。</li>
+            <li><strong>前沿更新</strong>：在验证集 $V$ 评估 $\tilde{p}$；若分数超过前沿最弱成员则替换入 $G$，否则丢弃。将结果追加到历史 $H$。</li>
+            <li><strong>早停</strong>：连续若干迭代无前沿改进时停止；$T$ 轮后返回 $G$ 中最优程序。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Results ========= -->
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Results</h2>
+        <p style="color:#555; margin-bottom:1rem;">
+          底层模型均为 <strong>Claude Code with Opus 4.5</strong>，参数完全冻结。最终评估使用精确匹配（$\tau=0$）。
+        </p>
+      </div>
+    </div>
+
+    <!-- OfficeQA results figure -->
+    <div class="columns is-centered" style="margin-bottom:1.5rem;">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2603.02766v1/x3.png" alt="OfficeQA performance across training splits and tolerance thresholds" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 2.</strong> EvoSkill 在 OfficeQA 上的表现。skill-merge 配置（合并多次独立运行发现的技能）在各容忍阈值下均达到最高准确率，精确匹配达 <strong>67.9%</strong>，比基线提升 7.3 个百分点。
+        </p>
+      </div>
+    </div>
+
+    <!-- OfficeQA table -->
+    <h3 class="title is-5 has-text-centered" style="margin-bottom:0.5rem;">OfficeQA 准确率（%）</h3>
+    <p style="text-align:center; color:#555; font-size:0.88rem; margin-bottom:0.8rem;">
+      各训练划分 × 各容忍阈值（$\tau$）组合
+    </p>
+    <div class="table-container">
+      <table class="table is-striped is-fullwidth results-table">
+        <thead>
+          <tr>
+            <th>配置</th>
+            <th>$\tau=0.00$</th>
+            <th>$\tau=0.10$</th>
+            <th>$\tau=1.00$</th>
+            <th>$\tau=5.00$</th>
+            <th>$\tau=10.00$</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>base（基线）</td>
+            <td>60.6</td><td>66.3</td><td>72.8</td><td>77.2</td><td>79.7</td>
+          </tr>
+          <tr>
+            <td>5% 训练</td>
+            <td>63.4</td><td>67.4</td><td>74.3</td><td>77.6</td><td>80.1</td>
+          </tr>
+          <tr>
+            <td>10% 训练</td>
+            <td><strong>65.8</strong></td><td><strong>69.9</strong></td><td><strong>76.4</strong></td><td><strong>80.5</strong></td><td><strong>82.5</strong></td>
+          </tr>
+          <tr>
+            <td>15% 训练</td>
+            <td>64.5</td><td>69.9</td><td>75.6</td><td>79.3</td><td>81.3</td>
+          </tr>
+          <tr class="our-method-row">
+            <td><strong>merge-unique（技能合并）</strong></td>
+            <td><strong>68.1</strong></td><td><strong>70.8</strong></td><td><strong>77.1</strong></td><td><strong>80.5</strong></td><td><strong>82.4</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SealQA & BrowseComp table -->
+    <h3 class="title is-5 has-text-centered" style="margin-top:2rem; margin-bottom:0.5rem;">SealQA 与 BrowseComp（零样本迁移）</h3>
+    <div class="table-container">
+      <table class="table is-striped is-fullwidth results-table">
+        <thead>
+          <tr>
+            <th>Benchmark</th>
+            <th>配置</th>
+            <th>准确率</th>
+            <th>提升</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="2">SealQA</td>
+            <td>基线（Claude Code Opus 4.5）</td>
+            <td>26.6%</td>
+            <td>—</td>
+          </tr>
+          <tr class="our-method-row">
+            <td><strong>EvoSkill（10% 训练）</strong></td>
+            <td><strong>38.7%</strong></td>
+            <td><strong>+12.1%</strong></td>
+          </tr>
+          <tr>
+            <td rowspan="2">BrowseComp<br><small>（零样本迁移）</small></td>
+            <td>基线（Claude Code Opus 4.5）</td>
+            <td>43.5%</td>
+            <td>—</td>
+          </tr>
+          <tr class="our-method-row">
+            <td><strong>+ search-persistence-protocol（从 SealQA 迁移）</strong></td>
+            <td><strong>48.8%</strong></td>
+            <td><strong>+5.3%</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="columns is-centered" style="margin-top:1rem;">
+      <div class="column is-four-fifths">
+        <div class="content">
+          <ul>
+            <li>OfficeQA：仅用 <strong>10% 训练数据</strong>（约 24 例）即可获得 +5.2% 精确匹配提升；skill-merge 进一步推至 +7.3%。</li>
+            <li>SealQA 核心发现技能：<strong>search-persistence-protocol</strong>——强制词义扩展、多源验证、完整性检查，防止 Agent 在初始检索结果噪声大时过早放弃。</li>
+            <li>该技能<strong>无修改直接迁移</strong>至 BrowseComp（不同任务分布），仍带来 +5.3% 提升，验证技能层优化的跨任务迁移性。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Analysis ========= -->
+<section class="section" id="analysis" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Analysis</h2>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">训练数据量的影响</h3>
+          <p class="analysis-card-desc">
+            5% → 10% 训练数据：精确匹配显著提升（+2.4 pp）。10% → 15%：性能轻微下滑（64.5% &lt; 65.8%），提示<strong>约 10% 为最优训练规模</strong>，更多数据可能导致过拟合或分布偏移。该规律在所有容忍阈值上保持一致。EvoSkill 在极小数据下仍有效，大幅降低标注成本。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Skill Merge 的互补性</h3>
+          <p class="analysis-card-desc">
+            多次独立运行各自针对不同失败模式发现不同技能，合并后（merge-unique）精确匹配达 68.1%，超过任何单次运行最优（65.8%）。表明多次独立进化的技能具有<strong>功能互补性</strong>，不相互覆盖——类似 ensemble 集成策略，可作为提升技能库上限的实用方法。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns" style="margin-top:1rem;">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">为何零样本迁移有效？</h3>
+          <p class="analysis-card-desc">
+            技能是结构化、可解读的文件夹，带有显式触发条件，与训练任务和底层模型解耦。相比之下，优化 prompt 迁移往往因模型或任务分布偏移而退化；技能作为更高抽象单位具备更好的迁移性。当前迁移实验仅覆盖 SealQA → BrowseComp 一对任务，更广泛验证留待未来工作。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Pareto 前沿治理与失败评分</h3>
+          <p class="analysis-card-desc">
+            前沿固定容量 $k=3$，用 git tag（前缀 <code>frontier/</code>）追踪；设置早停机制防止无效迭代。失败检测使用多容忍度加权评分，权重 $w(\tau)=\frac{1}{1+20\tau}$ 偏向严格阈值（$\tau=0$），确保进化方向朝精确匹配优化，避免偏向宽松容忍度下的虚假提升。
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Takeaways ========= -->
+<section class="section" id="takeaways">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Takeaways</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h3 class="title is-5">核心结论</h3>
+          <ol>
+            <li><span class="evoskill">EvoSkill</span> 在两个截然不同的 benchmark 上均取得显著提升，且<strong>仅使用极小训练子集</strong>（5%–15%），验证了技能层进化的高效性。</li>
+            <li>在<strong>技能层</strong>进行优化比在 prompt / 代码层优化产生更可解读、可组合、可迁移的制件。</li>
+            <li>技能进化是持续积累的过程——技能库不断扩展，Agent 能力逐步增强，底层模型不需要更新。</li>
+            <li><strong>Skill Merge</strong> 类似 ensemble 策略，多次独立运化后合并唯一技能，可进一步提升性能上限。</li>
+          </ol>
+
+          <h3 class="title is-5">局限性</h3>
+          <ul>
+            <li>零样本迁移目前仅覆盖一对任务（SealQA → BrowseComp），更广泛的跨域验证留待未来工作。</li>
+            <li>实验底层模型固定为 Claude Code Opus 4.5，跨模型家族的泛化性尚未评估。</li>
+            <li>技能格式遵循 agentskills.io 规范，与规范深度耦合，换用其他 Agent 框架需适配。</li>
+          </ul>
+
+          <h3 class="title is-5">对后续研究的启发</h3>
+          <ol>
+            <li><strong>抽象层次决定迁移性</strong>：prompt-level → code-level → skill-level，粒度越粗迁移性越强，EvoSkill 用自动化解决了"发现难度"问题。</li>
+            <li><strong>失败驱动是有效信号</strong>：利用有标签失败样本做根因分析，比无监督自我进化更高效，类比监督学习中的误差分析。</li>
+            <li><strong>Proposer 的反馈历史 $H$</strong>：防止冗余提案、引导探索"曾部分奏效"方向——这是跨迭代知识积累的关键设计。</li>
+            <li><strong>技能市场（Skill Marketplace）</strong>的潜力：一个任务上进化出的技能可被其他 Agent 和用户浏览、组合、复用，形成开放技能生态。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Footer ========= -->
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <p><a href="../index.html">← 返回 Agent × Skill 论文列表</a></p>
+    <p style="margin-top:0.5rem; font-size:0.78rem; color:#9ca3af;">
+      Data from <a href="https://huggingface.co/papers/2603.02766" target="_blank">Hugging Face Papers</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

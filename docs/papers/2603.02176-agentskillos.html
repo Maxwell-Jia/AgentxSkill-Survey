@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="AgentSkillOS: Organizing, Orchestrating, and Benchmarking Agent Skills at Ecosystem Scale — reading notes.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AgentSkillOS — Agent × Skill Survey</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+  <style>
+    /* AgentSkillOS brand: teal-blue → indigo gradient, distinct from existing brands */
+    .agentskillos {
+      font-variant: small-caps;
+      font-weight: bold;
+      background: linear-gradient(90deg, #0369a1 0%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    /* Accent color for section accents */
+    .agentskillos-accent { color: #0369a1; }
+  </style>
+</head>
+<body>
+
+<!-- ========= Breadcrumb ========= -->
+<div class="breadcrumb-nav">
+  <div class="container is-max-desktop">
+    <a href="../index.html">Agent × Skill Survey</a>
+    <span class="sep">/</span>
+    <span>03 Infrastructure</span>
+    <span class="sep">/</span>
+    <span>AgentSkillOS</span>
+  </div>
+</div>
+
+
+<!-- ========= Hero ========= -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="agentskillos">AgentSkillOS</span>: Organizing,<br>
+            Orchestrating, and Benchmarking<br>
+            Agent Skills at Ecosystem Scale
+          </h1>
+          <p class="is-size-5" style="color:#555; margin-top:0.2rem; font-family:'Google Sans',sans-serif;">
+            生态尺度下 Agent Skill 的组织、编排与评测
+          </p>
+
+          <div class="is-size-6 publication-authors" style="margin-top:1rem;">
+            <span class="author-block">Hao Li,</span>
+            <span class="author-block">Chunjiang Mu,</span>
+            <span class="author-block">Jianhao Chen,</span>
+            <span class="author-block">Siyue Ren,</span>
+            <span class="author-block">Zhiyao Cui,</span>
+            <span class="author-block">Yiqun Zhang,</span>
+            <span class="author-block">Lei Bai,</span>
+            <span class="author-block">Shuyue Hu</span>
+          </div>
+          <div class="is-size-7 publication-authors" style="margin-top:0.3rem; color:#555;">
+            <span class="author-block">Shanghai Artificial Intelligence Laboratory</span>
+          </div>
+          <div class="is-size-7" style="margin-top:0.25rem; color:#888;">
+            2026-03-02 · arXiv 2603.02176
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2603.02176" target="_blank"
+                   class="external-link button is-normal is-rounded btn-arxiv">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/ynulihao/AgentSkillOS" target="_blank"
+                   class="external-link button is-normal is-rounded btn-github">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/papers/2603.02176" target="_blank"
+                   class="external-link button is-normal is-rounded btn-hf">
+                  <span class="icon hf-icon">🤗</span>
+                  <span>HF Papers</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="../index.html"
+                   class="external-link button is-normal is-rounded btn-home">
+                  <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                  <span>Back</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Teaser figure ========= -->
+<section class="hero teaser" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="hero-body" style="padding-top:0;">
+      <div class="analysis-figure-wrap">
+        <img src="https://arxiv.org/html/2603.02176v1/x1.png"
+             alt="Figure 1: AgentSkillOS two-phase framework overview" loading="lazy">
+      </div>
+      <p class="figure-caption has-text-centered">
+        <strong>Figure 1.</strong> <span class="agentskillos">AgentSkillOS</span> 两阶段框架：离线 <em>Manage Skills</em> 阶段递归构建能力树；在线 <em>Solve Tasks</em> 阶段通过树形检索、DAG 编排与多 Skill 并行执行完成复杂任务。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Abstract ========= -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Agent Skill 生态正急速膨胀——2026 年 2 月已逾 28 万个 Skill，规模增长带来三重挑战：<strong>发现困难</strong>（用户无法从数十万 Skill 中找到所需工具）、<strong>组合困境</strong>（LLM Agent 缺乏协调多 Skill 依赖关系与执行顺序的显式机制）、<strong>治理成本</strong>（分散的第三方 Skill 生态难以保证质量与安全性）。
+          </p>
+          <p>
+            现有"平铺式"Skill 调用（native flat invocation）在小规模时勉强可用，但面对千级、万级生态时完全失效——<em>信息超载</em>导致 Agent 无法有效利用庞大的 Skill 库，更无法进行跨多 Skill 的结构化编排。
+          </p>
+          <p>
+            <span class="agentskillos">AgentSkillOS</span> 提出两阶段解法：离线用<strong>层级能力树</strong>（Capability Tree）将海量 Skill 递归组织，在线用<strong>有向无环图（DAG）编排</strong>管理多 Skill 执行。配套构造了覆盖 5 类 30 项任务的 benchmark，采用 Bradley-Terry 配对评估方案，定量验证了<em>结构化管理的收益随生态规模增大而放大</em>。
+          </p>
+        </div>
+
+        <div class="key-insight">
+          <div class="label">Key Insight</div>
+          <p><strong>结构化组合</strong>而非单纯的 Skill 可用性，才是解锁生态潜力的关键。树形检索 + DAG 编排的组合拳不仅优于平铺调用，甚至在 Skill 选择固定的条件下（oracle 集合），有无结构化编排之间的差距依然显著。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Framework ========= -->
+<section class="section" id="framework" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Framework Overview</h2>
+        <div class="content has-text-justified">
+          <p>
+            <span class="agentskillos">AgentSkillOS</span> 由离线构建阶段（Manage Skills）与在线求解阶段（Solve Tasks）组成，两者通过能力树 $\mathcal{T}$ 和 DAG $G=(V,E)$ 解耦：离线一次建好树，在线动态选 Skill、生成编排计划、并行执行。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Three framework cards -->
+    <div class="columns">
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#0369a1;">能力树构建</h3>
+          <p class="analysis-card-desc">
+            基于节点级递归分类算法：LLM 生成 $B \in \{7,12\}$ 个候选类别，将 Skill 分配至最合适的类别，类别不足容量阈值 $C = \lfloor 1.5B \rfloor$ 的节点直接升级为叶节点。根节点固定五大类（内容创作 / 数据处理 / 软件开发 / 自动化 / 垂直领域）。新增 Skill 时自顶向下逐层分配，沿路更新节点描述。
+          </p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#6366f1;">DAG 编排策略</h3>
+          <p class="analysis-card-desc">
+            三种策略对应不同优化目标：<strong>Quality-First</strong>——添加准备与精化阶段，生成深密 DAG，最大化交付质量；<strong>Efficiency-First</strong>——最大化并行度，宽且浅的 DAG，降低时延；<strong>Simplicity-First</strong>——保留最小本质 DAG，每个节点均必要，便于人工理解与调试。给定 Skill 集合 $V$ 与策略，LLM 输出 $G=(V,E)$，有向边表示数据流依赖。
+          </p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#0f766e;">超大规模适配</h3>
+          <p class="analysis-card-desc">
+            当生态规模达 200K 时，引入 <strong>Usage-Frequency Queue</strong>：只选最高 $K=10000$ 个高频 Skill 构造活跃树，其余 Skill 进入"休眠索引"，支持向量相似度检索补充。历史任务的 DAG 编排计划存入 <strong>recipe pool</strong>，可按向量相似度复用，跳过检索与编排两阶段，加速推理。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered" style="margin-top:1.5rem;">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h3 class="title is-5">多 Skill 执行</h3>
+          <p>
+            拓扑排序后，同层无依赖节点<strong>并行执行</strong>，不同层顺序执行。每个节点的执行提示明确包含：子任务描述、上游产物列表（路径 + 用途）、预期输出规范，生成的文件以"制品"（artifact）形式传递给下游节点。DAG 结构使得多 Skill 间的数据流和控制流均可被显式追踪，为后续 Skill 自进化留下可读日志。
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Results ========= -->
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Results</h2>
+        <p style="color:#555; margin-bottom:0.4rem;">
+          Bradley-Terry Score（线性缩放至 [0, 100]），跨三种生态规模（200 / 1K / 200K Skill）。
+          树构造 / 检索 / 编排：Claude Opus 4.5；节点执行：Claude Sonnet 4.5；评估：Claude Opus 4.5。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2603.02176v1/x4.png"
+               alt="Figure 4: Radar chart of Bradley-Terry scores across task categories" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 4.</strong> 三种 <span class="agentskillos">AgentSkillOS</span> 变体（Quality-First / Efficiency-First / Simplicity-First）在全部生态规模下形成最大多边形，各任务类别均领先；w/ Full Pool（全量平铺）分数随规模扩大急剧下滑，揭示 flat invocation 的根本瓶颈。
+        </p>
+      </div>
+    </div>
+
+    <div class="table-container" style="margin-top:1.5rem;">
+      <table class="table is-striped is-fullwidth results-table">
+        <thead>
+          <tr>
+            <th>生态规模</th>
+            <th>方法</th>
+            <th>Data Computation</th>
+            <th>Document Creation</th>
+            <th>Motion Video</th>
+            <th>Visual Design</th>
+            <th>Web Interaction</th>
+            <th>Overall</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td rowspan="4">200 Skills</td><td>Vanilla（无 Skill）</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>低</td></tr>
+          <tr><td>w/ Full Pool</td><td colspan="5" style="text-align:center; color:#555;">可接受，随规模上升快速退化</td><td>中</td></tr>
+          <tr class="our-method-row"><td><strong>AgentSkillOS Quality-First</strong></td><td colspan="5" style="text-align:center;"><strong>各类别最大多边形覆盖面积</strong></td><td><strong>最高</strong></td></tr>
+          <tr class="our-method-row"><td><strong>AgentSkillOS Efficiency / Simplicity</strong></td><td colspan="5" style="text-align:center;"><strong>仅次于 Quality-First，均优于 Full Pool</strong></td><td><strong>次高</strong></td></tr>
+
+          <tr><td rowspan="3">1K Skills</td><td>Vanilla（无 Skill）</td><td colspan="6" style="text-align:center; color:#888;">显著低于有 Skill 的所有方法</td></tr>
+          <tr><td>w/ Full Pool</td><td colspan="6" style="text-align:center; color:#c62828;">随规模增大性能下滑明显</td></tr>
+          <tr class="our-method-row"><td><strong>AgentSkillOS（三变体）</strong></td><td colspan="6" style="text-align:center;"><strong>全面领先；树形检索接近 oracle 上限</strong></td></tr>
+
+          <tr><td rowspan="3">200K Skills</td><td>Vanilla（无 Skill）</td><td colspan="6" style="text-align:center; color:#888;">—</td></tr>
+          <tr><td>w/ Full Pool</td><td colspan="6" style="text-align:center; color:#c62828;">token 溢出 / 性能最差</td></tr>
+          <tr class="our-method-row"><td><strong>AgentSkillOS（三变体）</strong></td><td colspan="6" style="text-align:center;"><strong>规模越大，结构化管理收益越显著</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="columns is-centered" style="margin-top:1rem;">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <ul>
+            <li>三种 AgentSkillOS 变体在<strong>全部</strong>生态规模上均超越 w/ Full Pool（将整个库提供给原生 Claude Code）。</li>
+            <li>w/ Full Pool 分数随生态规模增大而急剧下降，揭示了 flat invocation 的根本瓶颈。</li>
+            <li>Vanilla（无 Skill）始终最低，证明 Skill 利用本身有价值。</li>
+            <li><strong>生态规模越大，结构化管理的收益越明显</strong>——这是整篇论文的核心定量结论。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Analysis ========= -->
+<section class="section" id="analysis" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Analysis</h2>
+      </div>
+    </div>
+
+    <!-- Ablation figure -->
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2603.02176v1/x5.png"
+               alt="Figure 5: Ablation W/T/L pairwise counts" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 5.</strong> Quality-First 与四种消融变体的配对 Win/Tie/Loss 计数：相对"无检索无编排"、"仅检索无编排"、"Oracle Skill 无编排"均压倒性胜出；与"Oracle Skill + 编排"差距最小，验证树形检索逼近 oracle 能力。
+        </p>
+      </div>
+    </div>
+
+    <!-- Ablation cards -->
+    <div class="columns" style="margin-top:1.2rem;">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">DAG 编排是关键</h3>
+          <table class="table is-narrow ablation-table is-fullwidth" style="margin-top:0.6rem;">
+            <thead>
+              <tr><th>配置</th><th>vs Quality-First</th></tr>
+            </thead>
+            <tbody>
+              <tr class="our-method-row"><td><strong>Quality-First（完整）</strong></td><td><strong>基准</strong></td></tr>
+              <tr><td>w/ Full Pool（无检索无编排）</td><td class="drop">大幅落后</td></tr>
+              <tr><td>w/ Retrieval（仅检索，无编排）</td><td class="drop">仍落后</td></tr>
+              <tr><td>w/ Oracle Skills（oracle，无编排）</td><td class="drop">有明显差距</td></tr>
+              <tr><td>Quality-First (Oracle)（oracle + 编排）</td><td>接近 oracle 上限</td></tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc" style="margin-top:0.6rem;">
+            即使给予 oracle Skill 集合，缺少 DAG 编排依然大幅损害质量。<strong>编排比检索更关键</strong>——这是消融实验的核心结论。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">三种 DAG 策略的结构特性</h3>
+          <p class="analysis-card-desc">
+            论文通过节点数、边数、最大深度（最长依赖链）、最大宽度（最大并行度）四维分布验证三种策略确实体现了设计目标：
+          </p>
+          <table class="table is-narrow ablation-table is-fullwidth" style="margin-top:0.4rem;">
+            <thead>
+              <tr><th>策略</th><th>深度</th><th>宽度</th><th>边密度</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Quality-First</td><td>最大</td><td>中等</td><td>最密</td></tr>
+              <tr><td>Efficiency-First</td><td>最浅</td><td>最宽</td><td>中等</td></tr>
+              <tr><td>Simplicity-First</td><td>中等</td><td>中等</td><td>最疏</td></tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc" style="margin-top:0.6rem;">
+            三种策略不是同一个系统的微小变体，而是在编排拓扑上存在本质差异，可依场景灵活选择。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analysis detail cards -->
+    <div class="columns" style="margin-top:1rem;">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">树形检索逼近 Oracle 上限</h3>
+          <p class="analysis-card-desc">
+            Quality-First 与 Quality-First (Oracle) 的差距在 200 / 1K / 200K 三个生态规模上均保持稳定且较小，说明树形能力树检索能够高精度地逼近人工指定的最优 Skill 集合。"Creative skill discovery"——即发现非显而易见但功能相关的 Skill——是纯向量检索做不到的。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">定性案例对比</h3>
+          <p class="analysis-card-desc">
+            三个代表性任务的 Vanilla vs Quality-First 对比：<br>
+            (1) <strong>太空探索交互网页</strong>：Vanilla 产出平面低分辨率页；AgentSkillOS 调用图像生成 + 前端设计 Skill，生成高质量全屏分层滚动效果。<br>
+            (2) <strong>微积分教学包</strong>：Vanilla 仅有静态 matplotlib 图；AgentSkillOS 调用动画 Skill 生成 Manim 动态演进，配套精美 PDF 讲义。<br>
+            (3) <strong>量子计算演示文稿</strong>：Vanilla 文字堆砌无设计；AgentSkillOS 生成 Bloch 球可视化、布局统一的专业幻灯片。<br>
+            <em>核心观察：性能差异来自 Skill 发现与调用的结构化程度，而非 LLM 底层能力。</em>
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Takeaways ========= -->
+<section class="section" id="takeaways">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Takeaways</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h3 class="title is-5">核心结论</h3>
+          <ol>
+            <li><strong>能力树 + DAG 是生态规模管理的必要条件</strong>：平铺式调用在小规模（200）时尚可应对，但在千级、万级生态中完全失效。</li>
+            <li><strong>编排比检索更关键</strong>：即使 Skill 选择完美（oracle），缺乏结构化编排也会严重损害质量。</li>
+            <li><strong>三种策略各有所长</strong>：Quality-First 最大化质量但成本高；Efficiency-First 降低延迟；Simplicity-First 便于人理解——用户可根据场景权衡。</li>
+            <li><strong>规模越大，收益越明显</strong>：这是 AgentSkillOS 相对于 flat invocation 最核心的竞争优势。</li>
+          </ol>
+
+          <h3 class="title is-5">局限性</h3>
+          <ul>
+            <li>当前假设 Skill 已被收集到生态库，未涉及自动 Skill 发现与集成（从开源社区发现新 Skill）。</li>
+            <li>系统侧重一次编排执行，自动修正失败、逐步改进的自进化机制尚未完整实现。</li>
+            <li>Bradley-Terry 评估依赖 LLM judge，可能继承 judge 自身的偏差。</li>
+          </ul>
+
+          <h3 class="title is-5">对 Skill 管理与生态发展的启发</h3>
+          <ol>
+            <li><strong>层级分类是基础设施</strong>：构建全局能力树是长期必要投资，不应依赖每个用户自行用语义检索摸索。</li>
+            <li><strong>跨 Skill 编排的标准化</strong>：定义清晰的 Skill 输入输出规范、依赖声明格式，让 LLM 可靠地推理编排计划。</li>
+            <li><strong>质量与规模的权衡</strong>：Usage-Frequency Queue 动态维护"活跃 Skill 集"，将低频 Skill 隔离为休眠索引，兼顾生态开放性与噪声控制。</li>
+            <li><strong>编排计划的复用与演进</strong>：历史 DAG 方案（recipe pool）可加速推理，长期可积累"最佳实践 DAG 模板库"。</li>
+            <li><strong>可解释评测框架</strong>：Bradley-Terry 配对评估给出细粒度排序，避免任意绝对评分，为迭代优化提供清晰信号。</li>
+            <li><strong>自进化的入口</strong>：Skill 以可读制品形式存储，失败的编排执行日志可被用于自动改进 Skill 定义——为 Skill 沉淀与自进化奠定基础。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Footer ========= -->
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <p><a href="../index.html">← 返回 Agent × Skill 论文列表</a></p>
+    <p style="margin-top:0.5rem; font-size:0.78rem; color:#9ca3af;">
+      Data from <a href="https://huggingface.co/papers/2603.02176" target="_blank">Hugging Face Papers</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

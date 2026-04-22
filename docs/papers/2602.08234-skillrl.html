@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="SkillRL: Evolving Agents via Recursive Skill-Augmented Reinforcement Learning — reading notes.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SkillRL — Agent × Skill Survey</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+  <style>
+    .skillrl {
+      font-variant: small-caps;
+      font-weight: bold;
+      background: linear-gradient(90deg, #2563eb 0%, #db2777 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========= Breadcrumb ========= -->
+<div class="breadcrumb-nav">
+  <div class="container is-max-desktop">
+    <a href="../index.html">Agent × Skill Survey</a>
+    <span class="sep">/</span>
+    <span>01 Synthesis</span>
+    <span class="sep">/</span>
+    <span>SkillRL</span>
+  </div>
+</div>
+
+
+<!-- ========= Hero ========= -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="skillrl">SkillRL</span>: Evolving Agents via<br>
+            Recursive Skill-Augmented<br>Reinforcement Learning
+          </h1>
+          <p class="is-size-5" style="color:#555; margin-top:0.2rem; font-family:'Google Sans',sans-serif;">
+            递归式技能增强强化学习——经验蒸馏与技能库协同演化
+          </p>
+
+          <div class="is-size-6 publication-authors" style="margin-top:1rem;">
+            <span class="author-block">Jianwen Chen<sup>1</sup>,</span>
+            <span class="author-block">Hanyang Wang<sup>1</sup>,</span>
+            <span class="author-block">Jiaqi Liu<sup>1</sup>,</span>
+            <span class="author-block">Kaide Zeng<sup>1</sup>,</span>
+            <span class="author-block">Yu Wang<sup>1</sup>,</span>
+            <span class="author-block">Siwei Han<sup>1</sup>,</span>
+            <span class="author-block">Yiyang Zhou<sup>1</sup>,</span>
+            <span class="author-block">Xujiang Zhao<sup>2</sup>,</span>
+            <span class="author-block">Haifeng Chen<sup>2</sup>,</span>
+            <span class="author-block">Zeyu Zheng<sup>1</sup>,</span>
+            <span class="author-block">Cihang Xie<sup>1</sup>,</span>
+            <span class="author-block">Huaxiu Yao<sup>1</sup></span>
+          </div>
+          <div class="is-size-7 publication-authors" style="margin-top:0.3rem; color:#555;">
+            <span class="author-block"><sup>1</sup>UNC Chapel Hill</span>
+            <span class="author-block"><sup>2</sup>NEC Laboratories America</span>
+          </div>
+          <div class="is-size-7" style="margin-top:0.25rem; color:#888;">
+            2026-02-11 · arXiv 2602.08234
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2602.08234" target="_blank"
+                   class="external-link button is-normal is-rounded btn-arxiv">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/aiming-lab/SkillRL" target="_blank"
+                   class="external-link button is-normal is-rounded btn-github">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/papers/2602.08234" target="_blank"
+                   class="external-link button is-normal is-rounded btn-hf">
+                  <span class="icon hf-icon">🤗</span>
+                  <span>HF Papers</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="../index.html"
+                   class="external-link button is-normal is-rounded btn-home">
+                  <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                  <span>Back</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Teaser figure ========= -->
+<section class="hero teaser" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="hero-body" style="padding-top:0;">
+      <div class="analysis-figure-wrap">
+        <img src="https://arxiv.org/html/2602.08234v1/x1.png" alt="Figure 1: SkillRL pipeline 概览与 ALFWorld 收敛对比" loading="lazy">
+      </div>
+      <p class="figure-caption has-text-centered">
+        <strong>Figure 1.</strong> (a) <span class="skillrl">SkillRL</span> pipeline 概览：与直接存储原始轨迹（灰色虚线）的方法不同，
+        SkillRL 通过经验蒸馏机制将成功/失败轨迹转化为结构化技能并写入 SkillBank。(b) ALFWorld 验证集上的性能曲线，
+        SkillRL 比 vanilla GRPO 与记忆增强 RL 收敛更快、成功率更高。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Abstract ========= -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            LLM Agent 的现有学习范式面临四重结构缺陷：<strong>孤立执行</strong>（每个 Episode 重头开始，无法积累跨任务知识）、<strong>原始轨迹冗余</strong>（Reflexion / ExpeL / Mem0 等方法直接存入原始轨迹，冗长噪声大）、<strong>缺乏高层行为抽象</strong>（检索到的轨迹难以提炼可迁移策略模式）、以及<strong>记忆与策略割裂</strong>（MemRL 等方法无法让技能库与策略参数协同进化）。核心缺口在于：现有方法停留在"记忆检索"层面，而非"知识抽象"层面。
+          </p>
+          <p>
+            <span class="skillrl">SkillRL</span> 填补此空白，通过三阶段协同进化框架：(1) <strong>经验蒸馏</strong>——将成功与失败轨迹分别提炼为策略示范与反事实教训；(2) <strong>层级 SkillBank 构建</strong>——组织为通用技能 $\mathcal{S}_g$ 与任务专项技能 $\bigcup_k\mathcal{S}_k$ 两层结构；(3) <strong>递归技能演化</strong>——基于 GRPO 强化学习，在验证失败后触发 SkillBank 的自动扩充。在 ALFWorld 上达到 <strong>89.9%</strong> 成功率，以 7B 开源模型超越 Gemini-2.5-Pro（+29.6%）和 GPT-4o（+41.9%）。
+          </p>
+        </div>
+
+        <div class="key-insight">
+          <div class="label">Key Insight</div>
+          <p>从轨迹到技能的<strong>抽象</strong>比从轨迹到记忆的<strong>检索</strong>更有效：消融实验显示，用原始轨迹替换技能库带来高达 25% 的性能下降，而去掉动态演化仅损失 5.5%——说明<strong>抽象形式本身</strong>比动态性更关键。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Framework ========= -->
+<section class="section" id="framework" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Framework Overview</h2>
+        <div class="content has-text-justified">
+          <p>
+            <span class="skillrl">SkillRL</span> 将 Agent 策略形式化为 $\pi_{\theta}(a_t \mid o_{\leq t}, d, c)$，其中 $c$ 为检索到的技能上下文，并施加长度约束 $|c| \leq L_{\max}$。SkillBank 定义为 $\mathcal{S}_g \cup \bigcup_{k=1}^{K}\mathcal{S}_k$，通过下述三阶段 pipeline 自动构建与演化。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2602.08234v1/x2.png" alt="Figure 2: SkillRL 框架整体流程" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 2.</strong> <span class="skillrl">SkillRL</span> 完整流程——用基础模型收集轨迹，蒸馏为层级技能库，冷启动 SFT 使 Agent 学会使用技能，随后在 RL 训练中基于验证失败案例进行动态技能演化。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#1d4ed8;">阶段一：经验蒸馏</h3>
+          <p class="analysis-card-desc">
+            用基础模型 $\pi_{\text{base}}$ rollout 收集成功轨迹 $\mathcal{T}^+$ 与失败轨迹 $\mathcal{T}^-$（两者均保留）。教师模型 $\mathcal{M}_T$ 对成功轨迹提取关键决策模式；对失败轨迹合成简洁的"失败教训"——包含失败点、错误推理、应有做法、防范原则四要素。实现 <strong>10–20× token 压缩</strong>，平均 prompt 长度 &lt;1300 tokens。
+          </p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#be185d;">阶段二：层级 SkillBank 构建</h3>
+          <p class="analysis-card-desc">
+            将蒸馏结果组织为两层：<strong>通用技能 $\mathcal{S}_g$</strong>（跨任务战略原则——系统性探索策略、状态管理原则等，推理时始终注入上下文）与<strong>任务专项技能 $\mathcal{S}_k$</strong>（领域知识——特定动作序列、任务约束、失败模式，按语义相似度 $\text{TopK}({\{s: \text{sim}(e_d,e_s)>\delta\}},K)$ 检索注入）。每条技能含：名称 + 策略描述 + 适用条件。
+          </p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#0f766e;">阶段三：递归技能演化 + RL</h3>
+          <p class="analysis-card-desc">
+            <strong>冷启动 SFT</strong> 先教会模型检索与应用技能。随后 GRPO 强化学习以二值奖励 $R_i\in\{0,1\}$ 训练策略。每轮验证后，对成功率 $\text{Acc}(C) &lt; \delta=0.4$ 的任务类别触发演化：分层采样失败轨迹，教师模型分析未被现有技能覆盖的失败模式，提出新技能 $\mathcal{S}_{\text{new}}$，更新 $\text{SkillBank} \leftarrow \text{SkillBank} \cup \mathcal{S}_{\text{new}}$。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered" style="margin-top:0.5rem;">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h3 class="title is-5">GRPO 目标函数</h3>
+          <p>对每个任务采样 $G$ 条轨迹，按组内归一化优势 + PPO 式裁剪更新：</p>
+          <p>$$\mathcal{J}(\theta) = \mathbb{E}\!\left[\frac{1}{G}\sum_{i=1}^{G} \min\!\left(\rho_i A_i,\,\text{clip}(\rho_i,1-\epsilon,1+\epsilon)\,A_i\right) - \beta D_{\mathrm{KL}}(\pi_\theta \| \pi_{\text{ref}})\right]$$</p>
+          <p>其中 $\pi_{\text{ref}}$ 由冷启动 SFT 后的模型担任，KL 项防止策略偏离技能使用行为范式。</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Results ========= -->
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Results</h2>
+        <p style="color:#555; margin-bottom:0.8rem;">
+          基础模型：Qwen2.5-7B-Instruct；教师模型：OpenAI o3（技能蒸馏 + SFT 数据生成）。
+        </p>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="table is-striped is-fullwidth results-table">
+        <thead>
+          <tr>
+            <th>方法</th>
+            <th>ALFWorld（全）</th>
+            <th>ALFWorld Pick</th>
+            <th>ALFWorld Cool</th>
+            <th>ALFWorld PickTwo</th>
+            <th>WebShop 成功率</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>GPT-4o</td><td>48.0%</td><td>—</td><td>—</td><td>—</td><td>23.7%</td></tr>
+          <tr><td>Gemini-2.5-Pro</td><td>60.3%</td><td>—</td><td>—</td><td>—</td><td>35.9%</td></tr>
+          <tr><td>Reflexion</td><td>42.7%</td><td>—</td><td>—</td><td>—</td><td>28.8%</td></tr>
+          <tr><td>GRPO（基线）</td><td>77.6%</td><td>—</td><td>—</td><td>—</td><td>66.1%</td></tr>
+          <tr><td>Mem0 + GRPO</td><td>54.7%</td><td>—</td><td>—</td><td>—</td><td>37.5%</td></tr>
+          <tr><td>SimpleMem + GRPO</td><td>62.5%</td><td>—</td><td>—</td><td>—</td><td>46.9%</td></tr>
+          <tr><td>EvolveR</td><td>43.8%</td><td>—</td><td>—</td><td>—</td><td>17.6%</td></tr>
+          <tr><td>MemRL</td><td>21.4%</td><td>—</td><td>—</td><td>—</td><td>9.2%</td></tr>
+          <tr class="our-method-row"><td><strong>SkillRL</strong></td><td><strong>89.9%</strong></td><td><strong>+best</strong></td><td><strong>+23.0%</strong></td><td><strong>+22.8%</strong></td><td><strong>72.7%</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content">
+          <ul>
+            <li>SkillRL 以 7B 开源模型超越 Gemini-2.5-Pro <strong>+29.6%</strong>，超越 GPT-4o <strong>+41.9%</strong>。</li>
+            <li>相比 vanilla GRPO 基线，ALFWorld 绝对提升 <strong>+12.3%</strong>；最难子任务 Cool 和 PickTwo 提升最大（均超 20%）。</li>
+            <li>相比最强记忆增强 RL 基线 Mem0+GRPO，ALFWorld 高出约 <strong>+35.2%</strong>，WebShop 高出 <strong>+35.2%</strong>。</li>
+            <li>搜索增强 QA（7 数据集平均）：Search-R1 38.5% → EvolveR 43.1% → <strong>SkillRL 47.1%</strong>；Bamboogle 上比 EvolveR 高出 <strong>+19.4%</strong>。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Analysis ========= -->
+<section class="section" id="analysis" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Analysis</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered" style="margin-bottom:1rem;">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2602.08234v1/x3.png" alt="Figure 3: RL 训练过程中技能库规模的演化" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 3.</strong> 技能库在 RL 训练中随验证检查点触发的动态增长曲线。初始：55 个技能（12 通用 + 43 专项）；训练结束（Step 150）：100 个技能（20 通用 + 80 专项），专项技能增长速率显著高于通用技能。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">消融：各组件贡献（ALFWorld）</h3>
+          <table class="table is-narrow ablation-table is-fullwidth">
+            <thead>
+              <tr><th>消融项</th><th>ALFWorld 降幅</th><th>WebShop 降幅</th></tr>
+            </thead>
+            <tbody>
+              <tr class="our-method-row"><td><strong>Full SkillRL</strong></td><td><strong>89.9%</strong></td><td><strong>72.7%</strong></td></tr>
+              <tr><td>去除通用技能（仅专项）</td><td class="drop">−13.1%</td><td class="drop">−11.3%</td></tr>
+              <tr><td>用原始轨迹替换技能库</td><td class="drop">−25% (max)</td><td>—</td></tr>
+              <tr><td>去掉冷启动 SFT</td><td class="drop">−20%</td><td>—</td></tr>
+              <tr><td>去掉动态技能演化</td><td class="drop">−5.5%</td><td>—</td></tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc" style="margin-top:0.7rem;">
+            "用原始轨迹替换技能库"带来最大损失（高达 25%），远超去掉动态演化（5.5%）——<strong>抽象形式本身比动态性更关键</strong>。去掉冷启动 SFT 损失 20%，说明 SFT 是模型学会使用技能的必要前提。
+          </p>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">双路轨迹利用 + token 压缩</h3>
+          <p class="analysis-card-desc">
+            <strong>失败轨迹是被低估的学习信号。</strong>SkillRL 将失败轨迹合成为包含"失败点 / 错误推理 / 应有做法 / 防范原则"四要素的反事实教训，而非丢弃。过去方法通常只保留成功轨迹，浪费了失败中蕴含的边界条件信息。
+          </p>
+          <p class="analysis-card-desc">
+            <strong>技能蒸馏实现 10–20× token 压缩：</strong>平均 prompt 长度 &lt;1300 tokens（原始轨迹方案 ~1450 tokens），不损失推理质量的同时显著降低上下文负担，使技能库在有限窗口内可容纳更丰富的经验。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns" style="margin-top:0.5rem;">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">层级技能的互补性</h3>
+          <p class="analysis-card-desc">
+            通用技能负责<strong>战略层</strong>（Progressive Goal Decomposition 等），专项技能负责<strong>战术层</strong>（No Appliance Before Object 等）；案例分析显示 Agent 会同时调用两层技能协同决策。去掉任一层均有超过 11% 的显著下降，层级结构是性能的实质贡献来源。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">触发式递归演化</h3>
+          <p class="analysis-card-desc">
+            技能演化仅在验证成功率 $\text{Acc}(C) &lt; \delta=0.4$ 的任务类别上触发，避免对已掌握任务的无效扩张。<strong>多样性感知分层采样</strong>：失败轨迹按类别分组、按失败严重程度排序，轮询采样维持类别熵，保证演化覆盖多样场景。SkillRL 在 60 步内达到 80%+ 成功率，而静态记忆基线在 90 步才达到更低峰值。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Takeaways ========= -->
+<section class="section" id="takeaways">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Takeaways</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h3 class="title is-5">核心结论</h3>
+          <ol>
+            <li>SkillRL 通过经验蒸馏 + 层级 SkillBank + 递归技能演化，在不增加上下文负担的前提下将 Agent 经验转化为持续可用的结构化知识。</li>
+            <li>"经验到技能"的抽象是比"经验到记忆"更有效的迁移单元：原始轨迹替换带来的性能崩溃（最大 −25%）远大于去掉动态演化（−5.5%）。</li>
+            <li>7B 开源模型通过结构化技能学习可超越参数量大一个数量级的闭源模型（GPT-4o、Gemini-2.5-Pro）。</li>
+            <li>技能库与策略的协同演化（co-evolution）是克服局部最优、持续提升性能上限的关键机制。</li>
+          </ol>
+
+          <h3 class="title is-5">局限性</h3>
+          <ul>
+            <li>技能演化依赖能力强大的教师模型（o3），在无法获取强教师模型的场景下框架可用性尚待验证。</li>
+            <li>技能库管理缺乏冗余检测——技能数量只增不减，长期运行可能引入冲突或冗余技能。</li>
+            <li>搜索增强 QA 实验 baseline 较少，结论的稳健性有待进一步分析。</li>
+          </ul>
+
+          <h3 class="title is-5">对后续研究的启发</h3>
+          <ol>
+            <li><strong>失败轨迹是被低估的学习信号</strong>：将失败归因结构化为技能（含失败点 / 错误推理 / 正确做法 / 防范原则），比单纯记录失败轨迹更具可操作性——研究失败复用方向的工作可将此作为典型范式。</li>
+            <li><strong>SFT 冷启动是 RL 与技能库结合的必要桥梁</strong>：未经 SFT 的模型无法有效利用外部技能库，仅靠 RL 探索无法自动学会"检索 + 应用"的行为范式；这对其他将技能外化为上下文信息的框架具有普遍指导意义。</li>
+            <li><strong>技能层级（通用 + 专项）的两分法具有方法论价值</strong>：去掉任一层均有超过 11% 的显著下降，层级结构不是装饰性设计，而是性能的实质贡献来源。</li>
+            <li><strong>技能演化应以失败驱动、类别感知</strong>：基于验证失败触发的递归演化结合分层采样，是技能库扩充不退化的重要保障，可迁移到其他在线学习系统的知识更新策略。</li>
+            <li><strong>技能抽象带来的 token 压缩是系统级优势</strong>：10–20× 压缩比在生产环境中的实际价值不亚于性能数字本身。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Footer ========= -->
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <p><a href="../index.html">← 返回 Agent × Skill 论文列表</a></p>
+    <p style="margin-top:0.5rem; font-size:0.78rem; color:#9ca3af;">
+      Data from <a href="https://huggingface.co/papers/2602.08234" target="_blank">Hugging Face Papers</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

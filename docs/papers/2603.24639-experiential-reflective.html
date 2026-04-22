@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Experiential Reflective Learning for Self-Improving LLM Agents — reading notes.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ERL — Agent × Skill Survey</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+  <style>
+    /* ERL brand gradient: deep violet → teal */
+    .erl {
+      font-variant: small-caps;
+      font-weight: bold;
+      background: linear-gradient(90deg, #6d28d9 0%, #0d9488 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========= Breadcrumb ========= -->
+<div class="breadcrumb-nav">
+  <div class="container is-max-desktop">
+    <a href="../index.html">Agent × Skill Survey</a>
+    <span class="sep">/</span>
+    <span>02 Memory</span>
+    <span class="sep">/</span>
+    <span>ERL</span>
+  </div>
+</div>
+
+
+<!-- ========= Hero ========= -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="erl">Experiential Reflective Learning</span><br>
+            for Self-Improving LLM Agents
+          </h1>
+          <p class="is-size-5" style="color:#555; margin-top:0.2rem; font-family:'Google Sans',sans-serif;">
+            经验反思学习：用于自我提升的 LLM 智能体
+          </p>
+
+          <div class="is-size-6 publication-authors" style="margin-top:1rem;">
+            <span class="author-block">Marc-Antoine Allard,</span>
+            <span class="author-block">Arnaud Teinturier,</span>
+            <span class="author-block">Victor Xing,</span>
+            <span class="author-block">Gautier Viaud</span>
+          </div>
+          <div class="is-size-7 publication-authors" style="margin-top:0.3rem; color:#555;">
+            <span class="author-block">Illuin Technology</span>
+          </div>
+          <div class="is-size-7" style="margin-top:0.25rem; color:#888;">
+            arXiv 2025-03 · 代码未公开
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2603.24639" target="_blank"
+                   class="external-link button is-normal is-rounded btn-arxiv">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/papers/2603.24639" target="_blank"
+                   class="external-link button is-normal is-rounded btn-hf">
+                  <span class="icon hf-icon">🤗</span>
+                  <span>HF Papers</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="../index.html"
+                   class="external-link button is-normal is-rounded btn-home">
+                  <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                  <span>Back</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Teaser figure ========= -->
+<section class="hero teaser" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="hero-body" style="padding-top:0;">
+      <div class="analysis-figure-wrap">
+        <img src="https://arxiv.org/html/2603.24639v1/x1.png"
+             alt="Figure 1: ERL framework — experience accumulation (left) and test-time retrieval (right)"
+             loading="lazy">
+      </div>
+      <p class="figure-caption has-text-centered">
+        <strong>Figure 1.</strong> <span class="erl">ERL</span> 框架全貌。
+        <strong>左：经验积累阶段</strong>——agent 执行任务后反思结果，将成功/失败原因提炼为结构化启发式规则，存入持久化规则池。
+        <strong>右：测试执行阶段</strong>——面对新任务时，LLM 按相关性从规则池中检索 top-k 条规则注入 system prompt，无需参数更新即可完成快速适应。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Abstract + Key Insight ========= -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            现有 LLM 智能体每次执行任务都从零开始，无法利用历史交互中积累的经验。Fine-tuning 成本高昂、对闭源模型不可行，且不支持持续学习。已有工作（ExpeL、AutoGuide）或需要多次重试才能构建对比轨迹，或在每个 agent 步骤都要执行检索，开销大、可扩展性差。
+          </p>
+          <p>
+            <span class="erl">ERL</span>（Experiential Reflective Learning）提出一种轻量级的无参数自我提升范式：agent 对<strong>单次任务轨迹</strong>进行反思，生成带有触发条件和推荐行动的可复用启发式规则（heuristics），统一存入持久化规则池；面对新任务时，LLM 担任检索排序器，从规则池中按相关性、多样性与信息量选取 $k=20$ 条规则注入 system prompt。在 Gaia2 benchmark 上，<span class="erl">ERL</span> 总体成功率达到 <strong>56.1%</strong>，较 ReAct baseline 提升 <strong>+7.8%</strong>，较最强先前方法 ExpeL 提升 <strong>+5.2%</strong>。
+          </p>
+        </div>
+
+        <div class="key-insight">
+          <div class="label">Key Insight</div>
+          <p>
+            将轨迹<strong>蒸馏为带触发条件的规则</strong>，远优于直接注入原始轨迹（+9.7% vs −1.9%）；在相同 token 预算下，结构化规则能容纳更多经验。<strong>检索质量</strong>（LLM 排序器）是性能瓶颈：LLM 检索 56.1% > embedding 检索 53.3% > 最优随机配置 53.8%。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Framework ========= -->
+<section class="section" id="framework" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Framework Overview</h2>
+        <div class="content has-text-justified">
+          <p>
+            <span class="erl">ERL</span> 由两个核心组件构成：<strong>启发式规则生成</strong>（Heuristic Generation）和<strong>检索增强执行</strong>（Retrieval-Augmented Execution）。规则以结构化格式存储：<em>分析</em>（识别成功/失败原因）+ <em>指南</em>（带明确触发条件的可泛化行动建议），无需参数更新即可在不同任务间实现经验迁移。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#6d28d9;">启发式规则生成</h3>
+          <p class="analysis-card-desc">
+            <strong>触发时机</strong>：agent 完成任务并获得二值成功/失败反馈后。<br>
+            <strong>输入</strong>：任务描述 + 完整执行轨迹（推理链、工具调用、输出）+ 结果信号。<br>
+            <strong>输出</strong>：结构化规则——"分析"识别原因 + "指南"给出带触发条件的可泛化建议。<br>
+            <strong>关键设计</strong>：单次轨迹即可生成规则，无需多次重试，适用于实际不可重复的部署场景。
+          </p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#0d9488;">检索增强执行</h3>
+          <p class="analysis-card-desc">
+            面对新任务时，LLM 先将任务分解为潜在子任务，再对规则池按三维标准评分：<strong>相似性</strong>（与当前任务的匹配度）、<strong>多样性</strong>（覆盖不同经验教训）、<strong>信息量</strong>（指南内容丰富程度）。选取 top-$k$（默认 $k=20$）条规则注入 system prompt。<br>
+            <strong>任务级检索而非全量注入</strong>，避免规则池扩大时的上下文爆炸与噪声。
+          </p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#4338ca;">规则示例</h3>
+          <p class="analysis-card-desc" style="font-size:0.85rem;">
+            <em>"当向日历参会者发送邮件时，应先通过 Contacts 工具将姓名解析为邮箱地址，再调用 email API。"</em>
+            <br><br>
+            此类规则包含<strong>明确触发条件</strong>（"当向日历参会者发送邮件时"）和<strong>推荐行动</strong>（"先查联系人再发邮件"），可直接指导 agent 在相似场景的决策，且无需重新执行历史轨迹。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered" style="margin-top:1.5rem;">
+      <div class="column is-four-fifths">
+        <h3 class="title is-5">模型配置与成本（Gaia2 实验）</h3>
+        <div class="content has-text-justified">
+          <p>
+            主执行 agent、规则生成器均采用 <code>gpt-5-mini-2025-08-07</code>；检索排序器采用更强的 <code>gpt-5.2-2025-12-11</code>。整体 API 成本较 baseline 增加约 <strong>40%</strong>（主要来自规则生成 +$2.42 和检索 +$1.38），场景执行本身仅增加 15%（得益于更高缓存命中率：88% vs 82%）。
+          </p>
+        </div>
+        <div class="table-container">
+          <table class="table is-striped is-fullwidth results-table">
+            <thead>
+              <tr>
+                <th>阶段</th><th>Input Tokens</th><th>Output Tokens</th><th>成本</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="text-align:left;">Baseline 场景执行</td><td>103.8M（82% 缓存）</td><td>4.3M</td><td>$15.27</td></tr>
+              <tr><td style="text-align:left;">ERL 启发式生成</td><td>7.5M（8% 缓存）</td><td>0.3M</td><td>$2.42</td></tr>
+              <tr><td style="text-align:left;">ERL 启发式检索</td><td>1.0M（86% 缓存）</td><td>0.1M</td><td>$1.38</td></tr>
+              <tr><td style="text-align:left;">ERL 场景执行</td><td>192.0M（88% 缓存）</td><td>3.9M</td><td>$17.60</td></tr>
+              <tr class="our-method-row"><td style="text-align:left;"><strong>ERL 总计</strong></td><td><strong>200.5M（85% 缓存）</strong></td><td><strong>4.3M</strong></td><td><strong>$21.40</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Results ========= -->
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Results</h2>
+        <p style="color:#555; margin-bottom:1rem;">
+          Gaia2 benchmark（移动设备环境，12 个应用、101 个工具）；3 次运行平均。
+        </p>
+      </div>
+    </div>
+
+    <!-- Main results figure -->
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2603.24639v1/x2.png"
+               alt="Figure 2: Success rates on Gaia2 test universes (3 runs)"
+               loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 2.</strong> Gaia2 测试宇宙成功率对比（3 次运行平均）。
+          <span class="erl">ERL</span> 在 Execution 和 Search 两个分割上均显著优于所有 baseline。
+        </p>
+      </div>
+    </div>
+
+    <div class="table-container" style="margin-top:1.5rem;">
+      <table class="table is-striped is-fullwidth results-table">
+        <thead>
+          <tr>
+            <th>方法</th>
+            <th>Execution (%)</th>
+            <th>Search (%)</th>
+            <th>Overall (%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Baseline（ReAct）</td><td>43.1</td><td>53.6</td><td>48.3</td></tr>
+          <tr><td>Few-shot（原始轨迹）</td><td>41.7</td><td>51.2</td><td>46.4</td></tr>
+          <tr><td>ExpeL</td><td>45.8</td><td>56.0</td><td>50.9</td></tr>
+          <tr><td>AutoGuide</td><td>39.6</td><td>61.9</td><td>50.8</td></tr>
+          <tr class="our-method-row"><td><strong>ERL（本文）</strong></td><td><strong>51.4</strong></td><td><strong>60.7</strong></td><td><strong>56.1</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="columns is-centered" style="margin-top:1rem;">
+      <div class="column is-four-fifths">
+        <div class="content">
+          <ul>
+            <li>ERL 总体成功率 <strong>56.1%</strong>，较 ReAct baseline <strong>+7.8%</strong>，较 ExpeL <strong>+5.2%</strong>。</li>
+            <li>Few-shot 注入原始轨迹反而有害（-1.9%），证明规则蒸馏的必要性。</li>
+            <li>AutoGuide 在 Search 分割领先（61.9%），但 Execution 分割仅 39.6%，整体不及 ERL；ERL 两个分割均衡提升。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- τ²-Bench results -->
+    <div class="columns is-centered" style="margin-top:0.5rem;">
+      <div class="column is-four-fifths">
+        <h3 class="title is-5" style="text-align:center;">τ²-Bench 辅助评估</h3>
+        <div class="table-container">
+          <table class="table is-striped is-fullwidth results-table">
+            <thead>
+              <tr>
+                <th>指标</th><th>方法</th><th>Airline</th><th>Retail</th><th>Telecom</th><th>Overall</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td rowspan="2" style="text-align:left;">Success Rate</td><td>Baseline</td><td>36.7%</td><td>43.3%</td><td>30.0%</td><td>36.7%</td></tr>
+              <tr class="our-method-row"><td><strong>ERL</strong></td><td><strong>38.3%</strong></td><td><strong>47.5%</strong></td><td>28.3%</td><td><strong>38.0%</strong></td></tr>
+              <tr><td rowspan="2" style="text-align:left;">pass^3</td><td>Baseline</td><td>20.0%</td><td>12.5%</td><td>10.0%</td><td>14.2%</td></tr>
+              <tr class="our-method-row"><td><strong>ERL</strong></td><td><strong>25.0%</strong></td><td><strong>17.5%</strong></td><td>0.0%</td><td>14.2%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:0.85rem; color:#546e7a; font-style:italic; margin-top:0.6rem;">
+          Telecom 分割下降：该领域任务组合空间大且含双控制交互（用户也参与决策），历史启发式规则难以准确匹配。
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Analysis ========= -->
+<section class="section" id="analysis" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Analysis</h2>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">检索质量 vs. 数量</h3>
+          <p class="analysis-card-desc">
+            随机选取规则时，性能在 40~60 条时达峰值后下降（非单调），说明噪声规则有害。
+            LLM 检索（$k=20$，56.1%）显著优于 embedding 检索（53.3%）和最优随机配置（53.8%）。
+            <strong>结论：检索质量比检索数量更关键</strong>——LLM 能理解错误模式与规则内容，而非仅靠语义向量距离匹配。
+          </p>
+          <table class="table is-narrow ablation-table is-fullwidth" style="margin-top:0.8rem;">
+            <thead><tr><th>检索方式</th><th>Exec (%)</th><th>Search (%)</th><th>Overall (%)</th></tr></thead>
+            <tbody>
+              <tr><td>无检索（全量注入）</td><td>44.4</td><td>63.1</td><td>53.8</td></tr>
+              <tr><td>Embedding（Qwen3）</td><td>50.7</td><td>56.0</td><td>53.3</td></tr>
+              <tr class="our-method-row"><td><strong>LLM 检索（GPT-5.2）</strong></td><td><strong>51.4</strong></td><td><strong>60.7</strong></td><td><strong>56.1</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">失败 vs. 成功经验的贡献</h3>
+          <p class="analysis-card-desc">
+            <strong>失败规则</strong>在 Search 任务上效果更佳（+14.3% vs baseline），通过负向约束剪枝无效探索策略；
+            <strong>成功规则</strong>在 Execution 任务上贡献更大（+9.0%），通过正向示范强化已验证行动序列。
+            混合使用是实际部署中最安全的选择（任务分布未知时更稳健）。
+          </p>
+          <table class="table is-narrow ablation-table is-fullwidth" style="margin-top:0.8rem;">
+            <thead><tr><th>消融配置</th><th>Exec (%)</th><th>Search (%)</th><th>Overall (%)</th></tr></thead>
+            <tbody>
+              <tr class="our-method-row"><td><strong>ERL（全部）</strong></td><td><strong>51.4</strong></td><td>60.7</td><td>56.1</td></tr>
+              <tr><td>仅失败经验</td><td>50.0</td><td><strong>67.9</strong></td><td><strong>58.9</strong></td></tr>
+              <tr><td>仅成功经验</td><td>52.1</td><td>47.6</td><td>49.9</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns" style="margin-top:1rem;">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">规则 vs. 原始轨迹（token 效率）</h3>
+          <p class="analysis-card-desc">
+            Few-shot 直接注入原始轨迹：<span class="drop">-1.9%</span>（低于 baseline）。ERL 启发式规则：<strong>+7.8%</strong>。
+            在相同 token 预算下，结构化规则能容纳更多经验（token 压缩率高），信噪比更佳，迁移学习信号更强。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">迭代 ERL 的泛化悖论</h3>
+          <p class="analysis-card-desc">
+            积累阶段同步检索已有规则（边积累边使用）：积累阶段表现更好（Exec +2.6% / Search +6.1%），但测试泛化性下降 <span class="drop">-5.4%</span>。
+            原因：引导轨迹遇到的失败模式更窄，生成规则覆盖不足，泛化能力反而弱于从"天真失败"中学习——<strong>多样化失败经验是泛化的来源</strong>。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reliability figure -->
+    <div class="columns is-centered" style="margin-top:1.5rem;">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2603.24639v1/x3.png"
+               alt="Figure 3: Success rate, pass@3 and pass^3 comparison"
+               loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 3.</strong> 成功率、pass@3 与 pass^3（三次全成功）对比。
+          <span class="erl">ERL</span> 在 pass^3 上提升尤为显著：Execution <strong>+8.3%</strong>、Search <strong>+10.6%</strong>——
+          表明 ERL 主要提升了任务完成的<strong>稳定性</strong>，而非解锁全新任务类型。
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Takeaways ========= -->
+<section class="section" id="takeaways">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Takeaways</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h3 class="title is-5">核心结论</h3>
+          <ol>
+            <li><strong>规则蒸馏 > 原始轨迹</strong>：将轨迹提炼为带触发条件的结构化规则，既压缩了 token 成本，又提升了迁移学习信号质量。</li>
+            <li><strong>LLM 检索 > embedding 检索</strong>：LLM 能理解错误模式与规则语义，检索质量是 ERL 性能的关键瓶颈。</li>
+            <li><strong>单次轨迹即可学习</strong>：无需多次重试，适用于实际不可重复的生产部署场景。</li>
+            <li><strong>失败/成功经验的适用场景不同</strong>：失败规则适合 Search（负约束剪枝），成功规则适合 Execution（正向示范），混合使用最稳健。</li>
+            <li><strong>稳定性提升</strong>：ERL 主要提升 pass^3（一致性），说明其核心价值在于消除偶发错误而非扩展能力边界。</li>
+          </ol>
+
+          <h3 class="title is-5">局限性</h3>
+          <ul>
+            <li><strong>依赖成功/失败反馈信号</strong>：自评准确率仅 70%，无反馈时性能从 56.1% 降至 51.2%。</li>
+            <li><strong>双控制场景（含用户交互）表现较弱</strong>：Telecom 分割下降，因任务组合空间大、历史规则难以匹配。</li>
+            <li>规则池随经验积累增大后，冲突解决与检索精度维护的挑战尚未充分解决。</li>
+            <li>整体 API 成本增加约 40%，生产部署需权衡性能收益与成本。</li>
+          </ul>
+
+          <h3 class="title is-5">对后续研究的启发</h3>
+          <ol>
+            <li><strong>反思即学习</strong>：无参数更新地利用 LLM 反思能力，与 RL 范式形成互补，适合闭源模型或快速迭代场景。</li>
+            <li><strong>经验的可迁移抽象</strong>：带触发条件的规则是知识复用的有效表示；这一思路与 SkillX 的 functional skills 形成呼应——均强调经验的结构化表示优于原始记录。</li>
+            <li><strong>检索是核心瓶颈</strong>：随规模增长，两阶段检索（embedding 粗选 + LLM 精排）值得重点投入。</li>
+            <li><strong>多样化失败经验是泛化的来源</strong>：不要过早在积累阶段"引导"agent，保持探索多样性更有利于后期泛化。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Footer ========= -->
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <p><a href="../index.html">← 返回 Agent × Skill 论文列表</a></p>
+    <p style="margin-top:0.5rem; font-size:0.78rem; color:#9ca3af;">
+      Data from <a href="https://huggingface.co/papers/2603.24639" target="_blank">Hugging Face Papers</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

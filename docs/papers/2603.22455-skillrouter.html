@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="SkillRouter: Retrieve-and-Rerank Skill Selection for LLM Agents at Scale — reading notes.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SkillRouter — Agent × Skill Survey</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+  <style>
+    /* SkillRouter brand gradient */
+    .skillrouter {
+      font-variant: small-caps;
+      font-weight: bold;
+      background: linear-gradient(90deg, #0369a1 0%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========= Breadcrumb ========= -->
+<div class="breadcrumb-nav">
+  <div class="container is-max-desktop">
+    <a href="../index.html">Agent × Skill Survey</a>
+    <span class="sep">/</span>
+    <span>03 Infrastructure</span>
+    <span class="sep">/</span>
+    <span>SkillRouter</span>
+  </div>
+</div>
+
+
+<!-- ========= Hero ========= -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="skillrouter">SkillRouter</span>: Retrieve-and-Rerank<br>
+            Skill Selection for LLM Agents at Scale
+          </h1>
+          <p class="is-size-5" style="color:#555; margin-top:0.2rem; font-family:'Google Sans',sans-serif;">
+            大规模 LLM Agent Skill 检索：检索-重排路由系统
+          </p>
+
+          <div class="is-size-6 publication-authors" style="margin-top:1rem;">
+            <span class="author-block">Baohua Dong,</span>
+            <span class="author-block">Hangcheng Zhu,</span>
+            <span class="author-block">et al.</span>
+          </div>
+          <div class="is-size-7 publication-authors" style="margin-top:0.3rem; color:#555;">
+            <span class="author-block">Alibaba Group，杭州</span>
+          </div>
+          <div class="is-size-7" style="margin-top:0.25rem; color:#888;">
+            arXiv 2603.22455 · 2025
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2603.22455" target="_blank"
+                   class="external-link button is-normal is-rounded btn-arxiv">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/papers/2603.22455" target="_blank"
+                   class="external-link button is-normal is-rounded btn-hf">
+                  <span class="icon hf-icon">🤗</span>
+                  <span>HF Papers</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="../index.html"
+                   class="external-link button is-normal is-rounded btn-home">
+                  <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                  <span>Back</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Teaser figure ========= -->
+<section class="hero teaser" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="hero-body" style="padding-top:0;">
+      <div class="analysis-figure-wrap">
+        <img src="https://arxiv.org/html/2603.22455v1/x1.png"
+             alt="Figure 1: Skill body is the decisive signal. Left: removing body causes 29–44pp Hit@1 drops. Right: cross-encoder attention shows 91.7% on body."
+             loading="lazy">
+      </div>
+      <p class="figure-caption has-text-centered">
+        <strong>Figure 1.</strong>
+        <strong>左图：</strong>移除 body 字段（仅保留 name + description，即 nd）后，所有方法的 Hit@1 均出现灾难性下降（29–44 pp）。
+        <strong>右图：</strong>cross-encoder 注意力层间分析显示最终层有 <strong>91.7% 的注意力集中在 body 字段</strong>，而 description 在所有层的注意力均 ≤ 1.4%——推翻了"name + description 已足够"的业界默认假设。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Abstract ========= -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            随着 LLM Agent 生态成熟，社区 skill 库（工具 / 插件）已达数万乃至十万量级。把所有 skill 塞进 context 不可行——需要 <strong>skill routing</strong>：给定用户任务，从大规模 skill 池中自动检索最相关的 skill。然而，该问题存在三个核心难点：<strong>功能同质性</strong>（大量 skill 名称相近但实现细节各异，极难区分）；<strong>信息不对称假设被打破</strong>（现有系统默认 name + description 已足够，但这一假设从未被系统验证）；<strong>现有 benchmark 空白</strong>（SkillBench / ToolBench 等评测的是"如何用给定工具"，而非"如何从大池中找到正确工具"）。
+          </p>
+          <p>
+            本文系统研究上述问题，构建了 ~80K skill、75 条专家验证 query 的评测 benchmark，并提出 <span class="skillrouter">SkillRouter</span>：以 SR-Emb-0.6B（bi-encoder）+ SR-Rank-0.6B（cross-encoder）构成 1.2B 的两阶段 retrieve-and-rerank pipeline，在 ~80K skill 池上达到 <strong>74.0% Hit@1</strong>，优于更大的零样本 8B baseline（68.0%），且可部署于消费级硬件。
+          </p>
+        </div>
+
+        <div class="key-insight">
+          <div class="label">Key Insight</div>
+          <p><strong>Skill body（完整实现文本）才是决定性信号，而非 metadata。</strong>移除 body 造成 29–44 pp 灾难性下降；routing 层必须有 body 访问权限，agent 消费端保持 context 节省——这种"Hidden-Body Asymmetry"是架构设计的必要约束，不是便利选择。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Framework ========= -->
+<section class="section" id="framework" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Framework Overview</h2>
+        <div class="content has-text-justified">
+          <p>
+            <span class="skillrouter">SkillRouter</span> 是紧凑的两阶段 pipeline：第一阶段 bi-encoder 将 ~80K skills 压缩到 top-20 候选，第二阶段 cross-encoder 对候选进行精细重排。两阶段均使用完整 skill 文本（name + description + body）。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2603.22455v1/x2.png"
+               alt="Figure 2: SkillRouter two-stage pipeline architecture"
+               loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 2.</strong> <span class="skillrouter">SkillRouter</span> 两阶段架构。Stage 1：SR-Emb-0.6B（bi-encoder）将 ~80K skills 压缩到 top-20 候选；Stage 2：SR-Rank-0.6B（cross-encoder）对候选重排，输出最终排序。两阶段均使用完整 skill 文本。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#0369a1;">Stage 1 — SR-Emb-0.6B（Bi-Encoder 检索）</h3>
+          <p class="analysis-card-desc">
+            基座：Qwen3-Emb-0.6B（decoder-based embedding）。输入格式：Query 侧带 instruct 前缀，Skill 侧为 <code>name | description | body</code>（description 截至 300 token，body 截至 2500 token）。训练数据：37,979 个（query, skill）对，query 由 GPT-4o-mini 基于 skill 内容生成，与评测 benchmark 完全不相交。Hard negative mining 从四类来源各取 4/3/2/1 个负例，并施加三层<strong>假负例过滤</strong>（名称去重 + trigram Jaccard > 0.6 + 余弦相似度 > 0.92），约过滤掉 10% 负例对。损失函数：in-batch InfoNCE（$\tau = 0.05$）。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#06b6d4;">Stage 2 — SR-Rank-0.6B（Cross-Encoder 重排）</h3>
+          <p class="analysis-card-desc">
+            基座：Qwen3-Reranker-0.6B（decoder-based cross-encoder）。输入格式（flat-full）：对每个 query 将其与 20 个候选 skill 的完整文本拼接输入，description 截至 500 token，body 截至 3000 token。训练数据：32,283 个 query，每个取 SR-Emb-0.6B 检索的 top-20 候选，构成 binary 标注列表（同样施加假负例过滤）。损失函数：<strong>Listwise cross-entropy</strong>（对候选列表做 softmax + log-prob of positive），比 pointwise BCE 高出 <strong>30.7 pp Hit@1</strong>。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered" style="margin-top:1rem;">
+      <div class="column is-four-fifths">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Hidden-Body Asymmetry：信息不对称设计约束</h3>
+          <p class="analysis-card-desc">
+            这是 skill routing 区别于普通文档检索的核心特征。<strong>消费者（agent）</strong>：受 context 窗口限制，只能看到 skill 的 name + description。<strong>路由器（retriever / reranker）</strong>：可以访问完整的 body（实现代码 / 详细规范）。此不对称不是设计便利，而是必要约束——routing 层必须有 body 访问权限，才能实现准确选择；agent 消费端则保持轻量。注意力层间演化呈现 <strong>body → name → body</strong> 模式：早层（0–6）body 占 97.3%，中层（7–20）name 升至峰值 26.3%（语义匹配），晚层（21–27）回归 body 主导（91.7%）。
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Results ========= -->
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Results</h2>
+        <p style="color:#555; margin-bottom:0.5rem;">
+          评测 benchmark：~80K skills，75 条专家验证 query（24 单技能 + 51 多技能），两难度层级：Easy（78,361 skills）/ Hard（79,141 skills，含 780 个 distractor skills）。
+        </p>
+      </div>
+    </div>
+
+    <h3 class="title is-5" style="text-align:center; margin-bottom:0.5rem;">Encoder 检索结果（全文输入，~80K skill 池）</h3>
+    <div class="table-container">
+      <table class="table is-striped is-fullwidth results-table">
+        <thead>
+          <tr>
+            <th>模型</th><th>类型</th><th>参数量</th>
+            <th>Easy Hit@1</th><th>Hard Hit@1</th><th>Avg Hit@1</th><th>Avg R@20</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>BM25</td><td>Sparse</td><td>—</td><td>.347</td><td>.280</td><td>.314</td><td>.365</td></tr>
+          <tr><td>E5-Large-v2</td><td>Encoder</td><td>335M</td><td>.507</td><td>.493</td><td>.500</td><td>.594</td></tr>
+          <tr><td>BGE-Large-v1.5</td><td>Encoder</td><td>335M</td><td>.613</td><td>.587</td><td>.600</td><td>.668</td></tr>
+          <tr><td>GTE-Large-v1.5</td><td>Encoder</td><td>434M</td><td>.573</td><td>.520</td><td>.547</td><td>.696</td></tr>
+          <tr><td>gemini-emb-001</td><td>Proprietary</td><td>—</td><td>.613</td><td>.560</td><td>.587</td><td>.687</td></tr>
+          <tr><td>text-emb-3-large</td><td>Proprietary</td><td>—</td><td>.640</td><td>.600</td><td>.620</td><td>.664</td></tr>
+          <tr><td>Qwen3-Emb-0.6B</td><td>Decoder</td><td>0.6B</td><td>.587</td><td>.533</td><td>.560</td><td>.637</td></tr>
+          <tr><td>NV-Embed-v2</td><td>Decoder</td><td>7B</td><td>.440</td><td>.413</td><td>.427</td><td>.562</td></tr>
+          <tr><td>Qwen3-Emb-8B</td><td>Decoder</td><td>8B</td><td>.653</td><td>.627</td><td>.640</td><td>.726</td></tr>
+          <tr class="our-method-row"><td><strong>SR-Emb-0.6B（ours）</strong></td><td>Decoder</td><td>0.6B</td><td><strong>.667</strong></td><td><strong>.640</strong></td><td><strong>.654</strong></td><td><strong>.754</strong></td></tr>
+          <tr class="our-method-row"><td><strong>SR-Emb-8B（ours，scale）</strong></td><td>Decoder</td><td>8B</td><td><strong>.693</strong></td><td><strong>.667</strong></td><td><strong>.680</strong></td><td><strong>.777</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="title is-5" style="text-align:center; margin:1.5rem 0 0.5rem;">端到端 Pipeline 结果（top-20 候选，Avg Easy+Hard）</h3>
+    <div class="table-container">
+      <table class="table is-striped is-fullwidth results-table">
+        <thead>
+          <tr>
+            <th>Encoder</th><th>Reranker</th><th>Rank Input</th><th>Avg Hit@1</th><th>Avg MRR@10</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Qwen3-Emb-0.6B</td><td>—</td><td>—</td><td>.560</td><td>.638</td></tr>
+          <tr><td>Qwen3-Emb-8B</td><td>—</td><td>—</td><td>.640</td><td>.698</td></tr>
+          <tr><td>SR-Emb-0.6B</td><td>—</td><td>—</td><td>.654</td><td>.723</td></tr>
+          <tr><td>Qwen3-Emb-8B</td><td>Qwen3-Rank-8B</td><td>nd（无 body）</td><td>.240</td><td>.392</td></tr>
+          <tr><td>Qwen3-Emb-8B</td><td>GPT-5.4-mini</td><td>nd</td><td>.307</td><td>—</td></tr>
+          <tr><td>Qwen3-Emb-8B</td><td>GPT-4o-mini</td><td>full</td><td>.647</td><td>—</td></tr>
+          <tr><td>Qwen3-Emb-8B</td><td>Qwen3-Rank-8B</td><td>full</td><td>.680</td><td>.745</td></tr>
+          <tr><td>SR-Emb-0.6B</td><td>GPT-4o-mini</td><td>full</td><td>.673</td><td>—</td></tr>
+          <tr><td>SR-Emb-0.6B</td><td>Qwen3-Rank-8B</td><td>full</td><td>.714</td><td>.776</td></tr>
+          <tr class="our-method-row"><td><strong>SR-Emb-0.6B × SR-Rank-0.6B（ours）</strong></td><td>—</td><td><strong>full</strong></td><td><strong>.740</strong></td><td><strong>.791</strong></td></tr>
+          <tr class="our-method-row"><td><strong>SR-Emb-8B × SR-Rank-8B（scale）</strong></td><td>—</td><td><strong>full</strong></td><td><strong>.760</strong></td><td><strong>.808</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="columns is-centered" style="margin-top:1rem;">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <ul>
+            <li><span class="skillrouter">SkillRouter</span>（SR-Emb-0.6B × SR-Rank-0.6B，1.2B 参数）达到 <strong>74.0% Hit@1</strong>，比最强零样本 8B pipeline（68.0%）高 <strong>+6.0 pp</strong>，比 encoder-only baseline 提升 <strong>+8.6 pp</strong>。</li>
+            <li><strong>nd（无 body）的 reranker 甚至有害</strong>：Qwen3-Emb-8B × Qwen3-Rank-8B-nd 仅 24.0%，低于单用 encoder 的 64.0%（降低 40.0 pp）。</li>
+            <li>SR-Emb-0.6B（0.6B 微调）以更低参数量超过 Qwen3-Emb-8B（8B 零样本），证明<em>任务特定微调比单纯扩大规模更有效</em>。</li>
+            <li>可部署于消费级硬件（laptop CPU），无需云 API。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Analysis ========= -->
+<section class="section" id="analysis" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Analysis</h2>
+      </div>
+    </div>
+
+    <!-- Reranker contribution figure -->
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2603.22455v1/x3.png"
+               alt="Figure 3: Reranker contribution decomposition — rescues 12.7% queries, degrades 4.0%, net +8.7pp Hit@1"
+               loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 3.</strong> Reranker 贡献分解（共 150 条 query）：Reranker 在 <strong>12.7%</strong> 的 query 上修复了 encoder 的错误（绿色），仅在 <strong>4.0%</strong> 上出现降级（红色），净贡献 <strong>+8.7 pp Hit@1</strong>。22% query 被两阶段均错过——这是 encoder top-20 窗口召回不足或语义鸿沟需要多跳推理导致的系统上限。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns" style="margin-top:1rem;">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">假负例过滤的影响（Encoder 消融）</h3>
+          <table class="table is-narrow ablation-table is-fullwidth" style="margin-top:0.6rem;">
+            <thead>
+              <tr><th>难度层级</th><th>清洁负例 Hit@1</th><th>原始负例 Hit@1</th><th>Δ</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Easy</td><td>.667</td><td>.640</td><td class="drop">−2.7</td></tr>
+              <tr><td>Hard</td><td>.640</td><td>.587</td><td class="drop">−5.3</td></tr>
+              <tr><td>Avg</td><td>.653</td><td>.613</td><td class="drop">−4.0</td></tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc">
+            移除假负例过滤导致平均 Hit@1 降低 4.0 pp，Hard tier 降低更明显（-5.3 pp）。R@50 几乎不受影响（-0.7 pp）——假负例主要<strong>破坏精细排序能力</strong>，而非整体召回。社区 skill 库功能重叠严重，不过滤假负例会严重损害 contrastive learning 效果。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Listwise vs Pointwise 损失（Reranker 消融）</h3>
+          <table class="table is-narrow ablation-table is-fullwidth" style="margin-top:0.6rem;">
+            <thead>
+              <tr><th>Reranker</th><th>Loss</th><th>Avg Hit@1</th></tr>
+            </thead>
+            <tbody>
+              <tr class="our-method-row"><td><strong>SR-Rank-0.6B</strong></td><td><strong>Listwise</strong></td><td><strong>.740</strong></td></tr>
+              <tr><td>Qwen3-Rank-0.6B（base）</td><td>零样本</td><td>.707</td></tr>
+              <tr><td>Qwen3-Rank-8B（base）</td><td>零样本</td><td>.714</td></tr>
+              <tr><td>Encoder-only</td><td>—</td><td>.654</td></tr>
+              <tr><td class="drop">FT-PW（微调）</td><td>Pointwise</td><td class="drop">.433</td></tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc">
+            <strong>Listwise CE vs Pointwise BCE：差距高达 +30.7 pp Hit@1。</strong>Pointwise 微调后甚至低于 encoder-only baseline（43.3% vs 65.4%）。原因：skill 池高度同质，pointwise sigmoid 对近似候选输出汇聚至窄带，排序接近随机；listwise softmax 直接建模候选间相对顺序，正是同质池精选所需的比较机制。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns" style="margin-top:1rem;">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">规模扩展行为</h3>
+          <table class="table is-narrow ablation-table is-fullwidth" style="margin-top:0.6rem;">
+            <thead>
+              <tr><th>Pipeline</th><th>总参数量</th><th>Avg Hit@1</th></tr>
+            </thead>
+            <tbody>
+              <tr class="our-method-row"><td><strong>SR-Emb-0.6B × SR-Rank-0.6B</strong></td><td>1.2B</td><td><strong>74.0%</strong></td></tr>
+              <tr><td>SR-Emb-0.6B × SR-Rank-8B</td><td>~8.6B</td><td>74.7%</td></tr>
+              <tr><td>SR-Emb-8B × SR-Rank-8B</td><td>~16B</td><td>76.0%</td></tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc">
+            <strong>Encoder 质量对最终性能的贡献大于 reranker 规模</strong>：升级 encoder 0.6B→8B 贡献 +1.3 pp，单独升级 reranker 仅贡献 +0.7 pp。1.2B 的主方案在性能与部署成本间取得最优平衡。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Metadata-Only vs Implementation-Aware</h3>
+          <table class="table is-narrow ablation-table is-fullwidth" style="margin-top:0.6rem;">
+            <thead>
+              <tr><th>方法</th><th>仅 nd（无 body）</th><th>全文（含 body）</th><th>Δ</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>BM25</td><td>.000</td><td>.347</td><td>+34.7</td></tr>
+              <tr><td>Qwen3-Emb-0.6B</td><td>.227</td><td>.587</td><td>+36.0</td></tr>
+              <tr><td>Qwen3-Emb-8B</td><td>.307</td><td>.653</td><td>+34.6</td></tr>
+              <tr><td>Qwen3-Emb-8B × Rank-8B</td><td>.240</td><td>.680</td><td>+44.0</td></tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc">
+            在所有方法和难度层级上，body 均是不可缺少的信号。<em>仅有 name + description 的 reranker 甚至主动破坏排序</em>（Qwen3-Emb-0.6B × Qwen3-Rank-8B-nd：30.7% vs encoder-only 56.0%，降 25.3 pp）。
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Takeaways ========= -->
+<section class="section" id="takeaways">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Takeaways</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h3 class="title is-5">核心结论</h3>
+          <ol>
+            <li><strong>Skill routing 是真正困难的检索问题</strong>：最强 8B base encoder 也只有 64.0% Hit@1，功能同质性使得任何简单方法均难以应对。</li>
+            <li><strong>Skill body 是决定性信号</strong>：移除 body 造成 29–44 pp 灾难性下降，attention 分析证实 91.7% 集中在 body——推翻了"name + description 已足够"的业界假设。</li>
+            <li><strong>SkillRouter（1.2B）有效且紧凑</strong>：74.0% Hit@1，优于更大的零样本基线，可在消费级硬件上部署；同方法扩展到 16B 达到 76.0%。</li>
+            <li><strong>任务特定微调优于单纯扩大规模</strong>：0.6B 微调超越 8B 零样本，data / training 对此任务比 scale 更重要。</li>
+          </ol>
+
+          <h3 class="title is-5">对 Skill 管理与检索方向的启发</h3>
+          <ol>
+            <li><strong>Skill 文档质量至关重要</strong>：body（实现细节 / 详细规范）的质量直接决定检索精度，社区应重视 skill body 的信息丰富性，而非只关注简短的 name / description。</li>
+            <li><strong>Routing 层架构设计</strong>：大规模 agent 系统应将 routing 组件与 agent 消费端分离；routing 层必须有 body 访问权，agent 消费端保持 context 节省。</li>
+            <li><strong>假负例过滤是同质池训练的必要步骤</strong>：社区 skill 库功能重叠严重，不过滤假负例会严重损害 contrastive learning 效果。</li>
+            <li><strong>Listwise ranking loss 对同质候选池是关键</strong>：当候选池高度相似时，必须建模候选间相对顺序，pointwise 方案会失效。</li>
+            <li><strong>两阶段 pipeline 的互补价值</strong>：encoder 提供语义召回广度（R@20 = 75.4%），reranker 基于 body 细粒度 cross-attention 提升精度（Hit@1 净 +8.7 pp），两者缺一不可。</li>
+          </ol>
+
+          <h3 class="title is-5">局限性与未来方向</h3>
+          <ul>
+            <li>22% query 被两阶段均错过——系统上限来自 encoder top-20 窗口召回不足或语义鸿沟需要多跳推理，是未来重点突破方向。</li>
+            <li>当前 benchmark 为 75 条 query，规模有限；更大规模、更多领域的评测集仍待构建。</li>
+            <li>论文承诺开源模型与评测工具包，但截至笔记整理时公开链接尚未放出。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Footer ========= -->
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <p><a href="../index.html">← 返回 Agent × Skill 论文列表</a></p>
+    <p style="margin-top:0.5rem; font-size:0.78rem; color:#9ca3af;">
+      Data from <a href="https://huggingface.co/papers/2603.22455" target="_blank">Hugging Face Papers</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

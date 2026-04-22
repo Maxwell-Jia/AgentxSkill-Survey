@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="MetaClaw: Just Talk — An Agent That Meta-Learns and Evolves in the Wild — reading notes.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MetaClaw — Agent × Skill Survey</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+  <style>
+    /* MetaClaw brand gradient */
+    .metaclaw {
+      font-variant: small-caps;
+      font-weight: bold;
+      background: linear-gradient(90deg, #0f4c9e 0%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Two-loop diagram label styling */
+    .loop-label {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.18rem 0.6rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .loop-fast {
+      background: #dbeafe;
+      color: #1e40af;
+      border: 1px solid #bfdbfe;
+    }
+    .loop-slow {
+      background: #fce7f3;
+      color: #9d174d;
+      border: 1px solid #fbcfe8;
+    }
+
+    /* Inline code pill */
+    code.pill {
+      background: #f3f4f6;
+      color: #374151;
+      padding: 0.1em 0.45em;
+      border-radius: 4px;
+      font-size: 0.85em;
+    }
+
+    /* Algorithm box */
+    .algo-box {
+      background: #f8fafc;
+      border: 1px solid #dde3ea;
+      border-radius: 10px;
+      padding: 1.2rem 1.5rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.82rem;
+      line-height: 1.75;
+      color: #1e293b;
+      white-space: pre-wrap;
+    }
+    .algo-box .comment { color: #64748b; }
+    .algo-box .keyword { color: #0f4c9e; font-weight: 700; }
+  </style>
+</head>
+<body>
+
+<!-- ========= Breadcrumb ========= -->
+<div class="breadcrumb-nav">
+  <div class="container is-max-desktop">
+    <a href="../index.html">Agent × Skill Survey</a>
+    <span class="sep">/</span>
+    <span>02 Memory</span>
+    <span class="sep">/</span>
+    <span>MetaClaw</span>
+  </div>
+</div>
+
+
+<!-- ========= Hero ========= -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            Just Talk — An Agent That<br>
+            <span class="metaclaw">Meta-Learns and Evolves</span> in the Wild
+          </h1>
+          <p class="is-size-5" style="color:#555; margin-top:0.2rem; font-family:'Google Sans',sans-serif;">
+            MetaClaw：让已部署 LLM 智能体在真实环境中持续元学习与自主演化
+          </p>
+
+          <div class="is-size-6 publication-authors" style="margin-top:1rem;">
+            <span class="author-block">Jianwen Chen<sup>1</sup>,</span>
+            <span class="author-block">Xinyu Yang<sup>2</sup>,</span>
+            <span class="author-block">Haoqin Tu<sup>3</sup>,</span>
+            <span class="author-block">Jiaqi Liu<sup>1</sup>,</span>
+            <span class="author-block">Kaiwen Xiong<sup>1</sup>,</span>
+            <span class="author-block">Siwei Han<sup>4</sup>,</span>
+            <span class="author-block">Shi Qiu<sup>3</sup>,</span>
+            <span class="author-block">Haonian Ji<sup>1</sup>,</span>
+            <span class="author-block">Yuyin Zhou<sup>3</sup>,</span>
+            <span class="author-block">Zeyu Zheng<sup>4</sup>,</span>
+            <span class="author-block">Cihang Xie<sup>3</sup>,</span>
+            <span class="author-block">Huaxiu Yao<sup>1</sup></span>
+          </div>
+          <div class="is-size-7 publication-authors" style="margin-top:0.3rem; color:#555;">
+            <span class="author-block"><sup>1</sup>UNC Chapel Hill</span>
+            <span class="author-block"><sup>2</sup>CMU</span>
+            <span class="author-block"><sup>3</sup>UC Santa Cruz</span>
+            <span class="author-block"><sup>4</sup>UC Berkeley</span>
+          </div>
+          <div class="is-size-7" style="margin-top:0.25rem; color:#888;">
+            arXiv 2603.17187 · 2026-03
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2603.17187" target="_blank"
+                   class="external-link button is-normal is-rounded btn-arxiv">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/aiming-lab/MetaClaw" target="_blank"
+                   class="external-link button is-normal is-rounded btn-github">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/papers/2603.17187" target="_blank"
+                   class="external-link button is-normal is-rounded btn-hf">
+                  <span class="icon hf-icon">🤗</span>
+                  <span>HF Papers</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="../index.html"
+                   class="external-link button is-normal is-rounded btn-home">
+                  <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                  <span>Back</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Teaser figure ========= -->
+<section class="hero teaser" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="hero-body" style="padding-top:0;">
+      <div class="analysis-figure-wrap">
+        <img src="https://arxiv.org/html/2603.17187v1/x5.png"
+             alt="MetaClaw Framework — two-loop continual meta-learning" loading="lazy">
+      </div>
+      <p class="figure-caption has-text-centered">
+        <strong>Figure 1 (Framework Overview).</strong>
+        <span class="metaclaw">MetaClaw</span> 通过两个互补循环联合演化 meta-model $M = (\theta, S)$：
+        <span class="loop-label loop-fast">快速适应</span> — 分析失败轨迹，合成新 skill 注入库 $S$，零停机；
+        <span class="loop-label loop-slow">慢速优化</span> — 在用户空闲时段触发 RL 权重更新（Cloud LoRA），精炼参数 $\theta$。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Abstract + Key Insight ========= -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            LLM agent 在真实部署中面临根本矛盾：必须持续不中断地服务用户，同时其能力随任务分布漂移而逐渐过时——模型一经训练便静止不动。现有方法各有致命缺陷：
+            <strong>Memory-based 方法</strong>（Reflexion、Mem0 等）存储原始轨迹，未提炼可复用行为知识；
+            <strong>Skill-based 方法</strong>（Voyager、ExpeL 等）将经验压缩为 skill 指令，但 skill 库静态，从不与权重优化协调；
+            <strong>RL-based 方法</strong>（GRPO、DAPO 等）更新模型权重，却遭受<em>陈旧奖励污染</em>——skill 已演化后，旧 skill 上下文收集的轨迹奖励信号已失效。
+          </p>
+          <p>
+            <span class="metaclaw">MetaClaw</span> 将 LLM policy（权重 $\theta$）与 behavioral skill 库（$S$）<strong>联合演化</strong>：
+            技能驱动的即时 prompt 注入（零停机）与基于空闲时段的 RL 权重更新（opportunistic updates）相互强化，形成持续演化的正向循环。
+            在 MetaClaw-Bench（934 题 / 44 模拟工作日）与 AutoResearchClaw（23 阶段全自动科研 pipeline）上，
+            Full Pipeline 将 Kimi-K2.5 的任务完成率提升 <strong>8.25×</strong>，并几乎追平更强的 GPT-5.2 baseline。
+          </p>
+        </div>
+
+        <div class="key-insight">
+          <div class="label">Key Insight</div>
+          <p>
+            <strong>技能库（$S$）是天然的 meta-parameter。</strong>
+            自然语言行为指令跨任务可迁移，一次失败蒸馏的 skill 可泛化到结构不同的后续任务。
+            两种时间尺度（prompt-level 秒级 vs. weight-level 小时级）互补而非竞争——
+            <em>仅 skill 无法解锁文件执行完成率，仅 RL 缺乏结构化失败分析则更新低效</em>，两者缺一效果均不完整。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Framework ========= -->
+<section class="section" id="framework" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Framework Overview</h2>
+        <div class="content has-text-justified">
+          <p>
+            <span class="metaclaw">MetaClaw</span> 的核心抽象是 <strong>meta-model</strong> $M = (\theta, S)$：
+            $\theta$ 是基础 LLM policy 的权重参数；$S = \{s_1, s_2, \ldots, s_K\}$ 是 skill 指令库，每条 skill 是简洁、可复用的自然语言行为指令。
+            推理时先通过嵌入检索取出与当前任务最相关的 skill 子集，再输入给 policy：
+          </p>
+          <p style="text-align:center;">
+            $$a \sim \pi_\theta(\cdot \mid \tau,\, \mathrm{Retrieve}(S, \tau))$$
+          </p>
+          <p>
+            系统通过四个核心机制实现持续 meta-learning，覆盖"失败分析 → 技能蒸馏 → 版本控制 → 机会性训练"完整闭环。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Four mechanism cards -->
+    <div class="columns is-multiline">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#1e40af;">
+            机制一：Skill-Driven Fast Adaptation
+          </h3>
+          <p class="analysis-card-desc">
+            当失败轨迹积累到阈值后，LLM evolver $\varepsilon$ 分析失败，合成新的行为指令并并入 skill 库：
+          </p>
+          <p style="font-size:0.88rem; text-align:center; margin:0.5rem 0;">
+            $S_{g+1} = S_g \cup \varepsilon(S_g,\, D^{\mathrm{sup}}_g)$
+          </p>
+          <p class="analysis-card-desc">
+            $g$ 是 <em>skill generation</em>（技能代数），每次 skill 库更新时递增。
+            完全 gradient-free，通过 prompt 注入生效，<strong>零停机</strong>。
+            技能库具有双重角色：作为 <em>meta-parameter</em> 跨任务流积累行为知识（$S_{g+1} \supseteq S_g$），
+            同时作为推理时的 <em>adaptation basis</em> 按任务检索。
+          </p>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#9d174d;">
+            机制二：Opportunistic Policy Optimization
+          </h3>
+          <p class="analysis-card-desc">
+            在用户空闲时段，对 post-adaptation 轨迹（query data）执行 RL 权重更新：
+          </p>
+          <p style="font-size:0.88rem; text-align:center; margin:0.5rem 0;">
+            $\theta_{t+1} = \theta_t + \alpha\, \nabla_\theta\, \mathbb{E}_{(\tau,\xi,g') \sim B}\!\left[R\!\left(\pi_\theta(\cdot \mid \tau, S_{g'})\right)\right]$
+          </p>
+          <p class="analysis-card-desc">
+            $R$ 为 Process Reward Model（PRM）评分；实现方式为 <strong>Cloud LoRA fine-tuning + GRPO</strong>，无需本地 GPU。
+            RL buffer $B$ 只接受 query data（post-adaptation 轨迹），support data 被排除在外。
+          </p>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#065f46;">
+            机制三：Skill Generation Versioning
+          </h3>
+          <p class="analysis-card-desc">
+            <strong>陈旧奖励污染问题</strong>：触发 skill 演化的轨迹（support data）其奖励反映的是旧 skill 下的行为，
+            若进入 RL buffer 会污染梯度。解决方案：每条样本打上 skill generation index $g_i$ 的戳记。
+          </p>
+          <ul style="font-size:0.86rem; color:#444; line-height:1.7; padding-left:1.2rem;">
+            <li><strong>Support data</strong> $D^{\mathrm{sup}}_g$：触发 $S_g \to S_{g+1}$ 演化的轨迹，被 evolver 消费后<em>从 RL buffer 中丢弃</em></li>
+            <li><strong>Query data</strong> $D^{\mathrm{qry}}_{g+1}$：$S_{g+1}$ 生效后收集的轨迹，才可进入 RL buffer</li>
+          </ul>
+          <p class="analysis-card-desc">
+            当 skill generation 从 $g$ 推进到 $g+1$ 时，训练器自动清除 buffer 中所有版本 $\le g$ 的样本。
+            这是在线异步 skill 演化场景下<strong>必要的正确性保证</strong>，不可选。
+          </p>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#6d28d9;">
+            机制四：Opportunistic Meta-Learning Scheduler（OMLS）
+          </h3>
+          <p class="analysis-card-desc">
+            OMLS 是后台 daemon，监控三类空闲信号，只在用户不活跃时触发 RL 训练：
+          </p>
+          <table class="table is-narrow is-fullwidth" style="font-size:0.82rem; margin-bottom:0.5rem;">
+            <thead>
+              <tr style="background:#f3f4f6;">
+                <th>信号</th><th>说明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Sleep window</strong></td><td>用户配置的睡眠时段（如 23:00–07:00）</td></tr>
+              <tr><td><strong>System inactivity</strong></td><td>轮询 OS 输入设备空闲计时器（macOS: ioreg HIDIdleTime），默认 30 分钟</td></tr>
+              <tr><td><strong>Calendar-aware</strong></td><td>查询 Google Calendar API，会议时段推断用户不可用</td></tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc">
+            任意信号指示"用户离开"→ 训练窗口开启；任意信号指示"用户返回"→ 训练暂停。
+            支持 mid-batch checkpointing，断点续训。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Algorithm box -->
+    <div class="columns is-centered" style="margin-top:1.5rem;">
+      <div class="column is-four-fifths">
+        <h3 class="title is-5 has-text-centered">Algorithm 1：MetaClaw 完整流程</h3>
+        <div class="algo-box"><span class="keyword">输入</span>：$M = (\theta_0, S_0)$，skill evolver $\varepsilon$，task stream $\{\tau_i\}$，PRM $R$，OMLS
+<span class="keyword">初始化</span>：$g \leftarrow 0$，RL buffer $B \leftarrow \emptyset$
+
+<span class="keyword">for</span> 每条任务 $\tau_i$：
+    <span class="comment">// 服务任务</span>
+    $S_{\tau_i} \leftarrow \mathrm{Retrieve}(S_g, \tau_i)$         <span class="comment">// 检索相关技能</span>
+    $\xi_i \leftarrow \mathrm{Execute}(\pi_\theta(\cdot \mid \tau_i, S_{\tau_i}))$  <span class="comment">// 执行并收集轨迹</span>
+    $r_i \leftarrow R(\xi_i)$；给 $(\tau_i, \xi_i, r_i)$ 打上代数 $g$
+
+    <span class="keyword">if</span> $\xi_i$ 揭示失败：加入 support set $D^{\mathrm{sup}}_g$
+    <span class="keyword">else</span>：加入 RL buffer $B$（query data）
+
+    <span class="comment">// Skill-driven fast adaptation</span>
+    <span class="keyword">if</span> $|D^{\mathrm{sup}}_g| \ge$ 阈值：
+        $\Delta S \leftarrow \varepsilon(S_g, D^{\mathrm{sup}}_g)$    <span class="comment">// 从失败中合成新技能</span>
+        $S_{g+1} \leftarrow S_g \cup \Delta S$                        <span class="comment">// 演化技能库</span>
+        清除 $B$ 中所有版本 $\le g$ 的样本                           <span class="comment">// 支持-查询分离</span>
+        $g \leftarrow g + 1$
+
+    <span class="comment">// Opportunistic policy optimization</span>
+    <span class="keyword">if</span> OMLS 检测到空闲窗口 <span class="keyword">and</span> $|B| \ge$ batch size：
+        $\theta \leftarrow \theta + \alpha \nabla_\theta\, \mathbb{E}_{(\tau,\xi,r,g') \sim B}[R(\pi_\theta(\cdot \mid \tau, S_{g'}))]$
+        热替换模型权重</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Results ========= -->
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Results</h2>
+        <p style="color:#555; margin-bottom:0.2rem;">
+          MetaClaw-Bench：934 题 / 44 个模拟工作日（Part I：30 天 / 346 题；Part II：14 天 / 588 题）。
+          <em>Acc. = 平均每题准确率；Compl. = file-check 完成率（所有 checker 断言同时通过）。</em>
+        </p>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="table is-striped is-fullwidth results-table">
+        <thead>
+          <tr>
+            <th>Backbone</th><th>方法</th>
+            <th>Part I Acc. ↑</th><th>Part I Compl. ↑</th>
+            <th>Part II Acc. ↑</th><th>Part II Compl. ↑</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="2">GPT-5.2</td>
+            <td>Baseline</td>
+            <td>41.1%</td><td>14.7%</td><td>44.9%</td><td>58.4%</td>
+          </tr>
+          <tr class="our-method-row">
+            <td><strong>MetaClaw (Skills)</strong></td>
+            <td><strong>44.0%</strong></td><td><strong>17.1%</strong></td>
+            <td><strong>49.1%</strong></td><td><strong>67.5%</strong></td>
+          </tr>
+
+          <tr>
+            <td rowspan="3">Kimi-K2.5</td>
+            <td>Baseline</td>
+            <td>21.4%</td><td>2.0%</td><td>21.1%</td><td>18.2%</td>
+          </tr>
+          <tr>
+            <td>MetaClaw (Skills)</td>
+            <td>28.3%</td><td>2.0%</td><td>26.9%</td><td>33.8%</td>
+          </tr>
+          <tr class="our-method-row">
+            <td><strong>MetaClaw (Full)</strong></td>
+            <td><strong>40.6%</strong></td><td><strong>16.5%</strong></td>
+            <td><strong>39.6%</strong></td><td><strong>51.9%</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <ul>
+            <li>Kimi-K2.5 + Skills：Part I 准确率相对提升 <strong>+32.2%</strong>。</li>
+            <li>Kimi-K2.5 + Full：Part I 任务完成率 <strong>8.25×</strong>（2.0% → 16.5%）；Part II file-check 完成率 <strong>+185%</strong>（18.2% → 51.9%）。</li>
+            <li>MetaClaw (Full) 将弱模型 Kimi-K2.5（21.4%）提升至 <strong>40.6%</strong>，几乎追平 GPT-5.2 的 baseline（41.1%）。</li>
+          </ul>
+        </div>
+
+        <h3 class="title is-5" style="margin-top:1rem;">AutoResearchClaw（仅 Skills-Only，无 RL）</h3>
+        <table class="table is-narrow is-striped is-fullwidth results-table" style="font-size:0.84rem;">
+          <thead>
+            <tr>
+              <th>指标</th><th>Baseline</th><th>MetaClaw (Skills)</th><th>变化</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Stage Retry Rate ↓</td><td>10.5%</td><td>7.9%</td><td>−24.8%</td></tr>
+            <tr><td>Refine Cycle Count ↓</td><td>2.0 / stage</td><td>1.2 / stage</td><td>−40.0%</td></tr>
+            <tr><td>Pipeline Stage Completion ↑</td><td>18 / 19</td><td>19 / 19</td><td>+5.3%</td></tr>
+            <tr class="our-method-row"><td><strong>Composite Robustness Score ↑</strong></td><td>0.714</td><td><strong>0.845</strong></td><td><strong>+18.3%</strong></td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:0.86rem; color:#546e7a; font-style:italic;">
+          无任何梯度更新，仅 skill 注入。证明为 CLI 任务设计的 skill evolver 可直接迁移到多阶段科研 pipeline——skill 的自然语言形式本身就是领域无关的。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Analysis ========= -->
+<section class="section" id="analysis" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Analysis</h2>
+      </div>
+    </div>
+
+    <!-- Per-day accuracy figure -->
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2603.17187v1/x7.png"
+               alt="Per-day accuracy over 30 workdays (3-day rolling mean)" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 2（每日准确率趋势）.</strong>
+          30 个模拟工作日的每日准确率（3 日滚动均值）。实线：GPT-5.2；虚线：Kimi-K2.5。
+          Day 11–22（中期）MetaClaw 优势最明显，Full 在 Day 19–20 达到峰值优势（约 +0.8 准确率）。
+          晚期难度过高时各条件收敛至同样低水平，揭示积累技能量的上限。
+        </p>
+      </div>
+    </div>
+
+    <!-- Per-task-type pass rates figure -->
+    <div class="columns is-centered" style="margin-top:1rem;">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2603.17187v1/x8.png"
+               alt="Per-task-type pass rates breakdown" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 3（任务类型分解）.</strong>
+          按任务类型分解的通过率。
+          Skills-only 提升 multi-choice（程序性知识），但 file-check 完成率不变；
+          MetaClaw (Full) 使 file-check 完成率跳升 <strong>8.25×</strong>，但 multi-choice 略有下降（policy 向文件执行行为偏移）。
+          两种机制解决的是<em>不同瓶颈</em>，互补而非替代。
+        </p>
+      </div>
+    </div>
+
+    <!-- Analysis cards -->
+    <div class="columns" style="margin-top:1.2rem;">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">RL 训练动态（Part II 细粒度视图）</h3>
+          <p class="analysis-card-desc">
+            Kimi-K2.5 在 Part II 的 file-check 完成曲线呈现明确<strong>拐点</strong>（Day 8 之后）：
+          </p>
+          <table class="table is-narrow is-fullwidth" style="font-size:0.8rem;">
+            <thead><tr style="background:#f3f4f6;"><th>时段</th><th>file-check 每日通过率</th></tr></thead>
+            <tbody>
+              <tr><td>Day 1–4</td><td>~9%</td></tr>
+              <tr><td>Day 5–8</td><td>27–36%</td></tr>
+              <tr><td>Day 9–10</td><td>55–64%</td></tr>
+              <tr class="our-method-row"><td>Day 12, 14</td><td><strong>100%</strong></td></tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc">
+            前期积累 support 轨迹用于 skill 合成与权重更新；拐点后 LoRA fine-tune 积累足够梯度信号，policy 执行策略发生转变；后期 policy 已内化 skill 库揭示的程序性规则。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Case Study（Table 3）</h3>
+          <p class="analysis-card-desc">
+            两个典型案例揭示两种机制各自擅长的场景：
+          </p>
+          <table class="table is-narrow is-fullwidth" style="font-size:0.8rem;">
+            <thead><tr style="background:#f3f4f6;"><th>Case</th><th>场景</th><th>结果</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Case 1</td>
+                <td>合规性错误（格式不符）<br><small>GPT-5.2 + Skills</small></td>
+                <td>单条蒸馏 skill 直接修复<br>Score <strong>0 → 1.0</strong>，零权重更新</td>
+              </tr>
+              <tr>
+                <td>Case 2</td>
+                <td>结构复杂的文件操作<br><small>Kimi-K2.5 + Full</small></td>
+                <td>skill 提供格式上下文，RL 提供执行能力<br>Score <strong>0 → 1.0</strong>，需权重级优化</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc">
+            程序性规则类失败 → skill 注入即可修复；复杂执行能力类失败 → 必须结合 RL 权重更新。
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Takeaways ========= -->
+<section class="section" id="takeaways">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Takeaways</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h3 class="title is-5">核心结论</h3>
+          <ol>
+            <li>
+              <strong>技能库是天然的 meta-parameter。</strong>
+              自然语言指令跨任务可迁移，一次失败蒸馏的 skill 可泛化到结构不同的后续任务——这是传统 memory 方法（存原始轨迹）做不到的。
+            </li>
+            <li>
+              <strong>双时间尺度协同是关键架构决策。</strong>
+              Prompt-level 适应（秒级）与 weight-level 优化（小时级）是互补关系而非竞争：
+              前者提供即时知识注入，后者将隐性规则内化到参数中。两者缺一，效果均不完整。
+            </li>
+            <li>
+              <strong>版本控制是正确性保证。</strong>
+              在在线、异步的 skill 演化场景下，support/query 分离是<em>必要的正确性保证</em>——
+              不加版本控制会导致陈旧奖励污染，等价于在已修正错误的前提下仍惩罚 policy。
+            </li>
+            <li>
+              <strong>弱模型 + MetaClaw ≈ 强模型 baseline。</strong>
+              Kimi-K2.5（弱）+ Full Pipeline 几乎追平 GPT-5.2（强）的 baseline，
+              对"以经济模型服务生产规模"场景具有实际价值。
+            </li>
+            <li>
+              <strong>零停机 skill 注入具有跨域泛化能力。</strong>
+              AutoResearchClaw 证明，为 CLI 任务设计的 skill evolver 可直接迁移到多阶段科研 pipeline，
+              无需任何领域特定调整——skill 的自然语言行为指令形式本身就是领域无关的。
+            </li>
+          </ol>
+
+          <h3 class="title is-5">局限性</h3>
+          <ul>
+            <li>空闲窗口检测依赖用户配置，未必适用所有部署环境（服务器端无用户接口、多租户场景等）。</li>
+            <li>Skill 库只增不减（$S_{g+1} \supseteq S_g$），长期运行后可能出现技能冗余或冲突，尚无修剪机制。</li>
+            <li>当前在 OpenClaw（单用户 CLI agent）上验证，尚未在多用户并发场景下测试版本隔离的正确性。</li>
+          </ul>
+
+          <h3 class="title is-5">对 Agent × Skill 自进化方向的启发</h3>
+          <ol>
+            <li>将 support/query 分离的思路推广到在线 continual learning 是通用设计模式，适用任何"技能/记忆在线演化 + 权重优化"的场景。</li>
+            <li>OMLS 的"机会性训练"为需要 GPU 计算但又不能中断服务的 agent 提供了一个可工程化的落地路径。</li>
+            <li>失败轨迹的结构化分析（而非直接存储）是提炼跨任务 skill 的关键；skill evolver 的设计质量决定技能代数演化的上限。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Footer ========= -->
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <p><a href="../index.html">← 返回 Agent × Skill 论文列表</a></p>
+    <p style="margin-top:0.5rem; font-size:0.78rem; color:#9ca3af;">
+      Data from <a href="https://huggingface.co/papers/2603.17187" target="_blank">Hugging Face Papers</a>
+      · Code: <a href="https://github.com/aiming-lab/MetaClaw" target="_blank">aiming-lab/MetaClaw</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -37,6 +37,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - 单篇调研、信息补全 → `Explore` 或 `general-purpose`，模型用 Sonnet 或 Haiku（明确在 Agent 调用里写 `model: "sonnet"` 或 `"haiku"`），只让它回传结构化要点
 - 多篇论文可并行时 → **单条消息里发起多个 Agent 调用**，并行跑；用户明确要求"并行"时必须这样做
 - 需要保留关键图/表时，告诉 subagent 从 `hf papers read` 输出中抽取 Figure 编号和 arxiv html 图片 URL 一起返回，便于在网页或笔记中内嵌
+- **挑图先读懂图、再决定保不保留，不看编号**。不要想当然地认为 Figure 1 就是 framework 图——它经常只是 teaser / 问题现状 / 动机示意。正确做法：先完整读一遍论文，把每张 Figure 的**实际语义**记下来（是 framework / 是结果曲线 / 是 ablation / 是 case study / 是问题示意…），再根据语义而非编号决定价值。framework / pipeline / method overview 图几乎一定要保留，放到"方法"章节；其余凡是能表达**结果、问题现状、消融、案例**的图，只要对读者有信息量，也一并保留到对应章节（实验段放结果图，针对的问题段可放问题现状图，等等）。不要因为"只选一张核心图"就把其他有用的图丢掉
 
 ### 展示网页的设计方向
 

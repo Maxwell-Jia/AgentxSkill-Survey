@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="AgentFactory: A Self-Evolving Framework Through Executable Subagent Accumulation and Reuse — reading notes.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AgentFactory — Agent × Skill Survey</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+
+  <style>
+    /* AgentFactory brand gradient */
+    .agentfactory {
+      font-variant: small-caps;
+      font-weight: bold;
+      background: linear-gradient(90deg, #2563eb 0%, #7c3aed 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========= Breadcrumb ========= -->
+<div class="breadcrumb-nav">
+  <div class="container is-max-desktop">
+    <a href="../index.html">Agent × Skill Survey</a>
+    <span class="sep">/</span>
+    <span>01 Synthesis</span>
+    <span class="sep">/</span>
+    <span>AgentFactory</span>
+  </div>
+</div>
+
+
+<!-- ========= Hero ========= -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="agentfactory">AgentFactory</span>: A Self-Evolving Framework<br>
+            Through Executable Subagent Accumulation and Reuse
+          </h1>
+          <p class="is-size-5" style="color:#555; margin-top:0.2rem; font-family:'Google Sans',sans-serif;">
+            通过可执行子 Agent 累积与复用实现自进化的框架
+          </p>
+
+          <div class="is-size-6 publication-authors" style="margin-top:1rem;">
+            <span class="author-block">Zhang Zhang<sup>1</sup>,</span>
+            <span class="author-block">Shuqi Lu<sup>1</sup>,</span>
+            <span class="author-block">Hongjin Qian<sup>2</sup>,</span>
+            <span class="author-block">Di He<sup>1</sup>,</span>
+            <span class="author-block">Zheng Liu<sup>3</sup></span>
+          </div>
+          <div class="is-size-7 publication-authors" style="margin-top:0.3rem; color:#555;">
+            <span class="author-block"><sup>1</sup>北京大学</span>
+            <span class="author-block"><sup>2</sup>香港理工大学</span>
+            <span class="author-block"><sup>3</sup>北京智源人工智能研究院</span>
+          </div>
+          <div class="is-size-7" style="margin-top:0.25rem; color:#888;">
+            arXiv 2603.18000 · 2026-03-18 · 已开源
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2603.18000" target="_blank"
+                   class="external-link button is-normal is-rounded btn-arxiv">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/zzatpku/AgentFactory" target="_blank"
+                   class="external-link button is-normal is-rounded btn-github">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/papers/2603.18000" target="_blank"
+                   class="external-link button is-normal is-rounded btn-hf">
+                  <span class="icon hf-icon">🤗</span>
+                  <span>HF Papers</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="../index.html"
+                   class="external-link button is-normal is-rounded btn-home">
+                  <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                  <span>Back</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Teaser figure ========= -->
+<section class="hero teaser" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="hero-body" style="padding-top:0;">
+      <div class="analysis-figure-wrap">
+        <img src="https://arxiv.org/html/2603.18000v1/x1.png" alt="Figure 1: AgentFactory 三阶段管道概览" loading="lazy">
+      </div>
+      <p class="figure-caption has-text-centered">
+        <strong>Figure 1.</strong> <span class="agentfactory">AgentFactory</span> 三阶段管道概览。
+        Q1（无相关 subagent）：Meta-Agent 从零创建并持久化到库；
+        Q2（已有 subagent）：复用并通过自进化流程修改。
+        多轮执行后，subagent 库逐步积累，最终可导出至其他 Agent 框架（LangChain、AutoGen、Claude Code 等）。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Abstract ========= -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            现有 Agent 自进化工作（如 Reflexion、Self-Refine）主要依赖<strong>文本提示、口头反思或推理轨迹</strong>来记录成功经验，但文本化经验无法在复杂现实场景中可靠保证任务的高效重执行，也难以跨系统迁移。
+          </p>
+          <p>
+            <span class="agentfactory">AgentFactory</span> 提出将成功任务解决方案保存为<strong>可执行 Python 代码 + SKILL.md 文档</strong>（双模态制品），而非文本反思。通过三阶段生命周期（<em>Install → Self-Evolve → Deploy</em>），构建一个持续累积和自进化的 Subagent 库：强模型（Opus 4.6）驱动的 AgentFactory 相比 ReAct 基线减少约 <strong>~70%</strong> 编排 token 消耗（Batch 2 复用场景），且 subagent 库可导出为框架无关的可移植制品，供 Claude Code 等外部系统直接调用。
+          </p>
+        </div>
+
+        <div class="key-insight">
+          <div class="label">Key Insight</div>
+          <p>Skill 应沉淀为<strong>可执行代码</strong>而非文本记忆。代码的显式性和可执行验证性，使 Agent 自进化从"提示优化"上升为真实的"能力增长"，并突破框架壁垒实现跨系统迁移。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Framework ========= -->
+<section class="section" id="framework" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Framework Overview</h2>
+        <div class="content has-text-justified">
+          <p>
+            <span class="agentfactory">AgentFactory</span> 的核心架构由 <strong>Meta-Agent 编排器</strong>、<strong>三层 Skill 体系</strong>与 <strong>Workspace Manager</strong> 构成。Meta-Agent 分解复杂问题，动态从 Skill 库精选工具分配给每个 Subagent（而非全量暴露）；Workspace Manager 提供隔离执行环境，成功后再将结果提升至持久库。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Three lifecycle phase cards -->
+    <div class="columns">
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#2563eb;">Phase 1: Install</h3>
+          <p class="analysis-card-desc">
+            <strong>触发</strong>：无现存 Skill 可解决新问题。<br>
+            Meta-Agent 识别所需能力，分解为子问题，对每个调用 <code>create_subagent</code> 生成专门 Python 脚本，执行成功后保存为<strong>可执行代码 + SKILL.md</strong>。
+            不同于 Reflexion 的口头反思，AgentFactory 将成功模式直接转化为可复用代码。
+          </p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#7c3aed;">Phase 2: Self-Evolve</h3>
+          <p class="analysis-card-desc">
+            <strong>触发</strong>：遇到与已保存 subagent 相似但有变体的新任务。<br>
+            检索相关 Skill → 运行 → 分析失败模式 → 调用 <code>modify_subagent</code> 自动改进代码（增加错误处理、扩展边界情形）→ 验证。
+            改进的是<strong>真实可执行代码</strong>，产生切实能力增长。
+          </p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title" style="color:#0f766e;">Phase 3: Deploy</h3>
+          <p class="analysis-card-desc">
+            产物：<strong>纯 Python 脚本 + SKILL.md 文档</strong>，独立可运行，无需 AgentFactory 运行时。<br>
+            可集成至 LangChain、AutoGen、Claude Code——通过提示词教会外部 Agent 读取 SKILL.md 并调用脚本，无需修改主框架代码。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skill system detail -->
+    <div class="columns is-centered" style="margin-top:1.5rem;">
+      <div class="column is-four-fifths">
+        <h3 class="title is-5" style="text-align:center; margin-bottom:1rem;">三层 Skill 体系</h3>
+        <div class="columns">
+          <div class="column is-one-third">
+            <div class="analysis-card">
+              <h3 class="title is-5 analysis-card-title">Meta Skills（固定）</h3>
+              <p class="analysis-card-desc">
+                <code>create_subagent</code> / <code>modify_subagent</code> / <code>run_subagent</code> / <code>list_saved_subagents</code> / <code>view_subagent_code</code> / <code>get_skill_description</code> / <code>finish</code>
+              </p>
+            </div>
+          </div>
+          <div class="column is-one-third">
+            <div class="analysis-card">
+              <h3 class="title is-5 analysis-card-title">Tool Skills（固定）</h3>
+              <p class="analysis-card-desc">
+                <code>web_search</code>（Serper）/ <code>web_reading</code>（Jina）/ <code>browser_automation</code>（Playwright）/ <code>shell_command</code>（带安全检查）
+              </p>
+            </div>
+          </div>
+          <div class="column is-one-third">
+            <div class="analysis-card">
+              <h3 class="title is-5 analysis-card-title">Subagent Skills（动态）</h3>
+              <p class="analysis-card-desc">
+                运行时自动生成与改进的可执行 Python 脚本，随系统遇到新任务持续添加，基于执行反馈迭代提升鲁棒性和通用性。
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Results ========= -->
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Results</h2>
+        <p style="color:#555; margin-bottom:0.2rem;">
+          指标：Meta-Agent 平均输出 token 数（每任务，不含 subagent 内部 LLM 消耗）。越少代表编排更高效、复用更充分。
+        </p>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="table is-striped is-fullwidth results-table">
+        <thead>
+          <tr>
+            <th>设置</th>
+            <th>ReAct</th>
+            <th>文本经验（Self-Evolving）</th>
+            <th>AgentFactory</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Batch 1，从零开始（Opus 4.6）</td>
+            <td>8298</td>
+            <td>7642</td>
+            <td class="our-method-row"><strong>4324</strong></td>
+          </tr>
+          <tr>
+            <td>Batch 2，使用已保存 subagent（Opus 4.6）</td>
+            <td>9145</td>
+            <td>6891</td>
+            <td class="our-method-row"><strong>2847</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <ul>
+            <li>Batch 2（复用场景）中，AgentFactory token 消耗仅为 ReAct 的 <strong>~31%</strong>，相比文本经验仅 <strong>~41%</strong>——<em>可执行 subagent 复用远胜文本经验</em>。</li>
+            <li>Batch 1 中 Opus 4.6 驱动的 AgentFactory 仍比 ReAct 减少 <strong>~48%</strong> token，说明强模型能在同批次内识别隐含复用机会。</li>
+            <li>文本经验方案介于两者之间：优于 ReAct（可查历史），但逊于可执行 subagent，体现"代码驱动"vs"文本驱动"的本质差异。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Analysis ========= -->
+<section class="section" id="analysis" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Analysis</h2>
+      </div>
+    </div>
+
+    <!-- Cross-system migration figure -->
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2603.18000v1/x3.png" alt="Figure 3: AgentFactory 跨系统迁移案例" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 3.</strong> 跨系统迁移案例：AgentFactory 先后创建 Audio Transcriber、QQ Music Player、Document Creator subagent；Claude Code 通过读取 SKILL.md 学习调用方式，无需重建即可复用这些 Python 脚本，成功完成"音频文件描述文档创建"任务。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns" style="margin-top:1.2rem;">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">迭代细化：代码级自进化</h3>
+          <p class="analysis-card-desc">
+            同一 README 生成 subagent 经历三轮演化（Figure 2）：
+            <br><strong>Run 1</strong>：路径解析硬编码（特定项目）
+            <br><strong>Run 2</strong>：LLM-based 动态解析，但失败时用脆弱硬编码后退
+            <br><strong>Run 3</strong>：Meta-Agent 分析失败，替换为正则提取，鲁棒性大幅提升
+            <br>每次新任务出现，Meta-Agent 分析反馈、识别弱点、修改代码——每一轮产生实质能力增长。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">关键设计决策</h3>
+          <p class="analysis-card-desc">
+            <strong>动态 Skill 分配 vs. 全工具暴露</strong>：Meta-Agent 对每个 subagent 精选相关工具而非暴露全集，减少搜索空间、提升任务聚焦度、降低错配风险。
+            <br><br>
+            <strong>Workspace 隔离</strong>：运行期在临时 Workspace 中修改和测试，成功后才提升至持久库，失败不破坏已有库，并发任务互不干扰。
+            <br><br>
+            <strong>双模态制品</strong>：Python 代码确保跨平台可移植（任何支持 Python 的系统均可运行）；SKILL.md 标准化文档使外部 LLM Agent 能够通过提示学习调用方式。
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Takeaways ========= -->
+<section class="section" id="takeaways">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Takeaways</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h3 class="title is-5">核心贡献</h3>
+          <ol>
+            <li><strong>三阶段自进化管道</strong>（Install → Self-Evolve → Deploy）——系统性框架，使 Agent 从"一次性执行"走向"能力持续积累"。</li>
+            <li><strong>可执行 Subagent 库</strong>——记录的是功能代码而非文本，支持持续改进和跨系统复用；Batch 2 复用场景下编排 token 消耗降低约 70%。</li>
+            <li><strong>跨框架 Deploy</strong>——纯 Python + SKILL.md 使 Skill 可无缝迁移至 LangChain、AutoGen、Claude Code 等生态，无需修改主框架代码。</li>
+          </ol>
+
+          <h3 class="title is-5">对 Skill 沉淀方向的启发</h3>
+          <ol>
+            <li><strong>"制品优于记忆"</strong> — Skill 沉淀为可执行代码 + 标准文档，而非文本反思或提示词。代码的显式性和可验证性强于含糊的文本经验。</li>
+            <li><strong>自进化的关键是"代码改进"</strong> — 直接修改 Agent 逻辑代码（增加错误处理、扩展分支）产生真实能力增长；执行反馈驱动的迭代周期是关键。</li>
+            <li><strong>从"场景重复"到"能力积累"</strong> — 用户任务虽多样，实质可分解为可复用子任务；库一旦足够丰富，正反馈循环加速后续问题求解。</li>
+            <li><strong>跨框架部署决定 Skill 的生命力</strong> — "纯 Python + 文档"方案提供了不依赖特定框架、仅靠提示词即可迁移的实用路径。</li>
+          </ol>
+
+          <h3 class="title is-5">局限性</h3>
+          <ul>
+            <li>评估规模较小（每批 15 个任务），缺少大规模 benchmark 对比。</li>
+            <li>指标仅为编排 token 数，未涵盖任务成功率、代码质量等多维度评估。</li>
+            <li>Subagent 与具体 Python 生态绑定，纯对话型 Agent 场景（无代码执行）覆盖不足。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Footer ========= -->
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <p><a href="../index.html">← 返回 Agent × Skill 论文列表</a></p>
+    <p style="margin-top:0.5rem; font-size:0.78rem; color:#9ca3af;">
+      Data from <a href="https://huggingface.co/papers/2603.18000" target="_blank">Hugging Face Papers</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
