@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="SWE-Skills-Bench: Do Agent Skills Actually Help in Real-World Software Engineering? — reading notes.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SWE-Skills-Bench — Agent × Skill Survey</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+  <style>
+    .sweb {
+      background: linear-gradient(90deg, #F97316, #FACC15);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-variant: small-caps;
+    }
+    .metric-badge {
+      display: inline-block;
+      padding: 0.18rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-right: 0.3rem;
+    }
+    .badge-positive { background: #dcfce7; color: #166534; }
+    .badge-neutral  { background: #f3f4f6; color: #374151; }
+    .badge-negative { background: #fee2e2; color: #991b1b; }
+  </style>
+</head>
+<body>
+
+<div class="breadcrumb-nav">
+  <div class="container is-max-desktop">
+    <a href="../index.html">Agent × Skill Survey</a>
+    <span class="sep">/</span>
+    <span>04 Evaluation</span>
+    <span class="sep">/</span>
+    <span>SWE-Skills-Bench</span>
+  </div>
+</div>
+
+
+<!-- ========= Hero ========= -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="sweb">SWE-Skills-Bench</span>:<br>
+            Do Agent Skills Actually Help in<br>Real-World Software Engineering?
+          </h1>
+          <p class="is-size-5" style="color:#555; margin-top:0.2rem; font-family:'Google Sans',sans-serif;">
+            Agent Skill 在真实软件工程任务中的实际增益评测
+          </p>
+
+          <div class="is-size-6 publication-authors" style="margin-top:1rem;">
+            <span class="author-block">Tingxu Han<sup>1</sup>,</span>
+            <span class="author-block">Yi Zhang<sup>1</sup>,</span>
+            <span class="author-block">Wei Song<sup>2</sup>,</span>
+            <span class="author-block">Chunrong Fang<sup>2†</sup>,</span>
+            <span class="author-block">Zhenyu Chen<sup>2</sup>,</span>
+            <span class="author-block">Youcheng Sun<sup>3</sup>,</span>
+            <span class="author-block">Lijie Hu<sup>1†</sup></span>
+          </div>
+          <div class="is-size-7 publication-authors" style="margin-top:0.3rem; color:#555;">
+            <span class="author-block"><sup>1</sup>MBZUAI</span>
+            <span class="author-block">· <sup>2</sup>Nanjing University</span>
+            <span class="author-block">· <sup>3</sup>South China University of Technology · UNSW</span>
+          </div>
+          <div class="is-size-7" style="margin-top:0.25rem; color:#888;">
+            2026-03-19 · work in progress
+          </div>
+          <div class="is-size-7" style="margin-top:0.15rem; color:#aaa;">
+            <sup>†</sup>Corresponding authors
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2603.15401" target="_blank"
+                   class="external-link button is-normal is-rounded btn-arxiv">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/GeniusHTX/SWE-Skills-Bench" target="_blank"
+                   class="external-link button is-normal is-rounded btn-github">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/papers/2603.15401" target="_blank"
+                   class="external-link button is-normal is-rounded btn-hf">
+                  <span class="icon hf-icon">🤗</span>
+                  <span>HF Papers</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/Maxwell-Jia/AgentxSkill-Survey/blob/main/notes/2603.15401-SWESkillsBench.md" target="_blank"
+                   class="external-link button is-normal is-rounded btn-notes">
+                  <span class="icon"><i class="fas fa-file-alt"></i></span>
+                  <span>完整笔记</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="../index.html"
+                   class="external-link button is-normal is-rounded btn-home">
+                  <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                  <span>Back</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Teaser ========= -->
+<section class="hero teaser" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="hero-body" style="padding-top:0;">
+      <div class="analysis-figure-wrap">
+        <img src="https://arxiv.org/html/2603.15401v1/x3.png" alt="Figure 3: SWE-Skills-Bench 四阶段构建 pipeline" loading="lazy">
+      </div>
+      <p class="figure-caption has-text-centered">
+        <strong>Figure 3.</strong> <span class="sweb">SWE-Skills-Bench</span> 四阶段构建 pipeline：Stage 1 从 84,192 个公开 skill 三轮过滤得到 49 个 SWE skill；Stage 2 将每个 skill 与真实 GitHub 仓库配对，生成约 565 个任务实例 (R, E, P, S)；Stage 3 将验收准则转化为确定性 pytest 测试；Stage 4 配对运行有 skill / 无 skill 两条件，计算 ΔP 与 token overhead 等指标。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Abstract ========= -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Skill 生态在过去 136 天内已积累超过 84,192 个公开 skill，向 LLM agent 注入 skill 已成为 SWE 任务中的常见做法——但其实际收益从未被系统量化。现有 SWE benchmark（SWE-Bench Verified、TerminalBench）均未设置"有 skill vs. 无 skill"配对评测；而现有 skill benchmark 中 SWE 任务覆盖极少，且缺乏需求驱动的验证体系。
+          </p>
+          <p>
+            <span class="sweb">SWE-Skills-Bench</span> 构建了首个<strong>需求驱动（requirement-driven）</strong>的 SWE skill 评测基准：将 49 个公开 SWE skill 与真实 GitHub 仓库配对，在有 skill / 无 skill 两条件下用确定性 pytest 单元测试进行配对评测，量化 skill 注入的边际增益（ΔP）与代价（token overhead ρ）。核心发现：<strong>约 80% 的 skill（39/49）带来零增益</strong>，全局平均 ΔP 仅 +1.2%；仅 7 个 skill 带来有意义增益，3 个 skill 因 context interference 主动降低性能。Token overhead 与正确性增益完全解耦，部分 skill 在不提升通过率的同时带来高达 +450.8% 的推理成本。
+          </p>
+        </div>
+
+        <div class="key-insight">
+          <div class="label">Key Insight</div>
+          <p><strong>Skill 注入不是通用性能提升器。</strong>在高度结构化的软件工程领域，基础模型已大量内化相关知识——注入冗余 skill 收效甚微；注入覆盖范围过宽的"综合参考文档"型 skill，反而会通过表面锚定、幻觉、概念渗漏三种机制主动降低性能（Context Interference）。Skill 的价值高度领域特异性，且极度依赖粒度-范围对齐。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Benchmark Construction ========= -->
+<section class="section" id="benchmark" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Benchmark Construction</h2>
+        <div class="content has-text-justified">
+          <p>
+            <span class="sweb">SWE-Skills-Bench</span> 的构建围绕"如何在真实 SWE 语境下进行可信的配对评测"展开，覆盖 skill 筛选、仓库配对、需求驱动验证三个核心环节。每个任务实例被定义为四元组 $(R, E, P, S)$：固定 commit 的仓库 $R$、容器化环境 $E$、需求文档 $P$（含 Background / Requirement / File Operations / Acceptance Criteria）以及可选 skill 文档 $S$。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2603.15401v1/x2.png" alt="Figure 2: Skill 类别分布与任务实例分布" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 2.</strong> (a) 49 个 skill 在六类 SWE 子域的分布；(b) 每个 skill 生成约 10 个任务实例，全量约 565 个。Deployment &amp; DevOps（13）和 Analytics &amp; Monitoring（12）是最大的两个类别。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Skill 池构建</h3>
+          <div class="content">
+            <p>从 mcpmarket 84,192 个公开 skill 出发，经三轮过滤得到 49 个 SWE skill：</p>
+            <ol>
+              <li><strong>类别筛选</strong>：保留六大与 SWE 流程最相关、可单元测试的类别</li>
+              <li><strong>语义过滤</strong>：排除生成类或主观类 skill，仅保留针对具体 SWE 动作的 skill</li>
+              <li><strong>可行性筛选</strong>：排除仓库体量过大或环境搭建成本过高的候选</li>
+            </ol>
+            <p style="font-size:0.82rem; color:#6b7280;">全部采用标准 <strong>SKILL.md 格式</strong>（Background / Requirement / File Operations / Acceptance Criteria 四段式），遵循 Claude Code agent skill 规范。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">真实仓库配对</h3>
+          <div class="content">
+            <p>每个 skill 对应一个真实开源 GitHub 项目，关键设计：</p>
+            <ul>
+              <li>仓库 <strong>pinned 在固定 commit</strong>，保证可复现</li>
+              <li>每个项目构建 <strong>Docker 容器</strong>（Ubuntu 24.04，CPU-only）</li>
+              <li>评测前清除 <code>.claude/skills/</code> 目录防止干扰</li>
+              <li>注入时将 SKILL.md 拷入 <code>~/.claude/</code>，无 skill 条件下缺席</li>
+            </ul>
+            <p style="font-size:0.82rem; color:#6b7280;"><strong>需求文档 P 中从不引用 skill S</strong>，确保 agent 行为完全由 skill 文件的物理存在驱动。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">需求驱动验证</h3>
+          <div class="content">
+            <p>核心理念：将验收准则（Acceptance Criteria）转化为确定性 pytest 测试，从需求到测试全链路追溯：</p>
+            <ul>
+              <li>固定"专业测试工程师"提示词模板</li>
+              <li>枚举可测行为，构造典型及边界场景</li>
+              <li>pytest 运行实际代码，验证具体输出/结构</li>
+            </ul>
+            <p style="font-size:0.82rem; color:#6b7280;"><strong>全程无 LLM-as-judge</strong>，确保评测确定性。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2603.15401v1/x4.png" alt="Figure 4: 任务实例生成三步流程" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 4.</strong> 任务实例生成三步流程——项目匹配（技术栈对齐 + fixed commit）→ 需求撰写（四部分模板）→ Skill 放置（文件级注入控制）。
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Results ========= -->
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Results</h2>
+        <p style="color:#555;">评测指标：Pass Rate（Pass+/Pass-）· Skill Utility Delta（ΔP）· Token Overhead Ratio（ρ）· Cost Efficiency（CE = ΔP / ρ）</p>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="table is-striped is-fullwidth results-table">
+        <thead>
+          <tr>
+            <th>指标</th>
+            <th>数值</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>全局 Pass-（无 skill）</td>
+            <td>89.8%</td>
+            <td>基础模型已有较强基线能力</td>
+          </tr>
+          <tr>
+            <td>全局 Pass+（有 skill）</td>
+            <td>91.0%</td>
+            <td>加入 skill 后的整体通过率</td>
+          </tr>
+          <tr class="our-method-row">
+            <td><strong>平均 ΔP（增益）</strong></td>
+            <td><strong>+1.2%</strong></td>
+            <td>全局边际增益极为有限</td>
+          </tr>
+          <tr>
+            <td>平均 token overhead（ρ）</td>
+            <td>+10.5%</td>
+            <td>skill 注入带来的平均推理成本增加</td>
+          </tr>
+          <tr>
+            <td>ΔP = 0 的 skill 数</td>
+            <td><strong>39 / 49（≈ 80%）</strong></td>
+            <td>绝大多数 skill 带来零增益</td>
+          </tr>
+          <tr>
+            <td>ΔP &gt; 0 的 skill 数</td>
+            <td>7 / 49</td>
+            <td>有意义增益，+7.1% 至 +30.0%</td>
+          </tr>
+          <tr>
+            <td>ΔP &lt; 0 的 skill 数</td>
+            <td>3 / 49</td>
+            <td>性能下降，−9.1% 至 −10.0%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="columns" style="margin-top:1.5rem;">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">最优 Skill：risk-metrics-calculation</h3>
+          <div class="content">
+            <p>将金融风险计算公式（VaR、CVaR、Sharpe Ratio 等）以程序性知识形式结构化编写，提供具体计算步骤而非通用建议。</p>
+            <p>
+              <span class="metric-badge badge-positive">ΔP = +30.0%</span>
+              <span class="metric-badge badge-positive">ρ = −34.8%</span>
+            </p>
+            <p style="font-size:0.82rem; color:#6b7280;">既提升正确率，又减少 token 消耗——"精炼程序知识 + 领域专用 + 无版本冲突"的理想范本。</p>
+          </div>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">有效 Skill 的共同特征</h3>
+          <div class="content">
+            <ul>
+              <li>编码了<strong>高度专业化的程序性知识</strong>（金融风险公式、云原生流量管理、GitLab CI 模式）</li>
+              <li>知识是 agent 预训练中覆盖<strong>不足的领域</strong></li>
+              <li>无版本错配或范围冲突</li>
+            </ul>
+            <p style="font-size:0.82rem; color:#6b7280;">tdd-workflow（ΔP = +7.1%）的机制是"清单效应"——强迫 agent 逐一检查容易遗漏的交付物，代价是 ρ = +78.6%（CE 极低）。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <ul>
+            <li>39 个 ΔP = 0 的 skill 中，<strong>24 个</strong>是 Pass+ = Pass- = 100%（skill 完全冗余，基础模型已内化）；<strong>15 个</strong>两条件均未达 100%（瓶颈在于复杂多步推理，而非领域知识缺失）。</li>
+            <li>Token overhead 与正确性<strong>完全解耦</strong>：ρ 范围从 −77.6%（python-resilience）到 +450.8%（service-mesh-observability），却均对应 ΔP = 0。Skill 改变的是推理路径，而非必然改变推理结果。</li>
+            <li>3 个 skill 因 context interference 主动降低性能：<strong>springboot-tdd（−10.0%）</strong>、<strong>linkerd-patterns（−9.1%）</strong>、<strong>django-patterns（−9.1%）</strong>。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Analysis ========= -->
+<section class="section" id="analysis" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Analysis</h2>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">失败模式分类</h3>
+          <div class="content">
+            <table class="table is-narrow ablation-table is-fullwidth">
+              <thead>
+                <tr><th>失败类型</th><th>ΔP 表现</th><th>根因</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>能力瓶颈</td>
+                  <td>= 0，Pass- 仍低</td>
+                  <td>多步推理 / API 理解不足，skill 无法弥补</td>
+                </tr>
+                <tr>
+                  <td>Skill 冗余</td>
+                  <td>= 0，Pass- = 100%</td>
+                  <td>基础模型已内化该领域知识</td>
+                </tr>
+                <tr class="our-method-row">
+                  <td><strong>Context Interference</strong></td>
+                  <td>&lt; 0</td>
+                  <td>Skill 覆盖范围与任务粒度错配</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="analysis-card-desc" style="margin-top:0.5rem;">
+              Context Interference 通过三种机制生效：<strong>Surface Anchoring</strong>（照抄模板错误参数）→ <strong>Hallucination</strong>（试图调和模板与任务，杜撰不存在字段）→ <strong>Concept Bleed</strong>（相邻概念污染输出）。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Context Interference 案例：linkerd-patterns</h3>
+          <div class="content">
+            <p>任务：生成 Server CRD + ServerAuthorization CRD 以强制 gRPC 服务的 mTLS 身份验证。Skill 含 7 个 Linkerd 模板，Template 5 近似匹配但使用 <code>v1beta1</code>（任务需要 <code>v1beta3</code>）。</p>
+            <ol style="font-size:0.85rem;">
+              <li><strong>Surface Anchoring</strong>：照抄 v1beta1 和 HTTP/1，未适配 gRPC</li>
+              <li><strong>Hallucination</strong>：杜撰 <code>rules/metricsServers</code> 字段（CRD 中不存在）</li>
+              <li><strong>Concept Bleed</strong>：混入 NetworkPolicy，生成任务未要求的 K8s 资源</li>
+            </ol>
+            <p style="font-size:0.82rem; color:#6b7280;"><strong>无 skill 时</strong>：Agent 从第一性原理出发，正确选择 v1beta3 + gRPC + 标准 meshTLS。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2603.15401v1/x5.png" alt="Figure 5: linkerd-patterns context interference 三阶段分析" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 5.</strong> linkerd-patterns skill 导致 context interference 的详细三阶段分析：Surface Anchoring → Hallucination → Concept Bleed。展示了客观上相关的 skill 如何因粒度错配而主动降低 agent 性能。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns" style="margin-top:1rem;">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Token Overhead 分布</h3>
+          <div class="content">
+            <p>ρ 与 ΔP 之间<strong>无系统性相关</strong>：</p>
+            <ul>
+              <li><strong>最低</strong>：python-resilience，ρ = <span class="metric-badge badge-positive">−77.6%</span></li>
+              <li><strong>最高</strong>：service-mesh-observability，ρ = <span class="metric-badge badge-negative">+450.8%</span></li>
+              <li>两者均对应 ΔP = 0</li>
+            </ul>
+            <p style="font-size:0.82rem; color:#6b7280;">Skill 影响的是 agent 的推理路径，不必然影响最终正确性——token overhead 是 skill 固有属性，与增益正交。</p>
+          </div>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">与相关工作的对比</h3>
+          <div class="content">
+            <ul>
+              <li><strong>SkillsBench（2602.12670）</strong>：通用领域 curated skill 上 +16.2pp；SWE-Skills-Bench 全局仅 +1.2%——模型已大量见过的领域，skill 收益趋近于零</li>
+              <li><strong>SkillUsageWild（2604.04323）</strong>：关注检索阶段失效；本文关注注入阶段失效——两者合描述 skill 全链路失效图谱</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Takeaways ========= -->
+<section class="section" id="takeaways">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Takeaways</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h3 class="title is-5">核心结论</h3>
+          <ol>
+            <li><strong>Skill 注入不是通用性能提升器</strong>：80% 的 skill 带来零增益，平均增益仅 +1.2%，远低于生态快速采用所暗示的收益预期。</li>
+            <li><strong>Skill 的价值高度领域特异性</strong>：仅在编码了高专业性程序知识、且与目标项目无版本/范围冲突时才有意义——最高可达 +30%。</li>
+            <li><strong>Token 开销与正确性完全解耦</strong>：skill 改变推理路径但不必然改变结果；部分 skill 在不提升通过率的同时带来 +451% token 增加。</li>
+            <li><strong>Context Interference 是结构性风险</strong>：版本错配、范围过宽的综合性 skill 通过表面锚定、幻觉、概念渗漏三种机制主动降低性能。</li>
+          </ol>
+
+          <h3 class="title is-5">对 Skill 设计的实操指导</h3>
+          <p><strong>不要</strong>用生产级综合模板（opinionated, hard-coded values）作为 skill 内容——覆盖范围与任务粒度的错配是 context interference 的直接来源。<strong>应当</strong>使用抽象指导模式，只编码模型预训练中覆盖不足的高专业性程序知识。这与 SkillsBench 发现的"精简 Skill 优于全面文档"从不同维度共同支持"精炼优于全面"的设计原则。</p>
+
+          <h3 class="title is-5">局限性</h3>
+          <ul>
+            <li>当前仅测试 Claude Code + Claude Haiku 4.5 单一 agent 配置，多模型扩展为后续工作。</li>
+            <li>49 个 skill 来自公开生态，不一定代表最优 skill 质量上限。</li>
+            <li>Skill 对其他 LLM（GPT、Gemini）的边际增益差异尚未量化。</li>
+          </ul>
+
+          <h3 class="title is-5">对 Skill 评测基建的启发</h3>
+          <ol>
+            <li><strong>Deterministic + requirement-driven 双保证</strong>：将验收准则与 pytest 测试全链路绑定，避免 LLM-as-judge 的不确定性——这一设计对评测基建子方向有直接参考价值。</li>
+            <li><strong>配对实验设计（有 skill vs. 无 skill）</strong>是量化 skill 边际增益的必要条件，不应只报告加入 skill 后的绝对性能。</li>
+            <li>检索漂移（SkillUsageWild）+ 注入干扰（本文）+ 能力瓶颈（本文）= skill 全链路失效的完整图谱，为综述框架提供完整分析视角。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <p><a href="../index.html">← 返回 Agent × Skill 论文列表</a></p>
+    <p style="margin-top:0.5rem; font-size:0.78rem; color:#9ca3af;">
+      Data from <a href="https://huggingface.co/papers/2603.15401" target="_blank">Hugging Face Papers</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

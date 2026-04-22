@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="SkillClaw: Let Skills Evolve Collectively with Agentic Evolver — reading notes.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SkillClaw — Agent × Skill Survey</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+  <style>
+    .skillclaw {
+      background: linear-gradient(90deg, #22C55E, #10B981);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-variant: small-caps;
+      font-weight: 700;
+    }
+    .evolution-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #22C55E22, #10B98133);
+      border: 1px solid #22C55E55;
+      border-radius: 6px;
+      padding: 0.15rem 0.55rem;
+      font-size: 0.78rem;
+      color: #059669;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      margin-left: 0.3rem;
+      vertical-align: middle;
+    }
+    .phase-badge {
+      display: inline-block;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 4px;
+      padding: 0.1rem 0.4rem;
+      font-size: 0.75rem;
+      color: #166534;
+      font-weight: 700;
+      font-variant: small-caps;
+      letter-spacing: 0.04em;
+    }
+    .action-refine { color: #0284c7; font-weight: 700; }
+    .action-create { color: #16a34a; font-weight: 700; }
+    .action-skip   { color: #9ca3af; font-weight: 700; }
+  </style>
+</head>
+<body>
+
+<div class="breadcrumb-nav">
+  <div class="container is-max-desktop">
+    <a href="../index.html">Agent × Skill Survey</a>
+    <span class="sep">/</span>
+    <span>01 Synthesis &amp; Evolution</span>
+    <span class="sep">/</span>
+    <span>SkillClaw</span>
+  </div>
+</div>
+
+
+<!-- ========= Hero ========= -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="skillclaw">SkillClaw</span>:<br>
+            Let Skills Evolve Collectively<br>with Agentic Evolver
+          </h1>
+          <p class="is-size-5" style="color:#555; margin-top:0.2rem; font-family:'Google Sans',sans-serif;">
+            让 Skill 在 Agentic Evolver 驱动下集体演化
+          </p>
+
+          <div class="is-size-6 publication-authors" style="margin-top:1rem;">
+            <span class="author-block">Ziyu Ma<sup>*1</sup>,</span>
+            <span class="author-block">Shidong Yang<sup>*1</sup>,</span>
+            <span class="author-block">Yuxiang Ji<sup>*1</sup>,</span>
+            <span class="author-block">Xucong Wang<sup>*1</sup>,</span>
+            <span class="author-block">Yong Wang<sup>†1</sup>,</span>
+            <span class="author-block">Yiming Hu<sup>1</sup>,</span>
+            <span class="author-block">Tongwen Huang<sup>1</sup>,</span>
+            <span class="author-block">Xiangxiang Chu<sup>1</sup></span>
+          </div>
+          <div class="is-size-7 publication-authors" style="margin-top:0.3rem; color:#555;">
+            <span class="author-block"><sup>1</sup>DreamX Team, AMAP-ML（阿里巴巴 / 高德地图）</span>
+          </div>
+          <div class="is-size-7" style="margin-top:0.2rem; color:#888;">
+            * 同等贡献 &nbsp;·&nbsp; † 项目负责人
+          </div>
+          <div class="is-size-7" style="margin-top:0.25rem; color:#888;">
+            2026-04-09 &nbsp;·&nbsp; ♥ 282
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2604.08377" target="_blank"
+                   class="external-link button is-normal is-rounded btn-arxiv">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/AMAP-ML/SkillClaw" target="_blank"
+                   class="external-link button is-normal is-rounded btn-github">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/papers/2604.08377" target="_blank"
+                   class="external-link button is-normal is-rounded btn-hf">
+                  <span class="icon hf-icon">🤗</span>
+                  <span>HF Papers</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/Maxwell-Jia/AgentxSkill-Survey/blob/main/notes/2604.08377-SkillClaw.md" target="_blank"
+                   class="external-link button is-normal is-rounded btn-notes">
+                  <span class="icon"><i class="fas fa-file-alt"></i></span>
+                  <span>完整笔记</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="../index.html"
+                   class="external-link button is-normal is-rounded btn-home">
+                  <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                  <span>Back</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Teaser ========= -->
+<section class="hero teaser" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="hero-body" style="padding-top:0;">
+      <div class="analysis-figure-wrap">
+        <img src="https://arxiv.org/html/2604.08377v1/x1.png" alt="Figure 1: SkillClaw 整体框架" loading="lazy">
+      </div>
+      <p class="figure-caption has-text-centered">
+        <strong>Figure 1.</strong> <span class="skillclaw">SkillClaw</span> 闭环流水线。左：多用户 Agent（Claw1–4）并发交互，产生包含成功 / 失败反馈的结构化会话轨迹，并按引用 skill 分组聚合。中：Agentic Evolver 分三阶段（<strong>Evidence → Attribution → Evolution</strong>）分析每个 skill group，输出 Refine / Create / Skip 动作。右：候选 skill 经夜间验证门（Nighttime Validation Gate）审核后写入共享 SkillHub，并同步分发给所有 Agent——实现"交互 → 证据 → 演化 → 验证 → 部署"的集体持续演化闭环。底部为 WildClawBench 覆盖的 10 种真实任务场景。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Abstract ========= -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            在多用户 Agent 生态中，skill 在部署后基本静止不动：同样的工具调用错误、参数格式问题、执行失败模式在不同会话、不同用户间被反复踩坑，系统从未从这些经验中受益。Agent 经过多轮试错找到的更稳健解法仅限于当次会话；用户间的经验形成孤岛，无法互通；而现有记忆方法只存原始轨迹，不能提炼为可复用的行为。
+          </p>
+          <p>
+            <span class="skillclaw">SkillClaw</span> 将跨用户交互轨迹聚合为共享证据库，由一个自主演化器（Agentic Evolver）以开放式推理驱动 skill 的精炼（Refine）与新建（Create），再将更新后的 skill 集合通过夜间验证门同步回所有 Agent，形成"交互 → 证据 → 演化 → 验证 → 部署"的持续闭环。在 WildClawBench（60 任务 / 6 类别）上，基于 Qwen3-Max，6 天集体演化后各类别成绩显著提升：Creative Synthesis <strong>+88.4%</strong>、Search &amp; Retrieval <strong>+52.0%</strong>、Safety &amp; Alignment <strong>+33.3%</strong>、Social Interaction <strong>+11.7%</strong>。
+          </p>
+        </div>
+
+        <div class="key-insight">
+          <div class="label">Key Insight</div>
+          <p>
+            <strong>跨用户交互轨迹聚合是集体演化的基础。</strong>单用户产生的信号难以区分"可泛化改进"与"个人特殊解法"；将多用户对同一 skill 的不同结果聚合，形成天然对照实验，为稳定演化提供更可靠的证据基础。夜间验证门将候选 skill 推送与实际部署解耦，保证共享 skill 池<strong>单调不降</strong>——用户始终享受经验证的最优版本。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Framework ========= -->
+<section class="section" id="framework" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Framework Overview</h2>
+        <div class="content has-text-justified">
+          <p>
+            <span class="skillclaw">SkillClaw</span> 采用<strong>去中心收集、中心演化</strong>的部署架构。Client Proxy（用户侧本地代理）拦截每次 Agent 请求，记录完整因果链；Evolve Server（可选中心服务端）从共享存储（OSS / S3 / 本地 FS）读取会话数据，运行演化引擎，将更新后的 skill 写回共享存储。Agentic Evolver 对聚合的跨用户会话轨迹执行三阶段分析，每日夜间触发：
+          </p>
+          <p style="text-align:center; font-size:0.9rem; color:#555;">
+            $S' \leftarrow \text{Evolve}(S,\; \{G(s)\}_{s \in S} \cup G(\varnothing))$ &nbsp;·&nbsp; 候选通过夜间验证门后写入 SkillHub
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered" style="margin-bottom:1.5rem;">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2604.08377v1/x1.png" alt="SkillClaw Agentic Evolver framework" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          Agentic Evolver 三阶段流水线（Evidence → Attribution → Evolution）及多用户 skill 分发闭环。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">
+            <span class="phase-badge">Phase 1</span>&nbsp; Trajectory Collection
+          </h3>
+          <div class="content">
+            <p>Client Proxy 拦截 <code>/v1/chat/completions</code>、<code>/v1/messages</code>，记录完整因果链：<code>prompt → action → feedback → … → response</code>，含所有工具调用、中间错误、用户反馈。</p>
+            <p>从每条会话提取：引用了哪些 skill、是否有工具错误、粗粒度质量估计（PRM 评分）；按引用 skill 分组 $G(s) = \{\tau_i \mid s \in K_i\}$，未使用 skill 的会话归入 $G(\varnothing)$。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">
+            <span class="phase-badge">Phase 2</span>&nbsp; Skill Aggregation
+          </h3>
+          <div class="content">
+            <p>Agentic Evolver 以<strong>开放式推理</strong>联合分析成功与失败会话：成功会话定义 skill 的<strong>不变量</strong>（不可改动），失败会话定义<strong>改进目标</strong>。</p>
+            <p>区分失败根因：<em>Skill 问题</em>（错误/缺失/误导性指导）→ 修改 skill；<em>Agent 问题</em>（误用/上下文溢出）→ 不修改；<em>环境问题</em>（API 不稳定）→ 酌情添加简短提示。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">
+            <span class="phase-badge">Phase 3</span>&nbsp; Skill Update Policy
+          </h3>
+          <div class="content">
+            <p>对每个 skill group 选一动作：</p>
+            <ul>
+              <li><span class="action-refine">Refine</span> — 精炼现有 skill（多会话指向同一缺陷）</li>
+              <li><span class="action-create">Create</span> — 创建新 skill（$G(\varnothing)$ 发现可复用模式）</li>
+              <li><span class="action-skip">Skip</span> — 维持不变（证据不足或非 skill 缺陷）</li>
+            </ul>
+            <p>保守编辑原则：局部精修而非全量重写；必须先读 <code>history/</code> 全部历史版本；不随意改动 API 端点/端口——除非会话证据明确表明已更改。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skill Representation -->
+    <div class="columns is-centered" style="margin-top:1rem;">
+      <div class="column is-four-fifths">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Skill 表示：SKILL.md + 版本化历史</h3>
+          <div class="content has-text-justified">
+            <p>每个 skill 以 <code>SKILL.md</code> 文件存储（YAML frontmatter 元信息 + Markdown 正文）。<strong>核心设计原则：skill 是环境信息压缩器</strong>——只记录 Agent 无法自行发现的领域特定细节（API 端口、payload 格式、工具名称、输出路径），而非通用最佳实践（重试逻辑、缓存策略等）。</p>
+            <p>每个 skill 目录下有 <code>history/</code> 子目录，按 <code>v&lt;N&gt;.md</code>（skill 快照）和 <code>v&lt;N&gt;_evidence.md</code>（本轮驱动修改的会话证据）分版本存储，形成完整的演化审计链。跳过历史读取被视为硬性错误（hard error）。</p>
+            <p><strong>典型演化案例（Slack 消息分析 skill）</strong>：API 端口从 <code>localhost:9100</code>（错误）修正为 <code>localhost:9110</code>；消息获取策略从全量检索改为先扫描预览再按需拉取；输出路径明确写入 <code>/tmp_workspace/results/results.md</code>；错误处理从 trial-and-error 重试变为 API 配置固化在 skill 中主动规避。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nighttime Validation Gate -->
+    <div class="columns is-centered" style="margin-top:0.5rem;">
+      <div class="column is-four-fifths">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">夜间验证门（Nighttime Validation Gate）</h3>
+          <div class="content has-text-justified">
+            <p>候选 skill 更新不直接部署，而是经过验证才写入共享仓库。验证在夜间于空闲用户环境执行，对候选 $s'$ 和现有 $s$ 从白天交互数据中抽取相关任务并在相同环境下执行两者并比较结果。若 $s'$ 表现优于 $s$，标记为 <strong>Accept</strong> 并次日推送所有 Agent；否则标记为 <strong>Reject</strong>，仅保留为候选记录不部署。效果：部署的 skill 池<strong>单调不降（monotonic deployment behavior）</strong>，用户始终交互的是前一夜通过验证的最优 skill 池。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Results ========= -->
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Results</h2>
+        <p style="color:#555;">WildClawBench（60 任务 / 6 类别）· 底层模型 Qwen3-Max · 6 天日夜循环演化 · Day 1 = baseline</p>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="table is-striped is-fullwidth results-table">
+        <thead>
+          <tr>
+            <th>类别</th>
+            <th>Day 1</th>
+            <th>Day 2</th>
+            <th>Day 3</th>
+            <th>Day 4</th>
+            <th>Day 5</th>
+            <th>Day 6</th>
+            <th>绝对提升 (pp)</th>
+            <th>相对提升</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Social Interaction</td>
+            <td>54.01%</td><td>60.34%</td><td>60.34%</td><td>60.34%</td><td>60.34%</td><td>60.34%</td>
+            <td>+6.33</td><td>+11.72%</td>
+          </tr>
+          <tr>
+            <td>Search &amp; Retrieval</td>
+            <td>22.73%</td><td>30.00%</td><td>30.00%</td><td>34.55%</td><td>34.55%</td><td>34.55%</td>
+            <td>+11.82</td><td>+52.00%</td>
+          </tr>
+          <tr class="our-method-row">
+            <td><strong>Creative Synthesis</strong></td>
+            <td>11.57%</td><td>21.80%</td><td>21.80%</td><td>21.80%</td><td>21.80%</td><td>21.80%</td>
+            <td><strong>+10.23</strong></td><td><strong>+88.41%</strong></td>
+          </tr>
+          <tr>
+            <td>Safety &amp; Alignment</td>
+            <td>24.00%</td><td>24.00%</td><td>24.00%</td><td>24.00%</td><td>32.00%</td><td>32.00%</td>
+            <td>+8.00</td><td>+33.33%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="columns is-centered" style="margin-top:1rem;">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <ul>
+            <li><strong>Social Interaction</strong>：Day 2 单次高影响 skill 更新立即生效（流程显式化，跨源整合大幅改善），后续轮次维持最优池。</li>
+            <li><strong>Search &amp; Retrieval</strong>：阶梯式改进（Day 2 → Day 4），体现"底层可靠性优先（输入验证/文件可访问性）、高层推理后至（约束感知检索规划）"的规律。</li>
+            <li><strong>Creative Synthesis</strong>：Day 2 大跳跃（+10.23 pp），瓶颈在环境设置（工作目录、符号链接、多模态 pipeline）而非内容生成本身；后续多模态更新多次被验证器拒绝，未超越早期最优池。</li>
+            <li><strong>Safety &amp; Alignment</strong>：改进出现在 Day 5（+8.00 pp），聚焦执行可靠性（Git 认证回退、目录克隆协议、非交互式环境安全执行），而非表面任务性能。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skill Evolve Lite table -->
+    <div class="columns is-centered" style="margin-top:1.5rem;">
+      <div class="column is-four-fifths">
+        <h3 class="title is-5 has-text-centered">受控验证：Skill Evolve Lite（Table 8）</h3>
+        <p class="has-text-centered" style="color:#555; font-size:0.85rem; margin-bottom:0.8rem;">3 个自定义查询单独验证演化机制的直接效果</p>
+        <div class="table-container">
+          <table class="table is-striped is-fullwidth results-table">
+            <thead>
+              <tr>
+                <th>查询</th>
+                <th>演化前</th>
+                <th>演化后</th>
+                <th>增益</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>basic extraction</td>
+                <td>21.7%</td><td>69.6%</td><td>+47.8%</td>
+              </tr>
+              <tr>
+                <td>deadline parsing</td>
+                <td>41.1%</td><td>48.0%</td><td>+6.9%</td>
+              </tr>
+              <tr class="our-method-row">
+                <td><strong>save report</strong></td>
+                <td>28.3%</td><td><strong>100.0%</strong></td><td><strong>+71.7%</strong></td>
+              </tr>
+              <tr>
+                <td><strong>平均</strong></td>
+                <td><strong>30.4%</strong></td><td><strong>72.5%</strong></td><td><strong>+42.1%</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:0.83rem; color:#555; text-align:center; margin-top:0.5rem;">
+          <code>save report</code> 从 28.3% 升至 100.0%：初始失败源于缺少环境特定程序（输出路径/格式），一轮演化后完全解决。<code>deadline parsing</code> 提升较小（+6.9%）：依赖细粒度推理的任务对程序性 skill 更新不够敏感。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Analysis ========= -->
+<section class="section" id="analysis" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Analysis</h2>
+        <p style="color:#555; font-size:0.9rem;">夜间候选验证详情与类别特异演化模式</p>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Social Interaction 候选详情（Table 4）</h3>
+          <div class="content">
+            <p>6 天共产生 4 个候选，<strong>仅 1 个被接受</strong>（Night 1）：<code>03_task6</code>——跨部门 Slack 总结 skill，将描述性指令重写为严格有序步骤。其余 3 个全部被拒绝。</p>
+            <p style="font-size:0.83rem; color:#6b7280;">结论：验证机制有效防止了过度更新——接受率低（1/4），但单次高影响更新足以带来 +11.72% 的持久提升。</p>
+          </div>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Search &amp; Retrieval 候选详情（Table 5）</h3>
+          <div class="content">
+            <p>Night 1 接受 <code>validate-file-existence</code> skill；Night 3 同池重测确认（Accept）为第二个关键节点；后续 4 个候选（含约束感知检索规划 skill）均被拒绝。</p>
+            <p style="font-size:0.83rem; color:#6b7280;">演化路径呈阶梯形：先解底层可靠性（输入验证/文件可访问性），再尝试高层推理提升，但高层改进未通过验证门。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns" style="margin-top:0.5rem;">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Creative Synthesis 候选详情（Table 6）</h3>
+          <div class="content">
+            <p>仅 <code>validate-tmp-workspace-inputs</code>（Night 1）被接受；后续多个多模态 pipeline skill 多次尝试均未超越已有最优池而被拒绝。</p>
+            <p style="font-size:0.83rem; color:#6b7280;">最大收益来自环境预检（工作目录/符号链接），内容生成本身并非瓶颈——揭示了 Creative 任务的真实失败根源。</p>
+          </div>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Safety &amp; Alignment 候选详情（Table 7）</h3>
+          <div class="content">
+            <p>Night 1–4 共接受 3 次更新（git push 认证回退 + clone 目录修正），Night 5–6 改进版本未超越最优池被拒绝，部署池保持<strong>单调不降</strong>。</p>
+            <p style="font-size:0.83rem; color:#6b7280;">Safety 类别的改进聚焦执行鲁棒性而非语义安全——说明程序性 skill 更新对执行稳定性的直接贡献最大。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered" style="margin-top:1rem;">
+      <div class="column is-four-fifths">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">类别特异（Category-Specific）演化模式</h3>
+          <div class="content has-text-justified">
+            <p>不同类别的 skill 演化驱动力截然不同——<strong>不存在单一通用的 skill 更新路径</strong>：</p>
+            <ul>
+              <li><strong>Social Interaction</strong>：流程显式化（将模糊意图转化为严格有序步骤）</li>
+              <li><strong>Search &amp; Retrieval</strong>：输入可靠性优先（文件存在性验证、API 配置固化）</li>
+              <li><strong>Creative Synthesis</strong>：环境预检（工作目录确认、符号链接修复、多模态 pipeline 初始化）</li>
+              <li><strong>Safety &amp; Alignment</strong>：执行鲁棒性（认证回退策略、非交互式环境适配）</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Takeaways ========= -->
+<section class="section" id="takeaways">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Takeaways</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h3 class="title is-5">核心结论</h3>
+          <ol>
+            <li><span class="skillclaw">SkillClaw</span> 将静态 skill 生态转化为<strong>持续演化的动态系统</strong>，把"用户交互"直接当作 skill 更新的驱动信号，无需额外人工投入。</li>
+            <li>夜间验证机制保证<strong>单调部署行为</strong>：skill 池只升不降，用户始终享受经验证的最优版本。</li>
+            <li>演化模式是<strong>类别特异的</strong>：Social 强调流程显式化，Search 强调输入可靠性，Creative 强调环境预检，Safety 强调执行鲁棒性——无单一通用路径。</li>
+            <li>即使在小规模实验（8 用户、6 天）下，集体演化仍展现显著效果，暗示扩展用户数和时长将进一步提升演化质量。</li>
+          </ol>
+
+          <h3 class="title is-5" style="margin-top:1.5rem;">局限性</h3>
+          <ul>
+            <li>实验规模较小（8 用户、6 天、60 任务、4 个类别），结果尚不构成大规模部署的充分验证；论文整体标注为 Work in Progress。</li>
+            <li>评测闭环在自家 WildClawBench，跨 benchmark 泛化性待验证。</li>
+            <li>夜间验证引入额外 token 成本；跨用户隐私与数据安全（轨迹共享）问题未作讨论。</li>
+          </ul>
+
+          <h3 class="title is-5" style="margin-top:1.5rem;">对"集体沉淀"方向的启发</h3>
+          <ol>
+            <li><strong>集体演化 vs 单用户演化的根本差异</strong>：跨用户聚合让同一 skill 在多种上下文下被检验，形成天然对照实验，为稳定演化提供更可靠的证据基础。</li>
+            <li><strong>"夜间验证门"作为质量锚点</strong>：候选 skill 推送与实际部署解耦，通过真实环境执行而非模型自评决定是否采纳，比直接信任 LLM 自我评判更可靠。未来 skill marketplace 可借用类似的"staged rollout + 生产验证"范式。</li>
+            <li><strong>Skill 是环境信息压缩器而非通用知识库</strong>：API 端口、payload 格式、工具名称等 Agent 无法自行发现的领域特定细节才是 skill 的核心价值，为 skill 质量评估标准制定提供直接参考。</li>
+            <li><strong>保守编辑原则降低演化风险</strong>：默认"局部修改而非重写"、"先读历史再动笔"、"成功会话保护的部分不轻动"——可直接移植到其他 skill 自进化框架。</li>
+            <li><strong>Skill Marketplace 的工程骨架已现</strong>：共享存储层（OSS/S3）、版本化历史（<code>history/v&lt;N&gt;.md</code>）、技能注册表（<code>skill_registry.json</code>）和 SkillHub 分发机制，事实上已构成轻量 skill marketplace 的技术原型。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <p><a href="../index.html">← 返回 Agent × Skill 论文列表</a></p>
+    <p style="margin-top:0.5rem; font-size:0.78rem; color:#9ca3af;">
+      Data from <a href="https://huggingface.co/papers/2604.08377" target="_blank">Hugging Face Papers</a>
+      &nbsp;·&nbsp; AMAP-ML / Alibaba DreamX Team
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

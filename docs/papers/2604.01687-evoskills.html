@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="EvoSkills: Self-Evolving Agent Skills via Co-Evolutionary Verification — 精读笔记。">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EvoSkills — Agent × Skill Survey</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+  <style>
+    .evoskills {
+      background: linear-gradient(90deg, #F97316, #22C55E);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-variant: small-caps;
+      font-weight: 700;
+    }
+    .disambiguation-note {
+      display: inline-block;
+      background: #fff8e1;
+      border: 1px solid #ffc107;
+      border-radius: 6px;
+      padding: 0.35rem 0.8rem;
+      font-size: 0.82rem;
+      color: #7a5800;
+      margin-top: 0.6rem;
+    }
+    .disambiguation-note strong {
+      color: #c77700;
+    }
+  </style>
+</head>
+<body>
+
+<div class="breadcrumb-nav">
+  <div class="container is-max-desktop">
+    <a href="../index.html">Agent × Skill Survey</a>
+    <span class="sep">/</span>
+    <span>01 Synthesis &amp; Evolution</span>
+    <span class="sep">/</span>
+    <span>EvoSkills</span>
+  </div>
+</div>
+
+
+<!-- ========= Hero ========= -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="evoskills">EvoSkills</span>:<br>
+            Self-Evolving Agent Skills via<br>Co-Evolutionary Verification
+          </h1>
+          <p class="is-size-5" style="color:#555; margin-top:0.2rem; font-family:'Google Sans',sans-serif;">
+            基于协同演化验证的 Agent 技能自进化框架
+          </p>
+
+          <div class="has-text-centered" style="margin-top:0.5rem;">
+            <span class="disambiguation-note">
+              ⚠️ <strong>注意区分</strong>：这是 <strong>EvoSkills（复数）2604.01687</strong>，UIC + MBZUAI + McGill + Columbia 合作；
+              与 <strong>EvoSkill（单数）2603.02766</strong>（Sentient + Virginia Tech）是完全不同的两篇论文。
+            </span>
+          </div>
+
+          <div class="is-size-6 publication-authors" style="margin-top:1.2rem;">
+            <span class="author-block">Hanrong Zhang<sup>1</sup>,</span>
+            <span class="author-block">Shicheng Fan<sup>1</sup>,</span>
+            <span class="author-block">Henry Peng Zou<sup>1</sup>,</span>
+            <span class="author-block">Yankai Chen<sup>2</sup>,</span>
+            <span class="author-block">Zhenting Wang<sup>3</sup>,</span>
+            <span class="author-block">Jiayu Zhou<sup>4</sup>,</span>
+            <span class="author-block">et al.</span>
+          </div>
+          <div class="is-size-7 publication-authors" style="margin-top:0.3rem; color:#555;">
+            <span class="author-block"><sup>1</sup>University of Illinois Chicago</span>
+            <span class="author-block">· <sup>2</sup>MBZUAI</span>
+            <span class="author-block">· <sup>3</sup>McGill University</span>
+            <span class="author-block">· <sup>4</sup>Columbia University</span>
+            <span class="author-block">· Zhejiang University · UBC</span>
+          </div>
+          <div class="is-size-7" style="margin-top:0.25rem; color:#888;">
+            2026-04-02 · arXiv 2604.01687
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2604.01687" target="_blank"
+                   class="external-link button is-normal is-rounded btn-arxiv">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/papers/2604.01687" target="_blank"
+                   class="external-link button is-normal is-rounded btn-hf">
+                  <span class="icon hf-icon">🤗</span>
+                  <span>HF Papers</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/Maxwell-Jia/AgentxSkill-Survey/blob/main/notes/2604.01687-EvoSkillsUIC.md" target="_blank"
+                   class="external-link button is-normal is-rounded btn-notes">
+                  <span class="icon"><i class="fas fa-file-alt"></i></span>
+                  <span>完整笔记</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="../index.html"
+                   class="external-link button is-normal is-rounded btn-home">
+                  <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                  <span>Back</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Teaser ========= -->
+<section class="hero teaser" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="hero-body" style="padding-top:0;">
+      <div class="analysis-figure-wrap">
+        <img src="https://arxiv.org/html/2604.01687v1/x3.png" alt="Figure 3: EvoSkills 协同演化框架总览" loading="lazy">
+      </div>
+      <p class="figure-caption has-text-centered">
+        <strong>Figure 3.</strong> <span class="evoskills">EvoSkills</span> 协同演化框架总览——<strong>Skill Generator</strong> 与 <strong>Surrogate Verifier</strong> 通过迭代细化协同演化。Verifier 提供结构化失败反馈驱动 Skill 改进；Ground-Truth Oracle 仅返回不透明 Pass/Fail 信号，触发测试升级并确保严格信息隔离。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Abstract ========= -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Agent Skill 的生成长期依赖人工编写：领域专家手动撰写 Skill bundle，成本高昂且质量不稳定，难以规模化。更深层的问题是<strong>人机认知错位</strong>——人类按直觉编写的工作流与 LLM Agent 的推理执行逻辑存在结构性鸿沟，导致部分领域（如 Natural Science）中人工 Skill 反而使 Agent 性能下降。
+          </p>
+          <p>
+            <span class="evoskills">EvoSkills</span> 将 Skill Generator 与 Surrogate Verifier 置于<strong>协同演化循环</strong>中：Generator 迭代生成多文件 Skill bundle（SKILL.md + 可执行脚本 + 领域参考资料），Verifier 在信息隔离条件下独立合成测试断言并提供结构化诊断反馈，两者交替优化。核心创新在于无需 Ground-Truth 内容即可提供密集可操作的演化信号。在 SkillsBench（87 任务 / 11 领域）上，<span class="evoskills">EvoSkills</span> 以 <strong>71.1% pass rate</strong> 超越无 Skill 基线 +40.5 pp、超越人工精心编写的 Skill +17.6 pp，且演化 Skill 跨 6 个模型家族均迁移有效（+36～+44 pp）。
+          </p>
+        </div>
+
+        <div class="key-insight">
+          <div class="label">Key Insight</div>
+          <p>
+            <strong>① 多文件 Skill bundle = SKILL.md + 可执行脚本 + 领域参考资料</strong>——比单一函数/API 结构复杂，一次生成不可靠，必须有闭环验证。<br>
+            <strong>② Co-evolutionary Verification</strong>——Generator 与 Surrogate Verifier 协同演化，Verifier 自主合成测试断言作为代理奖励信号，彻底摆脱对 Ground-Truth 反馈内容的依赖；演化效率高（5 轮内收敛，平均 4.1 次 Verifier 介入 + 2.4 次 Oracle 评估）。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Framework ========= -->
+<section class="section" id="framework" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Framework Overview</h2>
+        <div class="content has-text-justified">
+          <p>
+            任务环境被形式化为 POMDP $(\mathcal{X}, \mathcal{A}, T, \mathcal{O}, \Omega, R)$，Agent 目标是发现最优 Skill $S^* = \arg\max_S J(S)$，其中 $J(S)$ 是在 Skill $S$ 指导下策略 $\pi_\theta$ 到达终态时的期望奖励。由于 Ground-Truth 奖励 $R$ 仅返回不透明信号，<span class="evoskills">EvoSkills</span> 引入代理奖励 $\tilde{R}(x, V) = \frac{1}{|V|} \sum_k \mathbf{1}[e_k(x)]$（Surrogate Verifier 测试通过率）作为可优化的代理目标，通过交替优化（Skill 细化 + 测试升级）逼近真实目标。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2604.01687v1/x2.png" alt="Figure 2: EvoSkills 5 轮演化过程中 Skill 质量提升曲线" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 2.</strong> 5 轮演化过程中 Skill 质量提升曲线——<span class="evoskills">EvoSkills</span> 在第 5 轮已超越人工 Skill，演化收益递增且收敛迅速。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns" style="margin-top:1.5rem;">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Skill Generator</h3>
+          <div class="content">
+            <p>使用持久对话上下文 $C$，初始化为（任务指令 $I$，元技能 $S_{\text{meta}}$）。每次迭代读取当前 Skill $S^{(i)}$ 与累积 Verifier 诊断 $F^{(i,j)}$，生成改进版本：</p>
+            <p style="text-align:center; font-size:0.88rem;">$S^{(i+1)} \sim \pi_\theta(\cdot \mid S^{(i)},\, C^{(i+1)}),\quad C^{(i+1)} = C^{(i)} \oplus F^{(i,j)}$</p>
+            <p style="font-size:0.82rem; color:#6b7280;">上下文容量上限 $\beta = 0.7$（防止 LLM 上下文溢出），超限则终止当前演化轮次。Generator 执行 Skill 并产出输出文件 $x^{(i)} = \Phi(S^{(i)}, E)$，传递给 Surrogate Verifier 评估。</p>
+          </div>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Surrogate Verifier</h3>
+          <div class="content">
+            <p>运行于完全独立的 LLM 会话 $\pi_\theta^V$，仅接收任务指令 $I$ 和输出文件 $x^{(i)}$，不继承 Generator 的推理或代码——保证测试断言与 Generator 内部状态<strong>条件独立</strong>，防止"知道答案后合谋放行"。</p>
+            <p>代理奖励：$\tilde{R}(x, V) = \frac{1}{|V|} \sum_k \mathbf{1}[e_k(x)] \in [0,1]$</p>
+            <p style="font-size:0.82rem; color:#6b7280;">当 $\tilde{R} &lt; 1$ 时，生成结构化诊断 $F^{(i,j)}$（失败断言明细 + 根因分析 + 修复建议）反馈给 Generator。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns" style="margin-top:0.5rem;">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">协同演化：通路 1 — Skill 细化</h3>
+          <div class="content">
+            <p>当 Surrogate 测试失败时触发：固定测试套件 $V^{(j)}$，将诊断 $F^{(i,j)}$ 追加至 Generator 上下文，触发定向 Skill 修复。Verifier 测试套件在此阶段锁定不变。</p>
+            <p style="font-size:0.82rem; color:#6b7280;">约 40% 的迭代由 Surrogate Verifier 独自吸收，无需调用 Oracle，节省大量评估成本。</p>
+          </div>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">协同演化：通路 2 — 测试升级</h3>
+          <div class="content">
+            <p>当 Surrogate 通过但 Oracle 失败时触发：Oracle 返回不透明 Pass/Fail 位（无测试内容）追加至 Generator 上下文；Verifier 独立强化测试套件，生成更多样、更严格的断言：$V^{(j+1)} \sim \pi_\theta^V(\cdot \mid I, x^{(i)}, V^{(j)})$。</p>
+            <p style="font-size:0.82rem; color:#6b7280;">终止条件：最多 $N=5$ 次 Oracle 评估轮次，$M=15$ 次 Verifier 重试；Oracle 满分提前退出，保留历史最优 Skill 快照。超过 60% 的任务在 2 次 Oracle 轮次内收敛。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Results ========= -->
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Results</h2>
+        <p style="color:#555;">SkillsBench：87 任务 / 11 专业领域，pass rate（reward = 1.0 的任务比例）为主指标，二值确定性验证。</p>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="table is-striped is-fullwidth results-table">
+        <thead>
+          <tr>
+            <th>方法</th>
+            <th>Pass Rate</th>
+            <th>备注</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>No-Skill Baseline</td>
+            <td>30.6%</td>
+            <td>无 Skill 直接执行</td>
+          </tr>
+          <tr>
+            <td>Self-Generated Skills</td>
+            <td>32.0% ± 3.1%</td>
+            <td>单次生成，无验证（SkillsBench 原版）</td>
+          </tr>
+          <tr>
+            <td>CoT-Guided Self-Generation</td>
+            <td>30.7% ± 5.2%</td>
+            <td>5 步 CoT 引导，仍无外部验证</td>
+          </tr>
+          <tr>
+            <td>Skill-Creator（Anthropic 官方自动化版）</td>
+            <td>34.1%</td>
+            <td>迭代草稿自测但仍是单会话</td>
+          </tr>
+          <tr>
+            <td>Human Curated Skills</td>
+            <td>53.5%</td>
+            <td>SkillsBench 配套人工精心编写 Skill</td>
+          </tr>
+          <tr class="our-method-row">
+            <td><strong>EvoSkills（本文）</strong></td>
+            <td><strong>71.1%</strong></td>
+            <td><strong>+40.5 pp over no-skill；+17.6 pp over human</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="columns is-centered" style="margin-top:1.2rem;">
+      <div class="column is-four-fifths">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2604.01687v1/x5.png" alt="Figure 6: 各领域 pass rate 分布" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 6.</strong> SkillsBench 11 个专业领域上三种条件（无 Skill / 人工 Skill / <span class="evoskills">EvoSkills</span>）的 pass rate 对比。箭头标注 Natural Science 领域——人工 Skill 导致性能下降（认知错位典型案例），<span class="evoskills">EvoSkills</span> 则取得显著提升。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <ul>
+            <li><strong>Finance</strong>：EvoSkills 相较人工 Skill 提升 <strong>+56.9 pp</strong>（最大增益领域）</li>
+            <li><strong>Cybersecurity</strong>：+23.2 pp</li>
+            <li><strong>Natural Science</strong>：人工 Skill 性能下降（认知错位典型案例），EvoSkills 取得显著增益</li>
+            <li>EvoSkills 在 11 个领域中 <strong>9 个超越人工 Skill</strong>；一次性生成策略无论提示工程多精细均无法突破 35% 上限</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered" style="margin-top:0.5rem;">
+      <div class="column is-four-fifths">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2604.01687v1/x4.png" alt="Figure 5: 跨模型迁移结果" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 5.</strong> 跨模型迁移结果。Claude Opus 4.6 演化的 Skill 迁移至 6 个不同提供商的模型，全部提升 +36 至 +44 pp，证明演化 Skill 编码了可复用任务结构而非模型特定制件。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <ul>
+            <li>主模型：Claude Opus 4.6（+40.5 pp）、GPT-5.2（+40.2 pp）</li>
+            <li>迁移模型（接受 Opus 演化 Skill）：Claude Sonnet 4.5 / Claude Haiku 4.5 / Qwen3-Coder-480B / DeepSeek V3-671B / Mistral Large 3-675B，全部提升 +36 至 +44 pp</li>
+            <li>模型自身演化（GPT-5.2 自演化：69.8%）略优于接受迁移 Skill（65.0%），差距仅 4.8 pp</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Analysis ========= -->
+<section class="section" id="analysis" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Analysis</h2>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">消融实验</h3>
+          <table class="table is-narrow ablation-table is-fullwidth">
+            <thead>
+              <tr><th>消融设置</th><th>Pass Rate</th><th>与 Full 差距</th></tr>
+            </thead>
+            <tbody>
+              <tr class="our-method-row"><td><strong>EvoSkills（完整）</strong></td><td><strong>71.1%</strong></td><td>—</td></tr>
+              <tr><td>去除 Surrogate Verifier（仅用 Oracle 不透明信号）</td><td>41.1%</td><td>−30.0 pp</td></tr>
+              <tr><td>去除 Skill 演化（仅背景上下文 + 直接执行）</td><td>48.6%</td><td>−22.5 pp</td></tr>
+              <tr><td>No-Skill Baseline</td><td>30.6%</td><td>−40.5 pp</td></tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc" style="margin-top:0.7rem;">
+            Surrogate Verifier 贡献 <strong>−30.0 pp</strong>（最大单项），是框架核心；背景知识上下文有一定帮助（+18.0 pp over no-skill），但远不足以达到完整框架的水平（差距 −22.5 pp）。
+          </p>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Case Study：外行星凌日周期检测</h3>
+          <div class="content">
+            <p>人工 Skill：<strong>5 个文件 / 1,096 行文档</strong>。</p>
+            <p>EvoSkills 演化结果：<strong>1 个统一 Skill，64 行流程文档 + 142 行可执行 Python 函数</strong>，经 5 次独立测试全部通过（100%）。</p>
+            <p>关键改进点：</p>
+            <ul style="font-size:0.88rem;">
+              <li>两阶段周期搜索（宽扫描 + 窄精化）实现为带参数的两个独立函数，而非散文中的两行提示</li>
+              <li>算法被明确规定（TLS），附有从 3 次失败 BLS 尝试中得出的具体理由</li>
+              <li>可执行函数替代散文说明，消除每次执行时 Agent 重新实现引入的精度 Bug</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns" style="margin-top:0.5rem;">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">演化效率分析</h3>
+          <div class="content">
+            <ul style="font-size:0.88rem;">
+              <li>每任务平均 <strong>4.1 次 Verifier 介入</strong>，<strong>2.4 次 Oracle 评估</strong></li>
+              <li>约 <strong>40%</strong> 的迭代由 Surrogate Verifier 独自吸收，无需调用 Oracle</li>
+              <li>超过 <strong>60%</strong> 的任务在 2 次 Oracle 轮次内收敛</li>
+              <li>演化成本可控；5 轮内即可超越人工 Skill</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Surrogate-GT 差距（局限揭示）</h3>
+          <div class="content">
+            <p style="font-size:0.88rem;">Surrogate Verifier 无法复制 Oracle 的精确精度要求（如 5 位小数匹配），也无法区分自身估算误差与 Agent 答案误差。</p>
+            <p style="font-size:0.88rem; color:#6b7280;">这揭示了"Verifier 循环自证"的潜在风险：Verifier 生成的测试断言质量决定了演化上限；若 Verifier 本身存在系统性盲区，Generator 在 Surrogate 上满分并不保证 Oracle 满分。Oracle 作为权威仲裁者的角色不可替代。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Takeaways ========= -->
+<section class="section" id="takeaways">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Takeaways</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h3 class="title is-5">核心结论</h3>
+          <ol>
+            <li>Agent 自动演化的 Skill 在 SkillsBench 上超越人工精心编写的 Skill（71.1% vs 53.5%），证实了"机器发现的 Skill 比人类设计的更适合 Agent"这一命题。</li>
+            <li>演化 Skill 对不同模型家族具有强迁移性（+36 至 +44 pp），编码的是可复用的任务结构而非模型特定制件。</li>
+            <li>协同演化循环（而非生成提示本身）是性能提升的根本驱动力；5 轮内即可收敛，演化成本可控。</li>
+          </ol>
+
+          <h3 class="title is-5">局限性</h3>
+          <ul>
+            <li><strong>Verifier 循环自证风险</strong>：Surrogate Verifier 的测试质量决定演化上限——若 Verifier 存在系统性盲区（如无法检验精确数值精度），Generator 可能在 Surrogate 满分而 Oracle 失败，形成"自我欺骗"陷阱。</li>
+            <li>代码未公开（截至 2026-04-22），复现需自行实现协同演化循环及 SkillsBench 评测环境。</li>
+            <li>当前框架依赖 Claude-Code 执行环境，对其他 Agent 框架的适配性待验证。</li>
+          </ul>
+
+          <h3 class="title is-5">对 Skill 自动合成 / 自进化方向的启发</h3>
+          <ol>
+            <li><strong>Surrogate Verifier 作为通用信号源</strong>：以独立 LLM 会话合成测试断言作为代理奖励，是绕开稀缺 Ground-Truth 反馈的可推广范式，值得在其他 Skill 生成任务中探索。</li>
+            <li><strong>Skill 质量不能靠一次生成保证</strong>：SkillsBench 原论文发现自生成 Skill 基本无效（32.0%，与无 Skill 基线几乎持平），EvoSkills 将该结论反转至 71.1%，关键差异在于<strong>迭代验证</strong>而非生成策略本身。</li>
+            <li><strong>认知错位是 Skill 领域的系统性问题</strong>：Finance / Natural Science 等领域人工 Skill 的大幅差异证明了人类直觉与 LLM 执行逻辑之间的结构性鸿沟；自动演化通过实际执行反馈弥合这一鸿沟。</li>
+            <li><strong>Skill 迁移性表明演化产物编码了任务抽象而非模型偏好</strong>：跨 5 家提供商 6 个模型均获显著提升，为未来构建跨模型 Skill 共享市场提供了实验依据。</li>
+            <li><strong>与单数版 EvoSkill 的路线对比</strong>：单数版（2603.02766）依赖有标注失败样本驱动 Proposer + Pareto 前沿治理；复数版彻底摒弃 Ground-Truth 标注依赖，Surrogate 自主合成反馈，适用范围更广，但对 Verifier 质量的依赖更高。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <p><a href="../index.html">← 返回 Agent × Skill 论文列表</a></p>
+    <p style="margin-top:0.5rem; font-size:0.78rem; color:#9ca3af;">
+      Data from <a href="https://huggingface.co/papers/2604.01687" target="_blank">Hugging Face Papers</a>
+      · arXiv <a href="https://arxiv.org/abs/2604.01687" target="_blank">2604.01687</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

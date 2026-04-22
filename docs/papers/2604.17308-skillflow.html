@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="SkillFlow: Benchmarking Lifelong Skill Discovery and Evolution for Autonomous Agents — reading notes.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SkillFlow — Agent × Skill Survey</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+  <style>
+    .sf {
+      background: linear-gradient(90deg, #F97316, #FACC15);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-variant: small-caps;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+<div class="breadcrumb-nav">
+  <div class="container is-max-desktop">
+    <a href="../index.html">Agent × Skill Survey</a>
+    <span class="sep">/</span>
+    <span>04 Evaluation</span>
+    <span class="sep">/</span>
+    <span>SkillFlow</span>
+  </div>
+</div>
+
+
+<!-- ========= Hero ========= -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="sf">SkillFlow</span>:<br>
+            Benchmarking Lifelong Skill Discovery<br>and Evolution for Autonomous Agents
+          </h1>
+          <p class="is-size-5" style="color:#555; margin-top:0.2rem; font-family:'Google Sans',sans-serif;">
+            面向终身 Skill 发现与演化的 Benchmark
+          </p>
+
+          <div class="is-size-6 publication-authors" style="margin-top:1rem;">
+            <span class="author-block">Ziao Zhang<sup>1</sup>,</span>
+            <span class="author-block">Kou Shi<sup>1</sup>,</span>
+            <span class="author-block">Shiting Huang<sup>1</sup>,</span>
+            <span class="author-block">Avery Nie<sup>2</sup>,</span>
+            <span class="author-block">Yu Zeng<sup>1</sup>,</span>
+            <span class="author-block">Yiming Zhao<sup>1</sup>,</span>
+            <span class="author-block">Zhen Fang<sup>1</sup>,</span>
+            <span class="author-block">Qisheng Su<sup>3</sup>,</span>
+            <span class="author-block">Haibo Qiu<sup>1</sup>,</span>
+            <span class="author-block">Wei Yang<sup>1</sup>,</span>
+            <span class="author-block">et al.</span>
+          </div>
+          <div class="is-size-7 publication-authors" style="margin-top:0.3rem; color:#555;">
+            <span class="author-block"><sup>1</sup>USTC</span>
+            <span class="author-block">· <sup>2</sup>University of Toronto</span>
+            <span class="author-block">· <sup>3</sup>University of Sydney</span>
+          </div>
+          <div class="is-size-7" style="margin-top:0.25rem; color:#888;">
+            2026-04-21 · ♥ 16
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2604.17308" target="_blank"
+                   class="external-link button is-normal is-rounded btn-arxiv">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/ZhangZi-a/SkillFlow" target="_blank"
+                   class="external-link button is-normal is-rounded btn-github">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>GitHub</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/papers/2604.17308" target="_blank"
+                   class="external-link button is-normal is-rounded btn-hf">
+                  <span class="icon hf-icon">🤗</span>
+                  <span>HF Papers</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/Maxwell-Jia/AgentxSkill-Survey/blob/main/notes/2604.17308-SkillFlow.md" target="_blank"
+                   class="external-link button is-normal is-rounded btn-notes">
+                  <span class="icon"><i class="fas fa-file-alt"></i></span>
+                  <span>完整笔记</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="../index.html"
+                   class="external-link button is-normal is-rounded btn-home">
+                  <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                  <span>Back</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Teaser ========= -->
+<section class="hero teaser" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="hero-body" style="padding-top:0;">
+      <div class="analysis-figure-wrap">
+        <img src="https://arxiv.org/html/2604.17308v1/x1.png" alt="Figure 1: 静态评测 vs. 终身评测对比示意" loading="lazy">
+      </div>
+      <p class="figure-caption has-text-centered">
+        <strong>Figure 1.</strong> 传统静态 Skill 评测（预设固定 Skill 库，孤立评测每次任务）vs.
+        <span class="sf">SkillFlow</span> 的终身设定：Agent 从<strong>空 Skill 库出发</strong>，在任务族内顺序解题，通过
+        Patch 逐步外化经验，跨任务传递并迭代更新 Skill 库——将 Skill 的完整生命周期纳入统一评测。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Abstract ========= -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            现有 Skill benchmark（SkillsBench、SWE-Skills-Bench、SkillUsageWild）均预设了一个静态的已有 Skill 库，验证"外部 Skill 能否帮助模型"，却从未检验：<strong>Agent 能否从零开始，在序列化任务执行中自主发现、提炼、修复 Skill，并在后续任务中真正复用？</strong>这正是 lifelong 视角的核心缺口。
+          </p>
+          <p>
+            <span class="sf">SkillFlow</span> 构建了包含 <strong>166 个任务、20 个工作流族</strong>的终身 Skill 评测基准，覆盖 Finance、Operations、Healthcare、Governance、Data & Document 五大领域。每个任务族共享一套 <strong>Domain-Agnostic Execution Flow（DAEF）</strong>抽象工作流骨架，保证族内技能迁移具有结构性基础。评测协议规定 Agent 从空 Skill 库出发，通过<strong>轨迹驱动（trajectory-driven）</strong>与 <strong>Rubric 驱动（rubric-driven）</strong>两种 Skill Patch 机制在任务序列中增量积累知识，实现"发现→使用→修复→迁移"全生命周期测量。
+          </p>
+          <p>
+            在 11 个模型、4 个 harness 的评测中，Claude Opus 4.6 在完整终身演化协议下达到 <strong>71.08%</strong> 完成率，较 Vanilla 提升 <strong>+8.43 pts</strong>，同时成本下降 7.52%、输出 Token 减少 20.33%——效果与效率双优。
+          </p>
+        </div>
+
+        <div class="key-insight">
+          <div class="label">Key Insight</div>
+          <p>
+            <strong>Agents begin with no skills.</strong> SkillFlow 是目前<strong>唯一真正 lifelong</strong> 的 Skill 评测框架：每族任务从空库起步，trajectory- 与 rubric-driven skill patches 共同驱动知识外化，序列化执行使 Skill 在任务间积累与修复。"能否写 Skill"远不是瓶颈——<strong>能否识别并修复错误 Skill，才是正向迁移的真正分水岭。</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Benchmark Construction ========= -->
+<section class="section" id="benchmark" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Benchmark Construction</h2>
+        <div class="content has-text-justified">
+          <p>
+            <span class="sf">SkillFlow</span> 的构建核心是保证族内任务共享抽象工作流结构，从而使 Skill 迁移信号可靠且可测量。任务族从 SkillsBench（18 个）和 GDPval（46 个）中遴选 64 个种子任务，通过嵌入式语义匹配与双 Agent 迭代扩展（GPT-5.3-Codex 为 Architect Agent，Claude Opus 4.6 为 Critic Agent，在真实 Docker 环境中验证），最终生成 166 个可运行任务，全部通过人工审查，无致命环境错误。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered" style="margin-bottom:1.5rem;">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2604.17308v1/x2.png" alt="Figure 2: SkillFlow 任务构建流水线" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 2.</strong> 任务构建四步流水线：种子收集 + Skill 池整理 → 语义匹配配对 → 双 Agent 迭代扩展与 Docker 验证 → 人工审查（指令泄露 / 逻辑合理性 / 环境正确性 / 难度梯度）。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">任务族划分</h3>
+          <div class="content">
+            <ul>
+              <li><strong>20 个工作流族</strong>，每族 8–9 个任务，按难度升序排列</li>
+              <li>覆盖五大领域：Finance &amp; Economics · Operations &amp; Supply Chain · Healthcare &amp; Life Sciences · Governance &amp; Strategy · Data &amp; Document Intelligence</li>
+              <li>族间重置 Skill 库，避免异质工作流信号相互干扰</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">DAEF 工作流骨架</h3>
+          <div class="content">
+            <p>每族共享 <strong>Domain-Agnostic Execution Flow（DAEF）</strong>：形式化为有向图，节点为受控词汇操作类型（read / retrieve / compute / detect / output），边为依赖关系。</p>
+            <p>DAEF = $\phi(\mathcal{T})$，去掉具体实体后保留的抽象图，可在金融、医疗、运营等不同领域实例化，是族内 Skill 迁移的结构性保证。</p>
+          </div>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Skill Patch 协议</h3>
+          <div class="content">
+            <p>Patch 包含三个最小可审计字段：</p>
+            <ul>
+              <li><code>summary</code>：高层次经验总结</li>
+              <li><code>upsert_files</code>：创建或覆盖 SKILL.md 及辅助脚本</li>
+              <li><code>delete_paths</code>：移除过时 Skill 文件</li>
+            </ul>
+            <p><strong>轨迹驱动</strong>从行为轨迹 $\tau_t$ 归纳做法；<strong>Rubric 驱动</strong>从验证器反馈 $r_t$ 修复逻辑——两者互补。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered" style="margin-top:1rem;">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2604.17308v1/x3.png" alt="Figure 3: DAEF 跨领域对应示意" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 3.</strong> 相同 DAEF（抽象工作流节点与依赖结构相同）在金融分析、医疗合规、运营规划等不同领域的实例化示例，验证跨领域工作流迁移的可行性。
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Lifelong Protocol ========= -->
+<section class="section" id="protocol">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Agentic Lifelong Learning 协议</h2>
+        <div class="content has-text-justified">
+          <p>
+            每族评测开始时，Agent Skill 库为空 $\mathcal{S}_0 = \emptyset$。第一个任务在无任何 Skill 辅助下完成，产生执行轨迹 $\tau_1$ 与 Rubric $r_1$，从零引导生成初始 Skill：
+          </p>
+          <p style="text-align:center;">
+            $\Delta_1 = \text{Model}_g(\emptyset,\, \tau_1,\, r_1), \quad \mathcal{S}_1 = \text{Apply}(\Delta_1,\, \emptyset)$
+          </p>
+          <p>
+            对后续任务 $t > 1$，Agent 携带 $\mathcal{S}_{t-1}$ 执行 $T_t$，获得 $(\tau_t, r_t)$ 后增量更新：
+          </p>
+          <p style="text-align:center;">
+            $\Delta_t = \text{Model}_g(\mathcal{S}_{t-1},\, \tau_t,\, r_t), \quad \mathcal{S}_t = \text{Apply}(\Delta_t,\, \mathcal{S}_{t-1})$
+          </p>
+          <p>
+            Skill 使用为自然行为（Agent 自主决定是否读取已有 Skill），评测从轨迹中提取读/调用事件，计算 Skill 复用率（<code>%use</code>），不干预 Agent 决策。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Results ========= -->
+<section class="section" id="results" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Results</h2>
+        <p style="color:#555;">完成率 %comp. ↑ · #Skills（族内平均 Skill 数）· %use（Skill 复用率）</p>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="table is-striped is-fullwidth results-table">
+        <thead>
+          <tr>
+            <th>Harness</th>
+            <th>Model</th>
+            <th>Vanilla %comp.</th>
+            <th>Evolve %comp.</th>
+            <th>Δ</th>
+            <th>#Skills</th>
+            <th>%use</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="our-method-row">
+            <td>Claude Code</td>
+            <td><strong>Claude Opus 4.6</strong></td>
+            <td>62.65</td>
+            <td><strong>71.08</strong></td>
+            <td><strong>+8.43</strong></td>
+            <td>1.05</td>
+            <td>45.78</td>
+          </tr>
+          <tr>
+            <td>Claude Code</td>
+            <td>Claude Sonnet 4.5</td>
+            <td>49.40</td>
+            <td>55.42</td>
+            <td>+6.02</td>
+            <td>2.55</td>
+            <td>72.89</td>
+          </tr>
+          <tr>
+            <td>Claude Code</td>
+            <td>MiniMax M2.5</td>
+            <td>28.31</td>
+            <td>34.94</td>
+            <td>+6.63</td>
+            <td>2.50</td>
+            <td>32.53</td>
+          </tr>
+          <tr>
+            <td>Codex CLI</td>
+            <td>GPT 5.4</td>
+            <td>33.13</td>
+            <td>36.75</td>
+            <td>+3.62</td>
+            <td>1.05</td>
+            <td>81.33</td>
+          </tr>
+          <tr>
+            <td>Claude Code</td>
+            <td>Claude Opus 4.5</td>
+            <td>58.43</td>
+            <td>60.84</td>
+            <td>+2.41</td>
+            <td>1.50</td>
+            <td>60.84</td>
+          </tr>
+          <tr>
+            <td>Kimi CLI</td>
+            <td>Kimi K2.5</td>
+            <td>55.42</td>
+            <td>56.02</td>
+            <td>+0.60</td>
+            <td>1.50</td>
+            <td>66.87</td>
+          </tr>
+          <tr>
+            <td>Claude Code</td>
+            <td>Claude Sonnet 4.6</td>
+            <td>56.63</td>
+            <td>56.63</td>
+            <td>+0.00</td>
+            <td>2.55</td>
+            <td>53.01</td>
+          </tr>
+          <tr>
+            <td>Codex CLI</td>
+            <td>GPT 5.3 Codex</td>
+            <td>52.41</td>
+            <td>46.39</td>
+            <td style="color:#c0392b;">−6.02</td>
+            <td>1.10</td>
+            <td>84.94</td>
+          </tr>
+          <tr>
+            <td>Qwen Coder</td>
+            <td>Qwen-Coder-Next</td>
+            <td>45.18</td>
+            <td>44.58</td>
+            <td style="color:#c0392b;">−0.60</td>
+            <td>5.45</td>
+            <td>12.05</td>
+          </tr>
+          <tr>
+            <td>Qwen Coder</td>
+            <td>Qwen3-Coder-480B</td>
+            <td>24.70</td>
+            <td>24.10</td>
+            <td style="color:#c0392b;">−0.60</td>
+            <td>5.20</td>
+            <td>66.87</td>
+          </tr>
+          <tr>
+            <td>Claude Code</td>
+            <td>MiniMax M2.7</td>
+            <td>37.35</td>
+            <td>36.75</td>
+            <td style="color:#c0392b;">−0.60</td>
+            <td>4.60</td>
+            <td>51.20</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="columns is-centered" style="margin-top:1.5rem;">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <ul>
+            <li>Claude Opus 4.6 是唯一在效果（<strong>+8.43 pts</strong>）与效率（Cost −7.52%、Output Token −20.33%）上<strong>双优</strong>的模型；166 个任务中完成数从 104 升至 118，绝对增加 14 个。</li>
+            <li>收益是<strong>选择性</strong>而非普遍的：7 个模型中仅 5 个正向，2 个持平，4 个退化——Skill Evolution 不是免费午餐。</li>
+            <li><strong>高使用率 ≠ 高效用</strong>：Kimi K2.5 使用率 66.87% 却仅 +0.60 pts；GPT 5.3 Codex 使用率 84.94% 反而退化 −6.02 pts。</li>
+            <li>最优模型平均仅保留 <strong>1.05 个 Skill</strong>，而退化模型（Qwen-Coder-Next）积累 <strong>5.45 个碎片 Skill</strong>——紧凑性比数量更重要。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2604.17308v1/x5.png" alt="Figure 5: 完成率-成本 Pareto 前沿" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 5.</strong> Vanilla 与 Skill Evolution 两种设定下各模型的完成率—成本 Pareto 前沿：Claude Opus 4.6 向右上方移动（更高完成率 + 更低成本），GPT 5.3 Codex 则明显向左下方退化。
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Analysis ========= -->
+<section class="section" id="analysis">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Analysis</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered" style="margin-bottom:1.5rem;">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2604.17308v1/x6.png" alt="Figure 6: 各领域分组的 Skill Evolution 完成率增益热力图" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 6.</strong> 按行（模型）× 列（领域组：FE / OS / HLS / GS / DDI）展示 Skill Evolution 增益分布。Claude Opus 4.6 在多领域均呈绿色正增益；Data &amp; Document Intelligence 跨模型正迁移最稳定；Finance &amp; Economics 中存在较多负迁移案例。
+        </p>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Finding 1 &amp; 3：紧凑 Skill 库 vs. Skill 膨胀</h3>
+          <p class="analysis-card-desc">
+            Opus 4.6 是唯一能将 Skill 修订转化为库级持续改善的模型，平均保留 <strong>1.05 个核心 Skill</strong>。Qwen 等弱模型几乎为每个任务单独生成新 Skill（平均 5.45 个），Skill 数量单调增长但收益更差——失败原因是碎片化而非 Skill 缺失，即 <strong>Skill Inflation</strong> 问题。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Finding 2 &amp; 6：错误 Skill 的传播危害</h3>
+          <p class="analysis-card-desc">
+            一旦错误抽象写入 Skill 库，后续任务会继承同一缺陷逻辑，将局部错误放大为序列级负迁移。<strong>能否识别并修复错误 Skill 才是正向迁移的分水岭</strong>——几乎所有模型都能写出某种 Skill，但能否在后续任务中有效修订，区分了强弱模型。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">消融：历史轨迹拼接对照组</h3>
+          <table class="table is-narrow ablation-table is-fullwidth" style="margin-top:0.5rem;">
+            <thead>
+              <tr><th>设定</th><th>Claude Opus 4.6 完成率</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Vanilla（无 Skill）</td><td>62.65%</td></tr>
+              <tr><td>历史轨迹直接拼接</td><td class="drop">51.04%</td></tr>
+              <tr class="our-method-row"><td><strong>完整 Lifelong 协议</strong></td><td><strong>71.08%</strong></td></tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc" style="margin-top:0.6rem;">
+            历史轨迹拼接不仅无效，反而低于 Vanilla——证明 +8.43 pts 的收益来自 Skill 的<strong>结构化外化与修复</strong>，而非更长的原始上下文。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Finding 5：Codex 的 Skill 压缩 vs. 执行能力</h3>
+          <p class="analysis-card-desc">
+            Codex 在变体任务合并上更倾向形成单一演化核心（Skill 库文件数量相对紧凑），但端到端完成率不及 Opus 4.6，说明 <strong>Skill 压缩能力 ≠ 执行能力</strong>。两者是相对独立的维度，均需在 lifelong 评测中分开测量。
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Takeaways ========= -->
+<section class="section" id="takeaways" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Takeaways</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+
+          <h3 class="title is-5">核心结论</h3>
+          <p>
+            <span class="sf">SkillFlow</span> 表明，终身 Skill 演化带来的收益是<strong>选择性而非普遍的</strong>：能力更强的模型（Opus 4.6）将外化经验转化为紧凑、可修复的程序性 Skill，实现持续增益；弱模型则因 Skill Inflation、错误强化和创建-复用协调失败而出现退化。<strong>Skill 修复能力是区分强弱的核心维度，而非 Skill 生成量。</strong>
+          </p>
+
+          <h3 class="title is-5">对 Lifelong Skill 评测的启发</h3>
+          <ol>
+            <li>
+              <strong>现有评测体系的唯一缺失维度</strong>——SkillsBench 回答"有好 Skill 时能帮多少"，SWE-Skills-Bench 聚焦软工场景，<span class="sf">SkillFlow</span> 是目前<strong>唯一</strong>回答"Agent 能否自主在时间中积累并修复 Skill"的工作，填补了 Skill 生命周期评测的最后一环。
+            </li>
+            <li>
+              <strong>Trajectory patch 与 Rubric patch 的互补性</strong>——轨迹驱动从"How"归纳做法，Rubric 驱动从"What went wrong"修复逻辑。设计失败复用系统时，应同时接入这两类信号，而非只依赖成功轨迹。
+            </li>
+            <li>
+              <strong>Skill 库的紧凑性比数量更重要</strong>——+8.43 pts 的最佳模型平均只保留 1.05 个 Skill。需要主动的 Skill 合并、去冗余与淘汰机制，而非无限积累。
+            </li>
+            <li>
+              <strong>错误 Skill 的传播比缺少 Skill 更危险</strong>——写入前的质量校验（类似 Leakage Audit）和写入后的在线检测机制都是必要的。
+            </li>
+            <li>
+              <strong>高使用率 ≠ 高效用</strong>——Kimi K2.5 的 66.87% 使用率搭配 +0.60 pts 增益，揭示了"使用但无实质收益"的陷阱。评测指标应将 Skill 使用率与任务成功率的相关性纳入体系。
+            </li>
+            <li>
+              <strong>DAEF 作为 Skill 迁移的结构化脚手架</strong>——显式定义工作流抽象骨架约束任务族构建，可避免"任务相似性带来的伪迁移"，使评测结论更可靠，是 benchmark 设计的可推广原则。
+            </li>
+          </ol>
+
+          <h3 class="title is-5">局限性</h3>
+          <ul>
+            <li>评测聚焦族内 lifelong 学习，每族起始重置 Skill 库，暂未评测跨异质工作流的 Skill 泛化。</li>
+            <li>Skill Patch 生成与 Agent 执行 harness 解耦，但 Patch 质量仍受模型指令遵循能力影响。</li>
+            <li>当前协议中 Skill 库规模监控依赖 <code>#Skills</code> 与 <code>%use</code> 两个代理指标，尚无直接度量 Skill 质量演化的评测维度。</li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <p><a href="../index.html">← 返回 Agent × Skill 论文列表</a></p>
+    <p style="margin-top:0.5rem; font-size:0.78rem; color:#9ca3af;">
+      Data from <a href="https://huggingface.co/papers/2604.17308" target="_blank">Hugging Face Papers</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

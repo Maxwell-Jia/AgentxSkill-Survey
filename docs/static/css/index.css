@@ -59,6 +59,9 @@ body {
 .btn-home { background-color: #0ea5a0; border-color: #0a8580; color: #fff !important; }
 .btn-home:hover { background-color: #0a8580; border-color: #0a8580; color: #fff !important; }
 
+.btn-notes { background-color: #4f46e5; border-color: #4338ca; color: #fff !important; }
+.btn-notes:hover { background-color: #4338ca; border-color: #4338ca; color: #fff !important; }
+
 .hf-icon { font-style: normal; font-size: 1rem; line-height: 1; }
 
 /* ---------- Figures ---------- */
@@ -321,4 +324,287 @@ body {
   .overview-stats { gap: 1.5rem; }
   .stat-num { font-size: 1.6rem; }
   .results-table { font-size: 0.72rem; }
+}
+
+/* =========================================================
+   Hub page (index.html) — lifecycle overview + stage sections
+   ========================================================= */
+
+.hub-hero {
+  padding: 4rem 1rem 2.2rem;
+  text-align: center;
+}
+.hub-hero h1 {
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 700;
+  font-size: 3rem;
+  line-height: 1.15;
+  margin-bottom: 0.5rem;
+}
+.hub-hero .hub-subtitle {
+  font-size: 1.1rem;
+  color: #546e7a;
+  font-style: italic;
+  margin-bottom: 1.3rem;
+}
+.hub-tagline {
+  max-width: 720px;
+  margin: 0 auto;
+  color: #374151;
+  line-height: 1.78;
+  font-size: 0.98rem;
+  text-align: justify;
+}
+.hub-tagline strong {
+  color: #0f766e;
+}
+
+/* Sticky anchor nav */
+.hub-nav {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid #e4e8ee;
+}
+.hub-nav-inner {
+  max-width: 980px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 0.4rem 0.8rem;
+}
+.hub-nav-inner a {
+  color: #37474f;
+  padding: 0.55rem 0.9rem;
+  border-bottom: 2px solid transparent;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.86rem;
+  transition: color 0.15s, border-color 0.15s;
+}
+.hub-nav-inner a:hover {
+  color: #0ea5a0;
+  border-bottom-color: #0ea5a0;
+}
+
+/* Overview image block */
+.hub-overview {
+  padding: 2rem 1rem 3rem;
+}
+.lifecycle-hero-image-wrap {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #e4e8ee;
+  box-shadow: 0 6px 28px rgba(0,0,0,0.08);
+  background: #fff;
+}
+.lifecycle-hero-image-wrap img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Each lifecycle stage section */
+.stage-section {
+  padding: 3.5rem 1rem 3rem;
+  scroll-margin-top: 4.2rem; /* offset for sticky nav when anchor-jumping */
+}
+.stage-section.alt {
+  background: #eef1f6;
+}
+
+.section-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.1rem;
+  margin-bottom: 0.6rem;
+}
+.section-title .stage-num {
+  font-size: 2.8rem;
+  line-height: 1;
+  font-weight: 800;
+  font-family: 'Google Sans', sans-serif;
+  letter-spacing: -0.03em;
+}
+.section-title .stage-body { padding-top: 0.4rem; }
+.section-title .stage-name {
+  font-size: 1.55rem;
+  font-weight: 700;
+  font-variant: small-caps;
+  letter-spacing: 0.02em;
+  font-family: 'Google Sans', sans-serif;
+  color: #1a1a1a;
+}
+.section-title .stage-sub {
+  font-size: 0.93rem;
+  font-style: italic;
+  color: #6b7280;
+  margin-top: 0.1rem;
+}
+
+/* Stage accent colors */
+.stage-section[data-stage="synthesis"] .stage-num { color: #F97316; }
+.stage-section[data-stage="deposit"]   .stage-num { color: #14B8A6; }
+.stage-section[data-stage="retrieval"] .stage-num { color: #7C3AED; }
+.stage-section[data-stage="evolution"] .stage-num { color: #22C55E; }
+.stage-section[data-stage="benchmark"] .stage-num { color: #64748B; }
+
+/* Paper card tint per stage (override default has-detail teal) */
+.stage-section[data-stage="synthesis"] .paper-card.has-detail {
+  border-color: #fed7aa; box-shadow: 0 2px 12px rgba(249,115,22,0.08);
+}
+.stage-section[data-stage="synthesis"] .paper-card.has-detail:hover {
+  border-color: #F97316; box-shadow: 0 6px 22px rgba(249,115,22,0.18);
+}
+.stage-section[data-stage="deposit"] .paper-card.has-detail {
+  border-color: #99f6e4; box-shadow: 0 2px 12px rgba(20,184,166,0.08);
+}
+.stage-section[data-stage="deposit"] .paper-card.has-detail:hover {
+  border-color: #14B8A6; box-shadow: 0 6px 22px rgba(20,184,166,0.18);
+}
+.stage-section[data-stage="retrieval"] .paper-card.has-detail {
+  border-color: #ddd6fe; box-shadow: 0 2px 12px rgba(124,58,237,0.08);
+}
+.stage-section[data-stage="retrieval"] .paper-card.has-detail:hover {
+  border-color: #7C3AED; box-shadow: 0 6px 22px rgba(124,58,237,0.18);
+}
+.stage-section[data-stage="evolution"] .paper-card.has-detail {
+  border-color: #bbf7d0; box-shadow: 0 2px 12px rgba(34,197,94,0.08);
+}
+.stage-section[data-stage="evolution"] .paper-card.has-detail:hover {
+  border-color: #22C55E; box-shadow: 0 6px 22px rgba(34,197,94,0.18);
+}
+.stage-section[data-stage="benchmark"] .paper-card.has-detail {
+  border-color: #cbd5e1; box-shadow: 0 2px 12px rgba(100,116,139,0.08);
+}
+.stage-section[data-stage="benchmark"] .paper-card.has-detail:hover {
+  border-color: #64748B; box-shadow: 0 6px 22px rgba(100,116,139,0.18);
+}
+
+.stage-section .direction-intro {
+  max-width: 860px;
+  margin: 0 0 2rem 0;
+  text-align: justify;
+}
+
+.paper-grid { margin-top: 0.3rem !important; }
+
+/* Cross-section hint on paper cards that appear in more than one stage */
+.cross-hint {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  font-style: italic;
+  margin-left: 0.4rem;
+  padding: 0.08rem 0.45rem;
+  border: 1px dashed #cbd5e1;
+  border-radius: 4px;
+}
+
+/* Stage-colored chip used in section intro */
+.stage-chip {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.55rem;
+  border-radius: 4px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-right: 0.35rem;
+  vertical-align: 2px;
+}
+.stage-chip.synthesis { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+.stage-chip.deposit   { background: #ccfbf1; color: #0f766e; border: 1px solid #99f6e4; }
+.stage-chip.retrieval { background: #ede9fe; color: #5b21b6; border: 1px solid #ddd6fe; }
+.stage-chip.evolution { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+.stage-chip.benchmark { background: #e2e8f0; color: #334155; border: 1px solid #cbd5e1; }
+
+/* ---------- Collapsible "other papers" panel ---------- */
+.hub-others {
+  padding: 2.5rem 1rem 4rem;
+  background: #fafbfc;
+  border-top: 1px solid #e4e8ee;
+}
+.others-panel {
+  max-width: 960px;
+  margin: 0 auto;
+  border: 1px solid #e4e8ee;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 2px 14px rgba(0,0,0,0.04);
+}
+.others-panel > summary {
+  cursor: pointer;
+  padding: 1.1rem 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: 'Google Sans', sans-serif;
+  color: #1f2937;
+  list-style: none;
+  user-select: none;
+}
+.others-panel > summary::-webkit-details-marker { display: none; }
+.others-panel > summary::after {
+  content: "▸";
+  font-size: 0.9rem;
+  color: #9ca3af;
+  transition: transform 0.18s;
+  margin-left: 0.4rem;
+}
+.others-panel[open] > summary::after { transform: rotate(90deg); }
+.summary-title { font-size: 1.05rem; font-weight: 600; }
+.summary-count { color: #6b7280; font-weight: 500; margin-left: 0.35rem; }
+.summary-hint {
+  font-size: 0.82rem;
+  color: #6b7280;
+  font-style: italic;
+  font-weight: normal;
+  margin-left: auto;
+}
+.others-list {
+  padding: 0.3rem 1.4rem 1.4rem;
+  border-top: 1px solid #f1f3f5;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.2rem 1.6rem;
+}
+@media (max-width: 720px) {
+  .others-list { grid-template-columns: 1fr; }
+}
+.other-item {
+  padding: 0.9rem 0 0.4rem;
+  border-bottom: 1px dashed #eceff3;
+}
+.oi-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.74rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+.oi-id { font-family: 'Courier New', monospace; letter-spacing: 0.02em; }
+.oi-meta { font-family: 'Google Sans', sans-serif; }
+.oi-meta .likes { color: #ef4444; font-weight: 500; }
+.oi-title {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.94rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0 0 0.3rem;
+  color: #1a1a1a;
+}
+.oi-title a { color: #1a1a1a; border-bottom: none; }
+.oi-title a:hover { color: #4f46e5; }
+.oi-summary {
+  font-size: 0.82rem;
+  color: #4b5563;
+  line-height: 1.55;
+  margin: 0;
+  text-align: justify;
 }

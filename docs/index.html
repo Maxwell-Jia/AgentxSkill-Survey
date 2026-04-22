@@ -2,10 +2,11 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="Agent × Skill: a survey of 2026 papers on skill automation, self-evolution and management in LLM agents.">
+  <meta name="description" content="Agent × Skill: 聚焦 Anthropic Agent Skill 抽象，梳理 2026 年以来 Skill Library 合成、沉淀、检索、演化与评测的核心文献。">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Agent × Skill — A Survey of 2026 Papers</title>
+  <title>Agent × Skill · Skill Library Lifecycle 综述</title>
 
+  <link rel="icon" type="image/svg+xml" href="static/images/favicon.svg">
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
@@ -15,354 +16,172 @@
 </head>
 <body>
 
-<!-- ========= Nav ========= -->
-<nav class="navbar" role="navigation" aria-label="main navigation">
-  <div class="navbar-menu">
-    <div class="navbar-start" style="flex-grow:1; justify-content:center;">
-      <a class="navbar-item" href="#abstract">Overview</a>
-      <a class="navbar-item" href="#direction-1">Synthesis</a>
-      <a class="navbar-item" href="#direction-2">Memory</a>
-      <a class="navbar-item" href="#direction-3">Infrastructure</a>
-    </div>
+
+<!-- ========= Hero ========= -->
+<section class="hero hub-hero">
+  <div class="container is-max-desktop">
+    <h1>
+      <span class="agentxskill">Agent × Skill</span><br>
+      Skill Library Lifecycle 综述
+    </h1>
+    <p class="hub-subtitle">A Unified View of Skill Library Research · 2026</p>
+    <p class="hub-tagline">
+      本综述聚焦 <strong>Anthropic Agent Skill 抽象</strong>（folder + <code>SKILL.md</code> + scripts / resources + progressive disclosure）下的研究进展，把 2026 年以来的核心工作串在一条统一的生命周期闭环上：<strong>合成 → 沉淀 → 检索 → 演化</strong>，并把真正具备外部 ground truth 的 <strong>评测</strong> 工作单独列为第五段。综述性质、prompt-level 记忆、GUI agent 等不符合本抽象的论文不在主线展示之列。
+    </p>
+  </div>
+</section>
+
+
+<!-- ========= Sticky Nav ========= -->
+<nav class="hub-nav" role="navigation" aria-label="section navigation">
+  <div class="hub-nav-inner">
+    <a href="#overview">Overview</a>
+    <a href="#synthesis">01 · 合成</a>
+    <a href="#deposit">02 · 沉淀</a>
+    <a href="#retrieval">03 · 检索</a>
+    <a href="#evolution">04 · 演化</a>
+    <a href="#benchmarks">05 · 评测</a>
   </div>
 </nav>
 
 
-<!-- ========= Hero ========= -->
-<section class="hero">
-  <div class="hero-body">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered">
-        <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">
-            <span class="agentxskill">Agent × Skill</span>:<br>
-            A Survey of 2026 Papers on Self-Evolving Skills in LLM Agents
-          </h1>
-          <div class="is-size-5 publication-authors">
-            <span class="author-block">Maxwell<sup>*</sup></span>
-          </div>
-          <div class="is-size-6 publication-authors" style="margin-top:0.3rem; color:#555;">
-            <span class="author-block">Reading survey · collected via <code>hf papers</code></span>
-          </div>
-          <div class="is-size-7" style="margin-top:0.25rem; color:#888;">
-            2026-02 — 2026-04 · 最近更新 2026-04-21
-          </div>
-
-          <div class="column has-text-centered">
-            <div class="publication-links">
-              <span class="link-block">
-                <a href="https://huggingface.co/papers" target="_blank"
-                   class="external-link button is-normal is-rounded btn-hf">
-                  <span class="icon hf-icon">🤗</span>
-                  <span>HF Papers</span>
-                </a>
-              </span>
-              <span class="link-block">
-                <a href="#abstract"
-                   class="external-link button is-normal is-rounded btn-home">
-                  <span class="icon"><i class="fas fa-book-open"></i></span>
-                  <span>Start Reading</span>
-                </a>
-              </span>
-            </div>
-          </div>
-
-          <div class="overview-stats">
-            <div class="stat-item">
-              <div class="stat-num">28</div>
-              <div class="stat-lab">Papers</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-num">3</div>
-              <div class="stat-lab">Directions</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-num">2</div>
-              <div class="stat-lab">Deep Reads</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-num">~11k</div>
-              <div class="stat-lab">HF Likes (total)</div>
-            </div>
-          </div>
-        </div>
-      </div>
+<!-- ========= Overview Image ========= -->
+<section id="overview" class="hub-overview">
+  <div class="container is-max-desktop">
+    <div class="lifecycle-hero-image-wrap">
+      <img src="static/images/lifecycle-overview.png" alt="Skill Library Lifecycle Overview" loading="lazy">
     </div>
+    <p class="figure-caption has-text-centered" style="margin-top:1rem;">
+      <strong>核心脉络图</strong>——上层 <em>Skill Library Lifecycle</em> 四站形成闭环；中间 <em>Agent Harness</em>（Claude Code / OpenClaw）作为消费者向下检索 skill、向上回灌执行轨迹；底部 <em>Benchmarks</em> 作为外部 verifier 探测不同阶段。跨阶段出现的论文意味着一篇工作同时扮演多重角色。
+    </p>
   </div>
 </section>
 
 
-<!-- ========= Abstract ========= -->
-<section class="section" id="abstract">
+<!-- ========= 01 Synthesis ========= -->
+<section id="synthesis" class="stage-section" data-stage="synthesis">
   <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Overview</h2>
-        <div class="content has-text-justified">
-          <p>
-            2026 年上半年，<span class="agentxskill">Agent × Skill</span> 成为 LLM agent 研究的一条高度收敛主线：以 Anthropic Claude Skills 为代表的"可复用能力模块"被大量工作重新定义并验证，研究问题从"agent 能不能用 skill"转向"skill 如何被 <em>自动产生、跨任务迁移、大规模管理</em>"。本综述覆盖 Hugging Face Papers 上 2026-02 至 2026-04 间的 28 篇相关论文。
-          </p>
-          <p>
-            我们按 <strong>skill 生命周期</strong> 组织全文：方向一聚焦技能如何 <em>产生</em>（合成 / 自进化 / 沉淀）；方向二聚焦技能如何 <em>累积并复用</em>（记忆 / 失败复用 / 元学习）；方向三聚焦当技能库规模膨胀后如何 <em>管理、检索与评测</em>（基建）。带
-            <span style="background:#e6f7f5; color:#0a7a75; padding:0.05rem 0.4rem; border-radius:3px; font-size:0.92em;">精读</span>
-            标记的论文提供独立详情页，含方法图解、完整实验表与讨论笔记。
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ========= Direction 1 ========= -->
-<section class="section" id="direction-1" style="background-color:#eef1f6;">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column">
-        <h2 class="title is-3">01 · Synthesis, Self-Evolution &amp; Consolidation</h2>
-        <p class="direction-intro">
-          核心问题：如何让 agent 从轨迹中自动 <em>产生</em> 可复用 skill，并通过迭代精炼持续进化。代表性范式有三条——轨迹到声明式技能的蒸馏（Trace2Skill），RL 驱动的层次化技能发现（SkillRL），以及"强模型沉淀 → 弱模型即插即用"（SkillX）。
-        </p>
+    <div class="section-title">
+      <span class="stage-num">01</span>
+      <div class="stage-body">
+        <div class="stage-name">Synthesis · 合成</div>
+        <div class="stage-sub">where skills come from</div>
       </div>
     </div>
 
-    <div class="columns is-multiline">
+    <p class="direction-intro">
+      合成阶段回答"<strong>第一批 skill 从哪里来</strong>"。当前文献沿三条相互独立的路径展开：从<strong>静态文献/语料</strong>蒸馏（SkillFoundry、Corpus2Skill 把领域知识固化为 skill），从<strong>交互轨迹</strong>归纳（Trace2Skill、SkillX 在 rollout 中抽取可迁移条目），以及从<strong>生成–验证共演化</strong>自造（EvoSkills 用 Surrogate Verifier 约束 Skill Generator）。三条路径各有长短，目前尚无工作真正融合三源。
+    </p>
 
+    <div class="columns is-multiline paper-grid">
+
+      <!-- SkillFoundry -->
       <div class="column is-half">
-        <div class="paper-card">
-          <div class="pc-head">
-            <span><span class="pc-id">2602.08234</span> · 2026-02-11</span>
-            <span class="pc-likes">♥ 74</span>
-          </div>
-          <h3 class="pc-title"><a href="papers/2602.08234-skillrl.html">SkillRL: Evolving Agents via Recursive Skill-Augmented RL</a></h3>
-          <div class="pc-affil">UNC Chapel Hill</div>
-          <p class="pc-summary">层次化技能发现 + 递归策略演化，让 LLM agent 在复杂任务上自主改进。</p>
-          <div class="pc-footer">
-            <span class="pc-tag tag-evolve">自进化</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="column is-half">
-        <div class="paper-card">
-          <div class="pc-head">
-            <span><span class="pc-id">2603.12056</span> · 2026-03-12</span>
-            <span class="pc-likes">♥ 33</span>
-          </div>
-          <h3 class="pc-title">XSkill: Continual Learning from Experience and Skills</h3>
-          <div class="pc-affil">HKUST · Zhejiang Univ. · HUST</div>
-          <p class="pc-summary">双流持续学习：action-level Experience + task-level Skill 通过 visually-grounded summarization 与 cross-rollout critique 形成闭环，5 benchmark / 4 backbone 均稳定优于基线。</p>
-          <div class="pc-footer">
-            <span class="pc-tag tag-distill">沉淀</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="column is-half">
-        <div class="paper-card">
-          <div class="pc-head">
-            <span><span class="pc-id">2603.25158</span> · 2026-03-30</span>
-            <span class="pc-likes">♥ 50</span>
-          </div>
-          <h3 class="pc-title"><a href="papers/2603.25158-trace2skill.html">Trace2Skill: Distill Trajectory-Local Lessons into Transferable Skills</a></h3>
-          <div class="pc-affil">—</div>
-          <p class="pc-summary">并行分析多样化轨迹并蒸馏为可迁移的声明式技能，无参数更新、无外部模块。</p>
-          <div class="pc-footer">
-            <span class="pc-tag tag-synthesis">合成</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="column is-half">
-        <div class="paper-card">
-          <div class="pc-head">
-            <span><span class="pc-id">2604.02268</span> · 2026-04-03</span>
-            <span class="pc-likes">♥ 94</span>
-          </div>
-          <h3 class="pc-title"><a href="papers/2604.02268-skill0.html">SKILL0: In-Context Agentic RL for Skill Internalization</a></h3>
-          <div class="pc-affil">Zhejiang Univ.</div>
-          <p class="pc-summary">训练时把 skill 内化进参数，推理时无需再把技能塞入 prompt，同时提升零样本自主性。</p>
-          <div class="pc-footer">
-            <span class="pc-tag tag-distill">沉淀</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="column is-full">
         <div class="paper-card has-detail">
           <div class="pc-head">
-            <span><span class="pc-id">2604.04804</span> · 2026-04-07 · ICML</span>
-            <span class="pc-likes">♥ 32</span>
-          </div>
-          <h3 class="pc-title"><a href="papers/2604.04804-skillx.html"><span class="skillx">SkillX</span>: Automatically Constructing Skill Knowledge Bases for Agents</a></h3>
-          <div class="pc-affil">Zhejiang University · Ant Group</div>
-          <p class="pc-summary">
-            把 skill 分为 <strong>Planning / Functional / Atomic</strong> 三层，用 rollout → 提取 → 精炼 → 探索扩展的闭环自动构建 SkillKB。强模型（GLM-4.6）提炼的技能库即插即用到弱模型（Qwen3-32B），BFCL-v3 / AppWorld / τ²-Bench 上均带来约 <strong>+10 分</strong> 提升，证明经验<em>表示形式</em>比<em>提取模型</em>的强弱更关键。
-          </p>
-          <div class="pc-footer">
-            <span class="pc-tag tag-distill">沉淀 · 代表作</span>
-            <a class="pc-detail-link" href="papers/2604.04804-skillx.html">Read detail →</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- ========= Direction 2 ========= -->
-<section class="section" id="direction-2">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column">
-        <h2 class="title is-3">02 · Memory, Failure Reuse &amp; Meta-Learning</h2>
-        <p class="direction-intro">
-          核心问题：让 agent 的记忆系统成为自身的一部分——包括分层经验池、失败轨迹的负样本利用、以及策略 / 技能并行演化的元学习框架。相比方向一更侧重 <em>跨任务、跨时间</em> 的连续性。
-        </p>
-      </div>
-    </div>
-
-    <div class="columns is-multiline">
-
-      <div class="column is-half">
-        <div class="paper-card">
-          <div class="pc-head">
-            <span><span class="pc-id">2603.17187</span> · 2026-03-19</span>
-            <span class="pc-likes">♥ 138</span>
-          </div>
-          <h3 class="pc-title"><a href="papers/2603.17187-metaclaw.html">MetaClaw: Just Talk — An Agent That Meta-Learns and Evolves in the Wild</a></h3>
-          <div class="pc-affil">UNC Chapel Hill</div>
-          <p class="pc-summary">持续元学习：策略与可复用行为技能联合演化，通过"机会性更新"与技能驱动适应最小化下线时间。</p>
-          <div class="pc-footer">
-            <span class="pc-tag tag-meta">元学习</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="column is-half">
-        <div class="paper-card">
-          <div class="pc-head">
-            <span><span class="pc-id">2603.19461</span> · 2026-03-23</span>
-            <span class="pc-likes">♥ 50</span>
-          </div>
-          <h3 class="pc-title">Hyperagents: A Self-Referential Framework for Metacognitive Agents</h3>
-          <div class="pc-affil">Meta FAIR</div>
-          <p class="pc-summary">任务 agent 与元 agent 合一，构成单一可编辑程序，实现跨域开放式自我改进。</p>
-          <div class="pc-footer">
-            <span class="pc-tag tag-meta">元学习</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="column is-half">
-        <div class="paper-card">
-          <div class="pc-head">
-            <span><span class="pc-id">2603.24533</span> · 2026-03-26</span>
-            <span class="pc-likes">♥ 47</span>
-          </div>
-          <h3 class="pc-title">UI-Voyager: A Self-Evolving GUI Agent Learning via Failed Experience</h3>
-          <div class="pc-affil">Tencent</div>
-          <p class="pc-summary">两阶段自进化的移动 GUI agent：拒绝微调 + 群体相对自蒸馏，充分复用失败轨迹。</p>
-          <div class="pc-footer">
-            <span class="pc-tag tag-failure">失败复用</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="column is-half">
-        <div class="paper-card">
-          <div class="pc-head">
-            <span><span class="pc-id">2602.05832</span> · 2026-02-05</span>
+            <span class="pc-id">2604.03964</span>
             <span class="pc-likes">♥ 0</span>
           </div>
-          <h3 class="pc-title">UI-Mem: Self-Evolving Experience Memory for Online RL in Mobile GUI Agents</h3>
-          <div class="pc-affil">—</div>
-          <p class="pc-summary">层次化经验记忆 + 分层采样，改进长时序 GUI 任务的信用分配与经验迁移。</p>
-          <div class="pc-footer">
-            <span class="pc-tag tag-memory">记忆</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- ========= Direction 3 ========= -->
-<section class="section" id="direction-3" style="background-color:#eef1f6;">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column">
-        <h2 class="title is-3">03 · Infrastructure — Management, Retrieval &amp; Benchmarks</h2>
-        <p class="direction-intro">
-          核心问题：当技能库从十几个膨胀到上万个，管理、检索、评测成为新的工程瓶颈。这条线索回应方向一、二的下游挑战，给出从向量检索到依赖图谱、从扁平调用到 DAG 编排、从手工 curation 到"野外"评测的差异化解法。
-        </p>
-      </div>
-    </div>
-
-    <div class="columns is-multiline">
-
-      <div class="column is-half">
-        <div class="paper-card">
-          <div class="pc-head">
-            <span><span class="pc-id">2602.12670</span> · 2026-02-18</span>
-            <span class="pc-likes">♥ 60</span>
-          </div>
-          <h3 class="pc-title"><a href="papers/2602.12670-skillsbench.html">SkillsBench: Benchmarking How Well Agent Skills Work Across Diverse Tasks</a></h3>
-          <div class="pc-affil">BenchFlow</div>
-          <p class="pc-summary">86 任务评测发现：curated skill 显著但不稳定地提升性能，模型自生成 skill 几乎无收益——当前 LLM 难以自主产生有用程序化知识，但能很好利用他人产生的。</p>
-          <div class="pc-footer">
-            <span class="pc-tag tag-bench">评测</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="column is-half">
-        <div class="paper-card">
-          <div class="pc-head">
-            <span><span class="pc-id">2603.02176</span> · 2026-03-02</span>
-            <span class="pc-likes">♥ 2</span>
-          </div>
-          <h3 class="pc-title"><a href="papers/2603.02176-agentskillos.html">AgentSkillOS: Organizing, Orchestrating &amp; Benchmarking Skills at Ecosystem Scale</a></h3>
-          <div class="pc-affil">—</div>
-          <p class="pc-summary">技能作为一等实体：层次化组织 + DAG 编排，在大规模场景下明显优于扁平调用。</p>
-          <div class="pc-footer">
-            <span class="pc-tag tag-mgmt">管理</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="column is-half">
-        <div class="paper-card">
-          <div class="pc-head">
-            <span><span class="pc-id">2604.04323</span> · 2026-04-08</span>
-            <span class="pc-likes">♥ 40</span>
-          </div>
-          <h3 class="pc-title"><a href="papers/2604.04323-skillusagewild.html">How Well Do Agentic Skills Work in the Wild</a></h3>
-          <div class="pc-affil">UCSB NLP · Shiyu's Lab</div>
-          <p class="pc-summary">当 skill 从"手工打造"变成"检索 + 精炼"的真实使用方式，agent 性能显著退化；定向精炼策略可部分恢复。</p>
-          <div class="pc-footer">
-            <span class="pc-tag tag-bench">评测</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="column is-full">
-        <div class="paper-card has-detail">
-          <div class="pc-head">
-            <span><span class="pc-id">2604.05333</span> · 2026-04-08</span>
-            <span class="pc-likes">♥ 22</span>
-          </div>
-          <h3 class="pc-title"><a href="papers/2604.05333-graph-of-skills.html"><span class="gos">Graph of Skills</span>: Dependency-Aware Structural Retrieval for Massive Agent Skills</a></h3>
-          <div class="pc-affil">UPenn · UMD · Brown · CMU · Lehigh</div>
+          <h3 class="pc-title">
+            <a href="papers/2604.03964-skillfoundry.html">SkillFoundry: Building Self-Evolving Agent Skill Libraries from Heterogeneous Scientific Resources</a>
+          </h3>
+          <p class="pc-affil">Carnegie Mellon University · 2026-04-05</p>
           <p class="pc-summary">
-            <strong>语义接近 ≠ 可执行完备。</strong>仅靠向量检索在长链技术任务中会出现 <em>prerequisite gap</em>——顶层求解器技能被检索到，底层解析器/预处理工具却因语义距离远而被漏掉。GoS 离线构建类型化有向技能图，推理时通过混合语义–词法播种 + <strong>反向感知 PPR 扩散</strong> + 预算化水化组装最小执行包，reward 平均 <strong>+43.6%</strong>、token 平均 <strong>−37.8%</strong>。
+            面向科学场景（生物医学先行）的 skill 自演化框架：从 paper / protocol / 代码仓库等异构资源中自动挖掘操作契约，校验后沉淀成可执行 skill，是**距离天文领域最近的前置工作**。
           </p>
           <div class="pc-footer">
-            <span class="pc-tag tag-retrieve">检索 · 代表作</span>
-            <a class="pc-detail-link" href="papers/2604.05333-graph-of-skills.html">Read detail →</a>
+            <span class="pc-tag tag-synthesis">synthesis</span>
+            <a href="papers/2604.03964-skillfoundry.html" class="pc-detail-link">阅读精读 →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Corpus2Skill -->
+      <div class="column is-half">
+        <div class="paper-card has-detail">
+          <div class="pc-head">
+            <span class="pc-id">2604.14572</span>
+            <span class="pc-likes">♥ 6</span>
+          </div>
+          <h3 class="pc-title">
+            <a href="papers/2604.14572-corpus2skill.html">Don't Retrieve, Navigate: Distilling Enterprise Knowledge into Navigable Agent Skills</a>
+          </h3>
+          <p class="pc-affil">Magellan Technology Research Institute · 2026-04-16</p>
+          <p class="pc-summary">
+            把企业级文档语料离线蒸馏成层级化、可导航的 skill 文件树，让 agent 在树上主动漫游而非做 RAG chunk 检索——同时服务"合成 skill"与"替代检索"两个阶段。
+          </p>
+          <div class="pc-footer">
+            <span>
+              <span class="pc-tag tag-synthesis">synthesis</span>
+              <span class="cross-hint">also in 检索</span>
+            </span>
+            <a href="papers/2604.14572-corpus2skill.html" class="pc-detail-link">阅读精读 →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trace2Skill -->
+      <div class="column is-half">
+        <div class="paper-card has-detail">
+          <div class="pc-head">
+            <span class="pc-id">2603.25158</span>
+            <span class="pc-likes">♥ 50</span>
+          </div>
+          <h3 class="pc-title">
+            <a href="papers/2603.25158-trace2skill.html">Trace2Skill: Distill Trajectory-Local Lessons into Transferable Agent Skills</a>
+          </h3>
+          <p class="pc-affil">ETH Zürich · 北京大学 · 浙江大学 · 阿里 Qwen · 2026-03-30</p>
+          <p class="pc-summary">
+            并行分析多样化执行轨迹，把轨迹局部的教训蒸馏为可迁移的 declarative skill，不更新参数、不依赖外部模块，是"轨迹派"合成的典型路线。
+          </p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-synthesis">synthesis</span>
+            <a href="papers/2603.25158-trace2skill.html" class="pc-detail-link">阅读精读 →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- EvoSkills -->
+      <div class="column is-half">
+        <div class="paper-card has-detail">
+          <div class="pc-head">
+            <span class="pc-id">2604.01687</span>
+            <span class="pc-likes">♥ 6</span>
+          </div>
+          <h3 class="pc-title">
+            <a href="papers/2604.01687-evoskills.html">EvoSkills: Self-Evolving Agent Skills via Co-Evolutionary Verification</a>
+          </h3>
+          <p class="pc-affil">UIC · MBZUAI · McGill · Columbia · ZJU · UBC · 2026-04-02</p>
+          <p class="pc-summary">
+            Skill Generator 与 Surrogate Verifier 共同演化，自动产出<strong>可执行多文件 skill bundle</strong>（SKILL.md + scripts + resources），SkillsBench 71.1% pass（+40.5 pp）。与 <em>EvoSkill 单数 (2603.02766)</em> 为两篇不同工作。
+          </p>
+          <div class="pc-footer">
+            <span>
+              <span class="pc-tag tag-synthesis">synthesis</span>
+              <span class="cross-hint">also in 演化</span>
+            </span>
+            <a href="papers/2604.01687-evoskills.html" class="pc-detail-link">阅读精读 →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SkillX -->
+      <div class="column is-half is-offset-one-quarter">
+        <div class="paper-card has-detail">
+          <div class="pc-head">
+            <span class="pc-id">2604.04804</span>
+            <span class="pc-likes">♥ 32</span>
+          </div>
+          <h3 class="pc-title">
+            <a href="papers/2604.04804-skillx.html">SkillX: Automatically Constructing Skill Knowledge Bases for Agents</a>
+          </h3>
+          <p class="pc-affil">浙江大学 · 蚂蚁集团 · 2026-04-07</p>
+          <p class="pc-summary">
+            通过"层级 skill 设计 + 迭代精化 + 探索扩展"三机制自动构建跨环境通用 skill KB；在不同 agent backbone 间都有可观迁移性，是跨模型视角的零星探索。
+          </p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-synthesis">synthesis</span>
+            <a href="papers/2604.04804-skillx.html" class="pc-detail-link">阅读精读 →</a>
           </div>
         </div>
       </div>
@@ -372,64 +191,684 @@
 </section>
 
 
-<!-- ========= More papers (flat list, unclassified) ========= -->
-<section class="section" id="more-papers">
+<!-- ========= 02 Deposit ========= -->
+<section id="deposit" class="stage-section alt" data-stage="deposit">
   <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column">
-        <h2 class="title is-3">More Reading Notes</h2>
-        <p class="direction-intro">其余已完成精读的论文。分类将在首页重构时统一整理。</p>
+    <div class="section-title">
+      <span class="stage-num">02</span>
+      <div class="stage-body">
+        <div class="stage-name">Deposit · 沉淀</div>
+        <div class="stage-sub">how skills are represented and organized</div>
       </div>
     </div>
 
-    <div class="columns is-multiline">
-      <div class="column is-half">
-        <div class="paper-card">
-          <div class="pc-head"><span class="pc-id">2603.01145</span><span></span></div>
-          <h3 class="pc-title"><a href="papers/2603.01145-autoskill.html">AutoSkill: Experience-Driven Lifelong Learning via Skill Self-Evolution</a></h3>
+    <p class="direction-intro">
+      沉淀阶段定义 "<strong>一个 skill 长什么样</strong>、<strong>它们彼此怎么摆</strong>"。在表示维度上工作呈现一条"薄 → 厚"的连续谱——从仅 metadata 的 skill card，到单文件 SKILL.md，再到 multi-file executable bundle；在组织维度上则从平铺到层级目录再到依赖图。SkillNet 提供了规模化的 200K+ SKILL.md 底座，AgentSkillOS 把管理问题拉到 ecosystem 尺度，Graph of Skills 则把组织进一步推向图结构。
+    </p>
+
+    <div class="columns is-multiline paper-grid">
+
+      <!-- SkillNet -->
+      <div class="column is-one-third">
+        <div class="paper-card has-detail">
+          <div class="pc-head">
+            <span class="pc-id">2603.04448</span>
+            <span class="pc-likes">♥ 93</span>
+          </div>
+          <h3 class="pc-title">
+            <a href="papers/2603.04448-skillnet.html">SkillNet: Create, Evaluate, and Connect AI Skills</a>
+          </h3>
+          <p class="pc-affil">ZJU · Alibaba · Tencent · UCLA 等多机构联盟 · 2026-02-26</p>
+          <p class="pc-summary">
+            发布 200K+ SKILL.md 开源工具集，规范 Discovery → Activation → Execution 三段协议；把 skill 形式化为 folder + 中心 SKILL.md，是 Anthropic 官方抽象最规范化的落地。
+          </p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-mgmt">deposit</span>
+            <a href="papers/2603.04448-skillnet.html" class="pc-detail-link">阅读精读 →</a>
+          </div>
         </div>
       </div>
-      <div class="column is-half">
-        <div class="paper-card">
-          <div class="pc-head"><span class="pc-id">2603.02766</span><span></span></div>
-          <h3 class="pc-title"><a href="papers/2603.02766-evoskill.html">EvoSkill: Automated Skill Discovery for Multi-Agent Systems</a></h3>
+
+      <!-- AgentSkillOS -->
+      <div class="column is-one-third">
+        <div class="paper-card has-detail">
+          <div class="pc-head">
+            <span class="pc-id">2603.02176</span>
+            <span class="pc-likes">♥ 2</span>
+          </div>
+          <h3 class="pc-title">
+            <a href="papers/2603.02176-agentskillos.html">Organizing, Orchestrating, and Benchmarking Agent Skills at Ecosystem Scale</a>
+          </h3>
+          <p class="pc-affil">Shanghai Artificial Intelligence Laboratory · 2026-03-02</p>
+          <p class="pc-summary">
+            把 skill 组织问题拉到 ecosystem 尺度：层级化目录 + 运行时 DAG 编排，相比 flat invocation 在复杂任务上有显著增益。
+          </p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-mgmt">deposit</span>
+            <a href="papers/2603.02176-agentskillos.html" class="pc-detail-link">阅读精读 →</a>
+          </div>
         </div>
       </div>
-      <div class="column is-half">
-        <div class="paper-card">
-          <div class="pc-head"><span class="pc-id">2603.18000</span><span></span></div>
-          <h3 class="pc-title"><a href="papers/2603.18000-agentfactory.html">AgentFactory: A Self-Evolving Framework Through Executable Subagent Accumulation and Reuse</a></h3>
+
+      <!-- Graph of Skills -->
+      <div class="column is-one-third">
+        <div class="paper-card has-detail">
+          <div class="pc-head">
+            <span class="pc-id">2604.05333</span>
+            <span class="pc-likes">♥ 22</span>
+          </div>
+          <h3 class="pc-title">
+            <a href="papers/2604.05333-graph-of-skills.html">Graph of Skills: Dependency-Aware Structural Retrieval for Massive Agent Skills</a>
+          </h3>
+          <p class="pc-affil">UPenn · UMD · Brown · CMU · Lehigh · 2026-04-10</p>
+          <p class="pc-summary">
+            离线把 skill 库编译为类型化有向图（dep / wf / sem / alt 四类边），既是组织结构也是下一阶段的检索基座。
+          </p>
+          <div class="pc-footer">
+            <span>
+              <span class="pc-tag tag-mgmt">deposit</span>
+              <span class="cross-hint">also in 检索</span>
+            </span>
+            <a href="papers/2604.05333-graph-of-skills.html" class="pc-detail-link">阅读精读 →</a>
+          </div>
         </div>
       </div>
-      <div class="column is-half">
-        <div class="paper-card">
-          <div class="pc-head"><span class="pc-id">2603.22455</span><span></span></div>
-          <h3 class="pc-title"><a href="papers/2603.22455-skillrouter.html">SkillRouter: Retrieve-and-Rerank Skill Selection for LLM Agents at Scale</a></h3>
-        </div>
-      </div>
-      <div class="column is-half">
-        <div class="paper-card">
-          <div class="pc-head"><span class="pc-id">2603.24639</span><span></span></div>
-          <h3 class="pc-title"><a href="papers/2603.24639-experiential-reflective.html">Experiential Reflective Learning for Self-Improving LLM Agents</a></h3>
-        </div>
-      </div>
-      <div class="column is-half">
-        <div class="paper-card">
-          <div class="pc-head"><span class="pc-id">2604.03964</span><span></span></div>
-          <h3 class="pc-title"><a href="papers/2604.03964-skillfoundry.html">SkillFoundry: Building Self-Evolving Agent Skill Libraries from Heterogeneous Scientific Resources</a></h3>
-        </div>
-      </div>
+
     </div>
   </div>
 </section>
 
+
+<!-- ========= 03 Retrieval ========= -->
+<section id="retrieval" class="stage-section" data-stage="retrieval">
+  <div class="container is-max-desktop">
+    <div class="section-title">
+      <span class="stage-num">03</span>
+      <div class="stage-body">
+        <div class="stage-name">Retrieval · 检索</div>
+        <div class="stage-sub">how skills enter the context</div>
+      </div>
+    </div>
+
+    <p class="direction-intro">
+      检索阶段决定推理时哪些 skill 被塞进上下文。SkillRouter 指出一条关键反例：<strong>只靠 metadata / 语义向量检索不够</strong>，skill 实现细节对命中准确率更决定性。由此分化出两条路线——继续扩信息（Graph of Skills 用依赖感知召回依赖完备的 bundle）与绕开检索（Corpus2Skill 让 agent 在 skill 树上主动 navigate）。Claude Code 的 progressive disclosure 实践更靠近后者。
+    </p>
+
+    <div class="columns is-multiline paper-grid">
+
+      <!-- SkillRouter -->
+      <div class="column is-one-third">
+        <div class="paper-card has-detail">
+          <div class="pc-head">
+            <span class="pc-id">2603.22455</span>
+            <span class="pc-likes">♥ 2</span>
+          </div>
+          <h3 class="pc-title">
+            <a href="papers/2603.22455-skillrouter.html">SkillRouter: Retrieve-and-Rerank Skill Selection for LLM Agents at Scale</a>
+          </h3>
+          <p class="pc-affil">Alibaba Group · 2026-03-23</p>
+          <p class="pc-summary">
+            大规模 skill 仓库下的 retrieve + rerank 路由；系统揭示一条对<strong>所有仅靠 metadata 选 skill 的方案都致命</strong>的发现——实现内容比描述更能决定命中。
+          </p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-retrieve">retrieval</span>
+            <a href="papers/2603.22455-skillrouter.html" class="pc-detail-link">阅读精读 →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Graph of Skills (cross-ref) -->
+      <div class="column is-one-third">
+        <div class="paper-card has-detail">
+          <div class="pc-head">
+            <span class="pc-id">2604.05333</span>
+            <span class="pc-likes">♥ 22</span>
+          </div>
+          <h3 class="pc-title">
+            <a href="papers/2604.05333-graph-of-skills.html">Graph of Skills: Dependency-Aware Structural Retrieval</a>
+          </h3>
+          <p class="pc-affil">UPenn · UMD · Brown · CMU · Lehigh · 2026-04-10</p>
+          <p class="pc-summary">
+            在检索维度的核心机制是<strong>反向感知 Personalized PageRank</strong>：沿依赖边反向扩散相关性，恢复语义上离查询较远的底层 prerequisite skill。
+          </p>
+          <div class="pc-footer">
+            <span>
+              <span class="pc-tag tag-retrieve">retrieval</span>
+              <span class="cross-hint">also in 沉淀</span>
+            </span>
+            <a href="papers/2604.05333-graph-of-skills.html" class="pc-detail-link">阅读精读 →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Corpus2Skill (cross-ref) -->
+      <div class="column is-one-third">
+        <div class="paper-card has-detail">
+          <div class="pc-head">
+            <span class="pc-id">2604.14572</span>
+            <span class="pc-likes">♥ 6</span>
+          </div>
+          <h3 class="pc-title">
+            <a href="papers/2604.14572-corpus2skill.html">Don't Retrieve, Navigate: Distilling Enterprise Knowledge into Navigable Skills</a>
+          </h3>
+          <p class="pc-affil">Magellan Technology Research Institute · 2026-04-16</p>
+          <p class="pc-summary">
+            把"检索"问题重新表述为"agent 在层级 skill 树上主动漫游"——和 Claude Code <code>ls skills/</code> + description-first 的原生行为天然对齐。
+          </p>
+          <div class="pc-footer">
+            <span>
+              <span class="pc-tag tag-retrieve">retrieval</span>
+              <span class="cross-hint">also in 合成</span>
+            </span>
+            <a href="papers/2604.14572-corpus2skill.html" class="pc-detail-link">阅读精读 →</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= 04 Evolution ========= -->
+<section id="evolution" class="stage-section alt" data-stage="evolution">
+  <div class="container is-max-desktop">
+    <div class="section-title">
+      <span class="stage-num">04</span>
+      <div class="stage-body">
+        <div class="stage-name">Evolution · 演化</div>
+        <div class="stage-sub">how the library improves over time</div>
+      </div>
+    </div>
+
+    <p class="direction-intro">
+      演化阶段决定 skill 库随时间<strong>变好还是变坏</strong>。几乎所有工作都在做"<strong>加</strong>"——增量累积、cross-user 聚合、rubric patch、生成/验证共演化——而对"<strong>删 / 合并 / 退休</strong>"与"<strong>跨模型归一化</strong>"的研究几乎空白。SkillClaw 是集体演化的代表，SkillFlow 给出唯一真正 lifelong 的评测视角，AutoSkill 则是距离"天文领域长任务终身学习"最近的单机方案。
+    </p>
+
+    <div class="columns is-multiline paper-grid">
+
+      <!-- AutoSkill -->
+      <div class="column is-half">
+        <div class="paper-card has-detail">
+          <div class="pc-head">
+            <span class="pc-id">2603.01145</span>
+            <span class="pc-likes">♥ 0</span>
+          </div>
+          <h3 class="pc-title">
+            <a href="papers/2603.01145-autoskill.html">AutoSkill: Experience-Driven Lifelong Learning via Skill Self-Evolution</a>
+          </h3>
+          <p class="pc-affil">华东师范大学 · 上海人工智能实验室 · 2026-03-01</p>
+          <p class="pc-summary">
+            从用户交互中自动派生、维护、复用 skill 的终身学习框架，不重训模型；与本综述"在天文任务上自动积累 skill"目标<strong>最相似</strong>，是主要参考对象之一。
+          </p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-evolve">evolution</span>
+            <a href="papers/2603.01145-autoskill.html" class="pc-detail-link">阅读精读 →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SkillClaw -->
+      <div class="column is-half">
+        <div class="paper-card has-detail">
+          <div class="pc-head">
+            <span class="pc-id">2604.08377</span>
+            <span class="pc-likes">♥ 282</span>
+          </div>
+          <h3 class="pc-title">
+            <a href="papers/2604.08377-skillclaw.html">SkillClaw: Let Skills Evolve Collectively with Agentic Evolver</a>
+          </h3>
+          <p class="pc-affil">DreamX Team · AMAP-ML (Alibaba / 高德) · 2026-04-09</p>
+          <p class="pc-summary">
+            OpenClaw 生态上的 collective evolver：持续聚合 cross-user 交互轨迹，更新共享 skill 集合。单调不降的 skill 池 + 夜间验证门是其工程贡献。目前综述里最热（❤ 282）。
+          </p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-evolve">evolution</span>
+            <a href="papers/2604.08377-skillclaw.html" class="pc-detail-link">阅读精读 →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SkillFlow -->
+      <div class="column is-half">
+        <div class="paper-card has-detail">
+          <div class="pc-head">
+            <span class="pc-id">2604.17308</span>
+            <span class="pc-likes">♥ 16</span>
+          </div>
+          <h3 class="pc-title">
+            <a href="papers/2604.17308-skillflow.html">SkillFlow: Benchmarking Lifelong Skill Discovery and Evolution for Autonomous Agents</a>
+          </h3>
+          <p class="pc-affil">USTC · Toronto · Sydney · 2026-04-19</p>
+          <p class="pc-summary">
+            Agent 从零 skill 起步，用 trajectory- 与 rubric-driven patch 随任务推进演化；Claude Opus 4.6 上 +8.43 pts。既是演化方法也是 lifelong 评测——本综述唯一兼具二者。
+          </p>
+          <div class="pc-footer">
+            <span>
+              <span class="pc-tag tag-evolve">evolution</span>
+              <span class="cross-hint">also in 评测</span>
+            </span>
+            <a href="papers/2604.17308-skillflow.html" class="pc-detail-link">阅读精读 →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- EvoSkills (cross-ref) -->
+      <div class="column is-half">
+        <div class="paper-card has-detail">
+          <div class="pc-head">
+            <span class="pc-id">2604.01687</span>
+            <span class="pc-likes">♥ 6</span>
+          </div>
+          <h3 class="pc-title">
+            <a href="papers/2604.01687-evoskills.html">EvoSkills: Self-Evolving Agent Skills via Co-Evolutionary Verification</a>
+          </h3>
+          <p class="pc-affil">UIC · MBZUAI · McGill · Columbia · ZJU · UBC · 2026-04-02</p>
+          <p class="pc-summary">
+            在演化维度的核心机制是<strong>Surrogate Verifier 与 Skill Generator 共同训练</strong>——"可执行"被显式写进 loss，代价是评测链条闭环、自我肯定的风险。
+          </p>
+          <div class="pc-footer">
+            <span>
+              <span class="pc-tag tag-evolve">evolution</span>
+              <span class="cross-hint">also in 合成</span>
+            </span>
+            <a href="papers/2604.01687-evoskills.html" class="pc-detail-link">阅读精读 →</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= 05 Benchmarks ========= -->
+<section id="benchmarks" class="stage-section" data-stage="benchmark">
+  <div class="container is-max-desktop">
+    <div class="section-title">
+      <span class="stage-num">05</span>
+      <div class="stage-body">
+        <div class="stage-name">Benchmarks · 评测</div>
+        <div class="stage-sub">how the whole loop is probed from outside</div>
+      </div>
+    </div>
+
+    <p class="direction-intro">
+      评测带独立于生命周期闭环——四份 benchmark 分别从不同位置"探针"进 loop：<strong>SkillsBench</strong> 暴露了"curated 有效、self-generated 无效"的核心裂缝；<strong>SWE-Skills-Bench</strong> 把 49 份 Anthropic-format SWE skill 放进真实 GitHub issue 做端到端测；<strong>SkillFlow</strong> 是唯一真正 lifelong 视角；<strong>Skill-Usage-in-the-Wild</strong> 则表明把 skill 放进"真实检索+精化"管线后性能显著退化。当前评测在 5 个结构维度上仍有系统性缺陷（评估对象混淆、时间静态、基线不对等、库内在属性盲区、verifier 循环），这是后续研究的富矿。
+    </p>
+
+    <div class="columns is-multiline paper-grid">
+
+      <!-- SkillsBench -->
+      <div class="column is-half">
+        <div class="paper-card has-detail">
+          <div class="pc-head">
+            <span class="pc-id">2602.12670</span>
+            <span class="pc-likes">♥ 60</span>
+          </div>
+          <h3 class="pc-title">
+            <a href="papers/2602.12670-skillsbench.html">SkillsBench: Benchmarking How Well Agent Skills Work Across Diverse Tasks</a>
+          </h3>
+          <p class="pc-affil">BenchFlow · 2026-02-18</p>
+          <p class="pc-summary">
+            86 任务跨域 benchmark；<strong>关键发现：curated skill 显著涨、self-generated skill 无增益</strong>——暴露 skill 生成质量瓶颈，本综述多处引用作为 motivating evidence。
+          </p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-bench">benchmark</span>
+            <a href="papers/2602.12670-skillsbench.html" class="pc-detail-link">阅读精读 →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SWE-Skills-Bench -->
+      <div class="column is-half">
+        <div class="paper-card has-detail">
+          <div class="pc-head">
+            <span class="pc-id">2603.15401</span>
+            <span class="pc-likes">♥ 19</span>
+          </div>
+          <h3 class="pc-title">
+            <a href="papers/2603.15401-swe-skills-bench.html">SWE-Skills-Bench: Do Agent Skills Actually Help in Real-World Software Engineering?</a>
+          </h3>
+          <p class="pc-affil">MBZUAI · Nanjing University (+ SCUT + UNSW) · 2026-03-16</p>
+          <p class="pc-summary">
+            49 份 Anthropic-format SWE skill 配真实 GitHub issue，端到端测"skill 在真实场景是否真的有用"；<strong>最接近"真实环境 skill 有效性"的评测</strong>。
+          </p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-bench">benchmark</span>
+            <a href="papers/2603.15401-swe-skills-bench.html" class="pc-detail-link">阅读精读 →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SkillFlow (cross-ref) -->
+      <div class="column is-half">
+        <div class="paper-card has-detail">
+          <div class="pc-head">
+            <span class="pc-id">2604.17308</span>
+            <span class="pc-likes">♥ 16</span>
+          </div>
+          <h3 class="pc-title">
+            <a href="papers/2604.17308-skillflow.html">SkillFlow: Benchmarking Lifelong Skill Discovery and Evolution</a>
+          </h3>
+          <p class="pc-affil">USTC · Toronto · Sydney · 2026-04-19</p>
+          <p class="pc-summary">
+            在评测维度上的独特之处是<strong>时间维度</strong>——agent 从"零 skill"起步，随任务族推进累积库，第一次把"库本身是时序对象"这件事写进 benchmark 协议。
+          </p>
+          <div class="pc-footer">
+            <span>
+              <span class="pc-tag tag-bench">benchmark</span>
+              <span class="cross-hint">also in 演化</span>
+            </span>
+            <a href="papers/2604.17308-skillflow.html" class="pc-detail-link">阅读精读 →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skill-Usage-in-the-Wild -->
+      <div class="column is-half">
+        <div class="paper-card has-detail">
+          <div class="pc-head">
+            <span class="pc-id">2604.04323</span>
+            <span class="pc-likes">♥ 40</span>
+          </div>
+          <h3 class="pc-title">
+            <a href="papers/2604.04323-skillusagewild.html">How Well Do Agentic Skills Work in the Wild</a>
+          </h3>
+          <p class="pc-affil">UCSB (Shiyu Chang Lab) · MIT CSAIL · MIT-IBM · 2026-04-08</p>
+          <p class="pc-summary">
+            Handcrafted skill 换成"检索 + refine"管线后 skill 使用显著退化；targeted refinement 可以部分恢复——<strong>现实条件下 skill 有效性的压力测试</strong>。
+          </p>
+          <div class="pc-footer">
+            <span class="pc-tag tag-bench">benchmark</span>
+            <a href="papers/2604.04323-skillusagewild.html" class="pc-detail-link">阅读精读 →</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= 其他相关论文 ========= -->
+<section class="hub-others">
+  <div class="container is-max-desktop">
+    <details class="others-panel">
+      <summary>
+        <span class="summary-title">其他相关论文 <span class="summary-count">(28)</span></span>
+        <span class="summary-hint">不完全符合本综述 Anthropic skill 抽象口径，点击展开</span>
+      </summary>
+      <div class="others-list">
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2602.01983</span>
+            <span class="oi-meta">2026-02-03 · <span class="likes">♥ 2</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2602.01983" target="_blank">Evolving from Tool User to Creator via Training-Free Experience Reuse in Multimodal Reasoning</a></h4>
+          <p class="oi-summary">训练无关框架让多模态 agent 推理时自动创造与优化工具，通过自演化与记忆合并提升推理能力。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2602.02474</span>
+            <span class="oi-meta">2026-02-02 · <span class="likes">♥ 63</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2602.02474" target="_blank">MemSkill: Learning and Evolving Memory Skills for Self-Evolving Agents</a></h4>
+          <p class="oi-summary">给自演化 agent 配一组"记忆 skill"（描述 + 内容规范），由 controller 选择、executor 执行、designer 持续演化。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2602.03279</span>
+            <span class="oi-meta">2026-02-03 · <span class="likes">♥ 0</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2602.03279" target="_blank">Agentic Proposing: Enhancing LLM Reasoning via Compositional Skill Synthesis</a></h4>
+          <p class="oi-summary">用专门 agent + Multi-Granularity Policy Optimization 合成高质量、可验证的推理训练数据。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2602.05832</span>
+            <span class="oi-meta">2026-02-05 · <span class="likes">♥ 0</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2602.05832" target="_blank">UI-Mem: Self-Evolving Experience Memory for Online RL in Mobile GUI Agents</a></h4>
+          <p class="oi-summary">通过层级化经验记忆和分层采样，改进 GUI 在线 RL 的信用分配和经验迁移。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2602.08004</span>
+            <span class="oi-meta">2026-02-10 · <span class="likes">♥ 5</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2602.08004" target="_blank">Agent Skills: A Data-Driven Analysis of Claude Skills for Extending LLM Functionality</a></h4>
+          <p class="oi-summary">对 Claude Skills 生态做数据驱动分析，刻画 skill 在触发条件、过程逻辑、工具交互维度的结构特征。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2602.08234</span>
+            <span class="oi-meta">2026-02-11 · <span class="likes">♥ 74</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2602.08234" target="_blank">SkillRL: Evolving Agents via Recursive Skill-Augmented Reinforcement Learning</a></h4>
+          <p class="oi-summary">通过层级 skill 发现 + 递归策略演化让 LLM agent 迭代增强，属于 RL 维度的 skill 学习。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2602.12430</span>
+            <span class="oi-meta">2026-02-12 · <span class="likes">♥ 1</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2602.12430" target="_blank">Agent Skills for LLMs: Architecture, Acquisition, Security, and the Path Forward</a></h4>
+          <p class="oi-summary">综述：现代 LLM 正走向模块化 agent 架构，按需加载 skill，需要标准化协议与生命周期管理。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2602.20156</span>
+            <span class="oi-meta">2026-02-23 · <span class="likes">♥ 0</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2602.20156" target="_blank">Skill-Inject: Measuring Agent Vulnerability to Skill File Attacks</a></h4>
+          <p class="oi-summary">把 skill 文件作为 prompt injection 的攻击面，量化 SKILL.md 生态在 Claude Code / Gemini / Codex CLI 下的受攻击风险。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2602.20867</span>
+            <span class="oi-meta">2026-02-24 · <span class="likes">♥ 1</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2602.20867" target="_blank">SoK: Agentic Skills — Beyond Tool Use in LLM Agents</a></h4>
+          <p class="oi-summary">SoK 综述：把 skill 形式化为 $S=(C,\pi,T,R)$，归纳七种设计模式，从 metadata progressive disclosure 到 marketplace 分发。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2602.21320</span>
+            <span class="oi-meta">2026-03-03 · <span class="likes">♥ 12</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2602.21320" target="_blank">Tool-R0: Self-Evolving LLM Agents for Tool-Learning from Zero Data</a></h4>
+          <p class="oi-summary">用 self-play RL 训练通用 tool-calling agent，无需初始数据即可超越 base model 和监督 baseline。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2603.00195</span>
+            <span class="oi-meta">2026-02-27 · <span class="likes">♥ 0</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2603.00195" target="_blank">Formal Analysis and Supply Chain Security for Agentic AI Skills</a></h4>
+          <p class="oi-summary">对 agentic skill 供应链做形式化分析（OpenClaw 228K★ / Anthropic Skills 75.6K★），提出 SkillFortifyBench + 五阶段 skill 生命周期。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2603.02766</span>
+            <span class="oi-meta">2026-03-03 · <span class="likes">♥ 1</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2603.02766" target="_blank">EvoSkill (singular): Automated Skill Discovery for Multi-Agent Systems</a></h4>
+          <p class="oi-summary">通过迭代失败分析自动发现并精化 agent skill；注意与 2604.01687 EvoSkills (复数) 是两篇不同工作。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2603.05578</span>
+            <span class="oi-meta">2026-03-05 · <span class="likes">♥ 0</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2603.05578" target="_blank">Tool-Genesis: A Task-Driven Tool Creation Benchmark for Self-Evolving Language Agent</a></h4>
+          <p class="oi-summary">诊断性 benchmark：评估语言 agent 从抽象需求自主创造并使用工具的能力，揭示一步式工具合成的局限。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2603.09716</span>
+            <span class="oi-meta">2026-03-10 · <span class="likes">♥ 0</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2603.09716" target="_blank">AutoAgent: Evolving Cognition and Elastic Memory Orchestration for Adaptive Agents</a></h4>
+          <p class="oi-summary">自演化多 agent 框架，在动态环境中整合动态认知 + 实时决策 + 自适应记忆管理。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2603.12056</span>
+            <span class="oi-meta">2026-03-12 · <span class="likes">♥ 33</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2603.12056" target="_blank">XSkill: Continual Learning from Experience and Skills in Multimodal Agents</a></h4>
+          <p class="oi-summary">多模态 agent 的双流（experience + skill）持续学习，靠视觉接地摘要和 cross-rollout critique 累积可复用知识。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2603.14805</span>
+            <span class="oi-meta">2026-03-16 · <span class="likes">♥ 0</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2603.14805" target="_blank">Knowledge Activation: AI Skills as the Institutional Knowledge Primitive</a></h4>
+          <p class="oi-summary">把 Anthropic Skills 标准特化为 AKU 七字段 schema（intent / procedure / tools / metadata / governance / continuations / validators）。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2603.16060</span>
+            <span class="oi-meta">2026-03-18 · <span class="likes">♥ 3</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2603.16060" target="_blank">ARISE: Agent Reasoning with Intrinsic Skill Evolution in Hierarchical RL</a></h4>
+          <p class="oi-summary">层级 RL 框架，用 skill 管理系统通过可复用策略与结构化 skill 库改进数学推理。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2603.17187</span>
+            <span class="oi-meta">2026-03-19 · <span class="likes">♥ 138</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2603.17187" target="_blank">MetaClaw: Just Talk — An Agent That Meta-Learns and Evolves in the Wild</a></h4>
+          <p class="oi-summary">连续元学习框架，让 LLM agent 同时演化 policy 与可复用行为 skill，通过机会性更新减少停机。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2603.18000</span>
+            <span class="oi-meta">2026-03-18 · <span class="likes">♥ 0</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2603.18000" target="_blank">AgentFactory: A Self-Evolving Framework Through Executable Subagent Accumulation</a></h4>
+          <p class="oi-summary">通过保存和精化 subagent 代码让 LLM agent 自演化；沉淀的是 subagent，而非 Anthropic-format skill。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2603.18743</span>
+            <span class="oi-meta">2026-03-20 · <span class="likes">♥ 57</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2603.18743" target="_blank">Memento-Skills: Let Agents Design Agents</a></h4>
+          <p class="oi-summary">通用 agent 通过基于记忆的 RL（带状态提示 + skill 库）自主设计和改进任务专用 agent。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2603.19461</span>
+            <span class="oi-meta">2026-03-23 · <span class="likes">♥ 50</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2603.19461" target="_blank">Hyperagents</a></h4>
+          <p class="oi-summary">自引用框架，把任务 agent 与元 agent 整合成单个可编辑程序，支持元认知式自修改。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2603.21019</span>
+            <span class="oi-meta">2026-03-22 · <span class="likes">♥ 0</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2603.21019" target="_blank">SkillProbe: Security Auditing for Emerging Agent Skill Marketplaces via Multi-Agent Collaboration</a></h4>
+          <p class="oi-summary">对 ClawHub 上 2500 个真实 skill 做安全审计，用 Skills-for-Skills 范式把审计流程封装成标准化 skill 模块。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2603.24533</span>
+            <span class="oi-meta">2026-03-26 · <span class="likes">♥ 47</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2603.24533" target="_blank">UI-Voyager: A Self-Evolving GUI Agent Learning via Failed Experience</a></h4>
+          <p class="oi-summary">两阶段自演化移动 GUI agent：rejection fine-tuning + group relative self-distillation。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2603.24639</span>
+            <span class="oi-meta">2026-03-25 · <span class="likes">♥ 3</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2603.24639" target="_blank">Experiential Reflective Learning for Self-Improving LLM Agents</a></h4>
+          <p class="oi-summary">让自主 agent 通过学习过去经验并在任务间迁移可执行洞察来快速适应新环境。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2603.27850</span>
+            <span class="oi-meta">2026-03-29 · <span class="likes">♥ 1</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2603.27850" target="_blank">EffiSkill: Agent Skill Based Automated Code Efficiency Optimization</a></h4>
+          <p class="oi-summary">离线挖掘 Operator / Meta skill 并存为带 YAML-like metadata 的 skill card，组成可插拔代码效率优化工具包。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2604.02268</span>
+            <span class="oi-meta">2026-04-03 · <span class="likes">♥ 94</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2604.02268" target="_blank">SKILL0: In-Context Agentic Reinforcement Learning for Skill Internalization</a></h4>
+          <p class="oi-summary">LLM agent 在训练中内化 skill，通过动态课程学习减少上下文开销并改进任务表现；skill 不落盘。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2604.08224</span>
+            <span class="oi-meta">2026-04-09 · <span class="likes">♥ 50</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2604.08224" target="_blank">Externalization in LLM Agents: A Unified Review of Memory, Skills, Protocols and Harness Engineering</a></h4>
+          <p class="oi-summary">综述：统一视角覆盖 memory / skill / protocol / harness engineering，将 skill 放在"Stage 3: Packaged Expertise"。</p>
+        </div>
+
+        <div class="other-item">
+          <div class="oi-head">
+            <span class="oi-id">2604.14228</span>
+            <span class="oi-meta">2026-04-14 · <span class="likes">♥ 22</span></span>
+          </div>
+          <h4 class="oi-title"><a href="https://arxiv.org/abs/2604.14228" target="_blank">Dive into Claude Code: The Design Space of Today's and Future AI Agent Systems</a></h4>
+          <p class="oi-summary">对 Claude Code 的 TypeScript 源码做系统性逆向工程，映射出 MCP / plugins / skills / hooks 四种扩展机制。</p>
+        </div>
+
+      </div>
+    </details>
+  </div>
+</section>
 
 <!-- ========= Footer ========= -->
 <footer class="footer">
   <div class="container is-max-desktop">
-    <p>整理于 <code>Wiki/SkillX</code> · 数据来自 <a href="https://huggingface.co/papers" target="_blank">Hugging Face Papers</a> · 页面仅供组会交流使用</p>
+    <p>
+      <span class="agentxskill">Agent × Skill</span> · Skill Library Lifecycle 综述
+    </p>
+    <p style="margin-top:0.5rem;">
+      论文元信息与摘要来源：<a href="https://huggingface.co/papers" target="_blank">Hugging Face Papers</a> · 精读笔记位于本仓库 <code>notes/</code> 目录
+    </p>
     <p style="margin-top:0.5rem; font-size:0.78rem; color:#9ca3af;">
-      页面设计参考 <a href="https://xskill-agent.github.io/xskill_page/" target="_blank">xskill_page</a> / Nerfies academic project page template
+      本页只展示符合 Anthropic Agent Skill 抽象（folder + SKILL.md + scripts/resources + progressive disclosure）的工作；综述/安全/GUI/纯 in-context 记忆类论文不在展示范围。
     </p>
   </div>
 </footer>

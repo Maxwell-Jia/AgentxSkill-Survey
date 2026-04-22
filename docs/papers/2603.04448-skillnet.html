@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="SkillNet: Create, Evaluate, and Connect AI Skills — 技能全生命周期管理基础设施精读笔记。">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SkillNet — Agent × Skill Survey</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+  <style>
+    .skillnet {
+      background: linear-gradient(90deg, #06B6D4, #8B5CF6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-variant: small-caps;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+<div class="breadcrumb-nav">
+  <div class="container is-max-desktop">
+    <a href="../index.html">Agent × Skill Survey</a>
+    <span class="sep">/</span>
+    <span>02 Synthesis &amp; Deposit</span>
+    <span class="sep">/</span>
+    <span>SkillNet</span>
+  </div>
+</div>
+
+
+<!-- ========= Hero ========= -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="skillnet">SkillNet</span>: Create, Evaluate, and Connect AI Skills<br>
+          </h1>
+          <p class="is-size-5" style="color:#555; margin-top:0.2rem; font-family:'Google Sans',sans-serif;">
+            创建、评测与连接 AI 技能的一体化基础设施
+          </p>
+
+          <div class="is-size-6 publication-authors" style="margin-top:1rem;">
+            <span class="author-block">Ruobin Zhong<sup>*1</sup>,</span>
+            <span class="author-block">Haoming Xu<sup>*1</sup>,</span>
+            <span class="author-block">Chen Jiang<sup>*2</sup>,</span>
+            <span class="author-block">Yuan Liang<sup>1</sup>,</span>
+            <span class="author-block">Yi Zhong<sup>3</sup>,</span>
+            <span class="author-block">Runnan Fang<sup>4</sup>,</span>
+            <span class="author-block">Jia-Chen Gu<sup>5</sup>,</span>
+            <span class="author-block">et al.</span>
+          </div>
+          <div class="is-size-7 publication-authors" style="margin-top:0.3rem; color:#555;">
+            <span class="author-block"><sup>1</sup>Zhejiang University</span>
+            <span class="author-block">· <sup>2</sup>Tongji University</span>
+            <span class="author-block">· <sup>3</sup>Southeast University</span>
+            <span class="author-block">· <sup>4</sup>Alibaba Group</span>
+            <span class="author-block">· <sup>5</sup>UCLA</span>
+            <span class="author-block">· Fudan · UCSD · Edinburgh · Monash · NUS · NTU · Tencent · Ant Group · OPPO · 等</span>
+          </div>
+          <div class="is-size-7" style="margin-top:0.25rem; color:#888;">
+            通讯作者：Ningyu Zhang（浙大）· 2026-02-26 · ♥ 93
+          </div>
+          <div class="is-size-7" style="margin-top:0.15rem; color:#aaa;">
+            * 共同一作
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2603.04448" target="_blank"
+                   class="external-link button is-normal is-rounded btn-arxiv">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/zjunlp/SkillNet" target="_blank"
+                   class="external-link button is-normal is-rounded btn-github">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/papers/2603.04448" target="_blank"
+                   class="external-link button is-normal is-rounded btn-hf">
+                  <span class="icon hf-icon">🤗</span>
+                  <span>HF Papers</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/Maxwell-Jia/AgentxSkill-Survey/blob/main/notes/2603.04448-SkillNet.md" target="_blank"
+                   class="external-link button is-normal is-rounded btn-notes">
+                  <span class="icon"><i class="fas fa-file-alt"></i></span>
+                  <span>完整笔记</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="../index.html"
+                   class="external-link button is-normal is-rounded btn-home">
+                  <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                  <span>Back</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Teaser ========= -->
+<section class="hero teaser" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="hero-body" style="padding-top:0;">
+      <div class="analysis-figure-wrap">
+        <img src="https://arxiv.org/html/2603.04448v1/x3.png" alt="Figure 2: SkillNet 端到端 Pipeline" loading="lazy">
+      </div>
+      <p class="figure-caption has-text-centered">
+        <strong>Figure 2.</strong> <span class="skillnet">SkillNet</span> 端到端 Pipeline。系统将用户输入（执行轨迹、GitHub 项目、文档、prompt）和互联网资源转化为可执行技能，经过多维评测后组织为结构化技能网络，支持搜索、下载、分析和社区贡献，最终形成 250K+ 候选、150K+ 精选技能的开放生态。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Abstract ========= -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Agent 在执行任务过程中积累的经验往往分散在脚本、prompt 片段和工作流日志中，缺乏统一的提取和结构化机制，导致"重复造轮子"现象普遍。现有技能库（ClawHub、SkillsMP、Skills.sh 等）主要依赖社区下载量或 GitHub stars 进行隐式质量控制，缺乏对安全性、完整性、可执行性、可维护性、成本的多维度评估；同时，已有平台将技能视为独立制件，无法自动发现技能间的相似、组合、层级和依赖关系，妨碍大规模工作流合成和检索。
+          </p>
+          <p>
+            <span class="skillnet">SkillNet</span> 是首个覆盖技能全生命周期的统一开放基础设施：从异构来源（执行轨迹、GitHub 仓库、PDF/PPT/Word 文档、自然语言 prompt）自动合成技能，经五维多层次评测筛选，再构建技能本体关系图谱，最终形成含 <strong>250K+ 候选、150K+ 精选技能</strong>的开放生态。Discovery-Activation-Execution 三步渐进协议供 agent 按需检索和执行，在 ALFWorld / WebShop / ScienceWorld 三个环境上相对 ReAct 基线平均奖励提升 <strong>40%</strong>、交互步数减少 <strong>30%</strong>。
+          </p>
+        </div>
+
+        <div class="key-insight">
+          <div class="label">Key Insight</div>
+          <p><strong>技能不是孤岛，而是生态。</strong>覆盖"创建-评测-连接"完整生命周期的统一框架，比任何单点优化都更有价值——LLM 驱动的自动创建解决扩展成本，五维量化评测解决质量治理，技能本体关系图谱解决检索与工作流合成，三者缺一不可。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Framework Overview ========= -->
+<section class="section" id="framework" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Framework Overview</h2>
+        <div class="content has-text-justified">
+          <p>
+            <span class="skillnet">SkillNet</span> 围绕三大核心能力构建完整的技能生命周期管理：<strong>Create（创建）</strong>从异构来源自动生成结构化技能，<strong>Evaluate（评测）</strong>从五个维度量化质量，<strong>Connect（连接）</strong>通过技能本体关系图谱建模技能间结构关系。每个技能以标准化文件夹为单位组织，核心文件 <strong>SKILL.md</strong> 包含元数据（名称、描述、使用条件）和分步执行指令，格式与 Anthropic Agent Skills 开放标准高度对齐。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skill Ontology 图 -->
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2603.04448v1/x4.png" alt="Figure 3: SkillNet Skill Ontology" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 3.</strong> <span class="skillnet">SkillNet</span> Skill Ontology，三层结构：<strong>Skill Taxonomy</strong>（分类层）→ <strong>Skill Relation Graph</strong>（关系层）→ <strong>Skill Package Library</strong>（包层）。
+        </p>
+      </div>
+    </div>
+
+    <!-- 三大子能力 Cards -->
+    <div class="columns">
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Create（创建）</h3>
+          <div class="content">
+            <p>支持四类异构数据源自动生成技能：</p>
+            <ul>
+              <li><strong>执行轨迹 / 对话日志</strong>：Agent 任务完成记录</li>
+              <li><strong>开源 GitHub 仓库</strong>：代码库、工具包</li>
+              <li><strong>半结构化文档</strong>：PDF、PowerPoint、Word</li>
+              <li><strong>自然语言 prompt</strong>：用户直接描述</li>
+            </ul>
+            <p style="font-size:0.82rem; color:#6b7280;">所有创建过程均由 LLM 驱动，用户可自定义底层模型；此外通过互联网爬取和社区贡献持续扩充技能池。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Evaluate（评测）</h3>
+          <div class="content">
+            <p>五维评测框架，每维三级评分（Good / Average / Poor）：</p>
+            <ul>
+              <li><strong>Safety</strong>：危险操作与 prompt 注入风险</li>
+              <li><strong>Completeness</strong>：步骤完整性与依赖覆盖</li>
+              <li><strong>Executability</strong>：LLM 评估 + 沙箱实测</li>
+              <li><strong>Maintainability</strong>：模块化与可组合性</li>
+              <li><strong>Cost-awareness</strong>：时延 / 算力 / API 成本</li>
+            </ul>
+            <p style="font-size:0.82rem; color:#6b7280;">200 样本 PhD 盲审验证：MAE &lt; 0.03，QWK ≈ 1.000（近乎完美的评分者一致性）。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-one-third">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Connect（连接）</h3>
+          <div class="content">
+            <p>自动发现四类技能间结构关系：</p>
+            <ul>
+              <li><strong>similar_to</strong>：功能等价，支持冗余检测</li>
+              <li><strong>belong_to</strong>：子组件 / 原子步骤，层级结构</li>
+              <li><strong>compose_with</strong>：协同调用，输出接输入</li>
+              <li><strong>depend_on</strong>：前置依赖，安全执行规划</li>
+            </ul>
+            <p style="font-size:0.82rem; color:#6b7280;">语义嵌入匹配 + LLM 关系推理混合 pipeline，构建有向带类型多关系图。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Discovery → Activation → Execution 三步协议 -->
+    <div class="columns is-centered" style="margin-top:1.5rem;">
+      <div class="column">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Discovery → Activation → Execution 三步渐进协议</h3>
+          <div class="content">
+            <p>技能通过渐进式三步协议对 agent 暴露，实现"按需加载"（lazy-loading），避免一次性注入大量 context：</p>
+            <div class="columns">
+              <div class="column is-one-third">
+                <p><strong>Step 1 — Discovery（发现）</strong></p>
+                <p style="font-size:0.88rem;">Agent 只读取最小化元数据（名称 + 简短描述），进行初筛，识别与当前任务潜在相关的技能集合。此阶段 token 消耗极低。</p>
+              </div>
+              <div class="column is-one-third">
+                <p><strong>Step 2 — Activation（激活）</strong></p>
+                <p style="font-size:0.88rem;">当某技能描述与当前任务匹配时，agent 读取完整 SKILL.md 指令，并准备所有关联资源（脚本、模板等）。这是技能进入 agent 工作上下文的时刻。</p>
+              </div>
+              <div class="column is-one-third">
+                <p><strong>Step 3 — Execution（执行）</strong></p>
+                <p style="font-size:0.88rem;">Agent 遵照 SKILL.md 的分步指令执行任务，可选地运行绑定代码或调用外部资产。包含代码的技能还会在沙箱环境中进行运行时正确性验证。</p>
+              </div>
+            </div>
+            <p style="font-size:0.82rem; color:#6b7280;">与 OpenClaw 框架的 lazy-loading 设计对应，显著降低上下文开销——会话初始化时只在系统 prompt 注入紧凑元数据，按需激活完整指令。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Results ========= -->
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Results</h2>
+        <p style="color:#555;">评测环境：ALFWorld（家居具身）· WebShop（在线购物仿真）· ScienceWorld（虚拟科学实验室）· R = 奖励分 ↑</p>
+      </div>
+    </div>
+
+    <!-- 主结果图 -->
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2603.04448v1/x7.png" alt="Figure 6: 各方法性能对比" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 6.</strong> <span class="skillnet">SkillNet</span> 在三个环境、三个骨干模型上的性能对比，一致超越 ReAct 和 Few-shot 基线，平均奖励（R）显著提升，交互步数（S）显著降低。
+        </p>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="table is-striped is-fullwidth results-table">
+        <thead>
+          <tr>
+            <th>模型</th>
+            <th>方法</th>
+            <th>ALFWorld Seen R↑</th>
+            <th>ALFWorld Unseen R↑</th>
+            <th>WebShop R↑</th>
+            <th>ScienceWorld Seen R↑</th>
+            <th>ScienceWorld Unseen R↑</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="2">DeepSeek V3.2</td>
+            <td>ReAct</td>
+            <td>66.43</td><td>69.40</td><td>31.55</td><td>69.86</td><td>64.67</td>
+          </tr>
+          <tr class="our-method-row">
+            <td><strong>+ SkillNet</strong></td>
+            <td><strong>80.60</strong></td><td><strong>83.57</strong></td><td><strong>46.18</strong></td><td><strong>84.87</strong></td><td><strong>81.31</strong></td>
+          </tr>
+
+          <tr>
+            <td rowspan="2">Gemini 2.5 Pro</td>
+            <td>ReAct</td>
+            <td>60.00</td><td>61.94</td><td>31.66</td><td>58.24</td><td>56.13</td>
+          </tr>
+          <tr class="our-method-row">
+            <td><strong>+ SkillNet</strong></td>
+            <td><strong>91.43</strong></td><td><strong>91.04</strong></td><td><strong>53.02</strong></td><td><strong>88.84</strong></td><td><strong>86.26</strong></td>
+          </tr>
+
+          <tr>
+            <td rowspan="2">o4 Mini</td>
+            <td>ReAct</td>
+            <td>45.71</td><td>49.25</td><td>24.19</td><td>64.89</td><td>59.93</td>
+          </tr>
+          <tr class="our-method-row">
+            <td><strong>+ SkillNet</strong></td>
+            <td><strong>68.57</strong></td><td><strong>73.28</strong></td><td><strong>36.21</strong></td><td><strong>73.24</strong></td><td><strong>71.06</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <ul>
+            <li>相对 ReAct 基线，<strong>平均奖励提升 40%，交互步数减少 30%</strong>（三环境三模型一致验证）。</li>
+            <li><strong>各规模模型均受益</strong>：从紧凑模型（o4 Mini，+15.7R）到大规模模型（Gemini 2.5 Pro，+28.5R），性能提升始终显著，表明 SkillNet 提供超越参数知识的互补能力。</li>
+            <li><strong>Seen / Unseen 均有增益</strong>：技能抽象和复用能够促进跨任务知识迁移，不依赖于记忆特定实例。</li>
+            <li>评测所用技能从 ETO 专家轨迹合成，训练集和测试集无重叠，排除数据泄露。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========= Analysis ========= -->
+<section class="section" id="analysis" style="background-color:#eef1f6;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Analysis</h2>
+      </div>
+    </div>
+
+    <div class="columns">
+      <!-- 平台对比 -->
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">与现有平台对比（Table 2）</h3>
+          <table class="table is-narrow ablation-table is-fullwidth">
+            <thead>
+              <tr>
+                <th>平台</th>
+                <th>自动创建</th>
+                <th>质量评测</th>
+                <th>关系分析</th>
+                <th>规模</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="our-method-row">
+                <td><strong>SkillNet</strong></td>
+                <td>✓ LLM 驱动</td>
+                <td>五维量化</td>
+                <td>✓ 图谱</td>
+                <td>250K+</td>
+              </tr>
+              <tr>
+                <td>ClawHub</td>
+                <td>✗</td>
+                <td>无</td>
+                <td>✗</td>
+                <td>~9K</td>
+              </tr>
+              <tr>
+                <td>SkillsMP</td>
+                <td>✗</td>
+                <td>GitHub ★</td>
+                <td>✗</td>
+                <td>~261K</td>
+              </tr>
+              <tr>
+                <td>SkillHub</td>
+                <td>✗</td>
+                <td>LLM 评级</td>
+                <td>手动</td>
+                <td>~21K</td>
+              </tr>
+              <tr>
+                <td>Skills.sh</td>
+                <td>✗</td>
+                <td>社区排行</td>
+                <td>✗</td>
+                <td>~71K</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="analysis-card-desc" style="margin-top:0.7rem;">
+            SkillNet 是唯一同时覆盖自动创建、量化评测和关系图谱三个维度的开放平台。虽然 SkillsMP 体量更大，但缺乏质量控制。
+          </p>
+        </div>
+      </div>
+
+      <!-- skillnet-ai 工具包 -->
+      <div class="column is-half">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">Python Toolkit（skillnet-ai）</h3>
+          <div class="content">
+            <p>CLI + Python 库双接口，五大核心操作：</p>
+            <table class="table is-narrow ablation-table is-fullwidth">
+              <thead><tr><th>功能</th><th>CLI 命令</th></tr></thead>
+              <tbody>
+                <tr><td>关键词 / 语义搜索</td><td><code>skillnet search</code></td></tr>
+                <tr><td>下载技能</td><td><code>skillnet download</code></td></tr>
+                <tr><td>创建技能</td><td><code>skillnet create</code></td></tr>
+                <tr><td>评测技能</td><td><code>skillnet evaluate</code></td></tr>
+                <tr><td>分析关系</td><td><code>skillnet analyze</code></td></tr>
+              </tbody>
+            </table>
+            <p style="font-size:0.82rem; color:#6b7280;">API 端点：<code>http://api-skillnet.openkg.cn/v1/search</code>，支持关键词和向量两种检索模式。项目主页：<a href="http://skillnet.openkg.cn/" target="_blank">skillnet.openkg.cn</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- skillnet-ai 工具包使用示例图 -->
+    <div class="columns is-centered" style="margin-top:1rem;">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2603.04448v1/x6.png" alt="Figure 5: skillnet-ai 工具包用法示例" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 5.</strong> skillnet-ai 工具包实际使用示例，展示 CLI 命令行（左）和 Python 库调用（右）两种接口形态。
+        </p>
+      </div>
+    </div>
+
+    <!-- 应用场景 -->
+    <div class="columns is-centered" style="margin-top:1rem;">
+      <div class="column">
+        <div class="analysis-figure-wrap">
+          <img src="https://arxiv.org/html/2603.04448v1/x8.png" alt="Figure 7: SkillNet 应用场景示例" loading="lazy">
+        </div>
+        <p class="figure-caption has-text-centered">
+          <strong>Figure 7.</strong> <span class="skillnet">SkillNet</span> 应用场景示例。顶部展示用户任务分解为可行步骤；底部展示科研场景（单细胞 RNA-seq 数据分析）和编程 Agent 场景（大规模软件工程）中的典型技能链调度与多维评测。
+        </p>
+      </div>
+    </div>
+
+    <!-- 仓库构建与质量控制 -->
+    <div class="columns is-centered" style="margin-top:1rem;">
+      <div class="column">
+        <div class="analysis-card">
+          <h3 class="title is-5 analysis-card-title">200K+ 技能仓库的构建与质量控制</h3>
+          <div class="content">
+            <div class="columns">
+              <div class="column is-half">
+                <ul>
+                  <li><strong>初始规模</strong>：250K+ 候选技能（爬取 + 自动创建 + 社区贡献）</li>
+                  <li><strong>精选规模</strong>：150K+ 高质量技能（多阶段过滤后，持续扩展）</li>
+                  <li><strong>去重机制</strong>：联合比较目录结构和 SKILL.md 的 MD5 哈希值</li>
+                </ul>
+              </div>
+              <div class="column is-half">
+                <ul>
+                  <li><strong>过滤机制</strong>：规则验证（格式完整性）+ 模型检查（语义质量）双层过滤</li>
+                  <li><strong>10 个功能大类</strong>：Development / AIGC / Research / Science / Business / Testing / Productivity / Security / Lifestyle / Other</li>
+                  <li><strong>社区贡献</strong>：自动化质检 + 随机抽样人工审计双重保障</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========= Takeaways ========= -->
+<section class="section" id="takeaways">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Takeaways</h2>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h3 class="title is-5">核心结论</h3>
+          <ol>
+            <li><span class="skillnet">SkillNet</span> 是首个覆盖技能全生命周期（创建-评测-连接）的统一开放基础设施，将碎片化 agent 经验转化为结构化、可组合的知识单元。</li>
+            <li>五维评测框架配合自动化 LLM 评估器，在 200 样本盲测中实现与人类专家近乎完美的一致性（QWK ≈ 1.000），证明大规模自动质检的可行性。</li>
+            <li>在三个环境三个骨干模型上，相对 ReAct 基线平均奖励提升 40%、交互步数减少 30%，多骨干模型一致验证。</li>
+            <li>技能本体和关系图谱使 SkillNet 成为自进化生态而非静态仓库，技能创建、评测和分析可持续协同运转。</li>
+          </ol>
+
+          <h3 class="title is-5">局限性</h3>
+          <ul>
+            <li>评测框架当前主要靠 GPT-4o-mini 实例化，对不同 LLM 后端的泛化性有待验证。</li>
+            <li>技能关系图谱是静态的，尚未从 agent 执行轨迹动态更新，随着技能库扩大可能出现图谱漂移。</li>
+            <li>Executability 维度挑战最大（最多 Average 评级），说明仅靠 LLM 静态评估代码技能不够充分，沙箱验证成本较高。</li>
+          </ul>
+
+          <h3 class="title is-5">对 Skill 生态基建方向的启发</h3>
+          <ol>
+            <li><strong>Discovery-Activation-Execution 协议</strong>提供了操作语义模型，将"检索"具体化为分阶段渐进信息披露，token 效率和准确性优于 RAG 单次召回。</li>
+            <li><strong>250K 规模意义</strong>：首次证明技能仓库的工业级可行性——不只是研究原型，而是可直接部署的基础设施，与 EvoSkill（精选小库）、AutoSkill（个人级 SkillBank）形成规模梯度。</li>
+            <li><strong>技能关系图谱 vs. 向量索引</strong>：同时支持语义向量搜索和结构化关系查询（depend_on / compose_with 等），在工作流合成、依赖解析等复杂场景中提供向量相似度无法表达的结构信息。</li>
+            <li><strong>五维评测框架</strong>（Safety / Completeness / Executability / Maintainability / Cost-awareness）具有较好的完备性，可作为"技能质检 API"的标准接口设计参考。</li>
+            <li><strong>沙箱 Executability 验证是关键</strong>：大规模可执行技能仓库的刚需——仅靠 LLM 静态评估代码技能是不够的。</li>
+            <li><strong>"一人公司 / 一人实验室"愿景</strong>：在 SkillNet 支撑下，技能成为知识委托和集成的主要单元，个人策划技能仓库，agent 将其组合为工作流，记忆通过经验持续精炼。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <p><a href="../index.html">← 返回 Agent × Skill 论文列表</a></p>
+    <p style="margin-top:0.5rem; font-size:0.78rem; color:#9ca3af;">
+      Data from <a href="https://huggingface.co/papers/2603.04448" target="_blank">Hugging Face Papers</a>
+      · 项目主页 <a href="http://skillnet.openkg.cn/" target="_blank">skillnet.openkg.cn</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
